@@ -2,7 +2,9 @@
 
 namespace JAF {
 
-    bool Engine::init(AAssetManager *pAssetManager) {
+    bool Engine::init(AAssetManager *pAssetManager)
+    {
+        LOGI("JAF::Engine( Init begin: %d )", m_id);
         {
             PositionVertex vertices[] = {
                     {-0.5f, 0.5f,  0},
@@ -23,6 +25,10 @@ namespace JAF {
         m_camera.updateProjection(1080,1920);
         m_camera.updateView(Vector3(0,0,-100), Vector3(0,0,0), Vector3(0,1,0));
 
+        if(!m_updater.init())
+            return false;
+
+        LOGI("JAF::Engine( Init end: %d )", m_id);
         return true;
     }
 
@@ -35,8 +41,19 @@ namespace JAF {
         }
 
         {
-            ParticleInstance instance = {0,0,0, 10, 1,1,1,1};
-            m_particleMesh.updateInstances(1, &instance);
+            m_updater.updateInstances(m_particleMesh);
+        }
+
+
+        {
+            Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
+            Matrix rot;
+            Matrix::setRotate(rot, yaw);
+            Vector3 pos = Matrix::transform(rot, {0,0,-100});
+            Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0f);
+            Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
+
+            m_camera.updateView(pos, pos + at, up);
         }
 
         m_camera.update();
@@ -57,8 +74,8 @@ namespace JAF {
         glClearDepthf(1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-        m_particleShader.render(m_camera, m_particleMesh);
+        if (m_particleMesh.hasInstances())
+            m_particleShader.render(m_camera, m_particleMesh);
 
         return true;
     }

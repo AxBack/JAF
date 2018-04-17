@@ -20,6 +20,8 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/jawe/framebuffer.cpp
                 src/main/cpp/jaf/engine.cpp
                 src/main/cpp/jaf/particle_shader.cpp
+                src/main/cpp/jaf/updater.cpp
+                src/main/cpp/jaf/rocket.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a
