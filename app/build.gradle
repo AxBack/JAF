@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
-        applicationId "com.wallpaper.axb.AWE"
+        applicationId "com.wallpaper.axb.jaf"
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 1

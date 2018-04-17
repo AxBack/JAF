@@ -1,13 +1,13 @@
 #include <jni.h>
 
 #include "pch.h"
-#include "fireworks/engine.h"
+#include "jaf/engine.h"
 
 #include <map>
 
 int id = 0;
 
-std::map<int, Fireworks::Engine*> engines;
+std::map<int, JAF::Engine*> engines;
 
 extern "C" {
 
@@ -15,7 +15,7 @@ JNIEXPORT jint JNICALL
 Java_com_wallpaper_axb_engine_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/,
 												  jobject assetManager)
 {
-    Fireworks::Engine* pEngine = new Fireworks::Engine;
+    JAF::Engine* pEngine = new JAF::Engine;
 
 	AAssetManager* pAssetManager = AAssetManager_fromJava(pEnv, assetManager);
 	if(!pEngine->init(pAssetManager))

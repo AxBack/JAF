@@ -123,7 +123,7 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
                     setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR);
                 }
 
-                mRenderer = new com.wallpaper.axb.engine.Renderer(WallpaperService.this, "WAE.dat");
+                mRenderer = new com.wallpaper.axb.engine.Renderer(WallpaperService.this);
                 setRenderer(mRenderer);
                 setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 

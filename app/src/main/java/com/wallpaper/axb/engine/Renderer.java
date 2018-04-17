@@ -17,14 +17,8 @@ class Renderer implements GLSurfaceView.Renderer {
     protected int mNativeId = -1;
     protected boolean mIsActive = false;
 
-    private final String mBinaryFile;
-
-    private int mWidth = 0;
-    private int mHeight = 0;
-
-    public Renderer(Context ctx, String binaryFile) {
+    public Renderer(Context ctx) {
         mContext = ctx;
-        mBinaryFile = binaryFile;
     }
 
     public synchronized void reset(String binaryFile) {
@@ -45,8 +39,6 @@ class Renderer implements GLSurfaceView.Renderer {
 
     @Override
     public synchronized void onSurfaceChanged(GL10 gl, int width, int height) {
-        mWidth = width;
-        mHeight = height;
         if(mNativeId >= 0)
             mRenderEngine.setSize(mNativeId, width,height);
     }
