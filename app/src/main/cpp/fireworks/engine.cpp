@@ -4,6 +4,8 @@ namespace Fireworks {
 
     bool Engine::init(AAssetManager* pAssetManager)
     {
+
+
         return true;
     }
 
