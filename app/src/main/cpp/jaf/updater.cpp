@@ -28,22 +28,56 @@ namespace JAF {
 
         m_behaviour.init(time, &position, &size, &color);
 
-        m_rocket.fire(&m_behaviour);
+        fireParticle(&m_behaviour);
         return JAWE::Updater::init();
+    }
+
+    auto Updater::getParticle()->particle_ptr
+    {
+        if(m_particleBank.size() == 0)
+            return particle_ptr(new Particle);
+
+        auto p = m_particleBank.front();
+        m_particleBank.pop();
+        return p;
+    }
+
+    void Updater::returnParticle(particle_ptr pParticle)
+    {
+        m_particleBank.push(pParticle);
+    }
+
+    void Updater::fireParticle(const Behaviour *pBehaviour)
+    {
+        particle_ptr p = getParticle();
+        p->fire(pBehaviour);
+        m_itemsToAdd.push_back(p);
     }
 
     void Updater::advance(float dt)
     {
         m_particleCollector.begin();
-        if(!m_rocket.update(m_particleCollector, dt))
+        for(auto it = m_items.begin(); it != m_items.end();)
         {
-            m_rocket.fire(&m_behaviour);
+            if(!(*it)->update(m_particleCollector, dt))
+            {
+                returnParticle(*it);
+                it = m_items.erase(it);
+                //temp
+                fireParticle(&m_behaviour);
+            }
+            else
+                ++it;
         }
 
         {
             std::lock_guard<std::mutex> _(m_particleMutex);
             m_particleCollector.end(m_particles);
         }
+
+        for(auto& it : m_itemsToAdd)
+            m_items.push_back(it);
+        m_itemsToAdd.clear();
     }
 
     void Updater::updateInstances(particle_mesh& mesh)

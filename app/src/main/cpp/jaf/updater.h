@@ -6,6 +6,7 @@
 #include "particle.h"
 
 #include <random>
+#include <queue>
 
 namespace JAF {
 
@@ -16,23 +17,34 @@ namespace JAF {
         typedef JAWE::Path<Math::Vector3> vec3_path;
         typedef JAWE::Path<float> float_path;
         typedef JAWE::Path<Math::Color> color_path;
-        typedef std::vector<ParticleInstance> particle_vec;
+        typedef std::vector<ParticleInstance> instance_vec;
         typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
+        typedef std::shared_ptr<Particle> particle_ptr;
+        typedef std::vector<particle_ptr> particle_vec;
+        typedef std::queue<particle_ptr> particle_queue;
 
         std::mt19937 m_generator;
 
+        particle_queue m_particleBank;
+
         std::mutex m_particleMutex;
-        particle_vec m_particles;
+        instance_vec m_particles;
 
         InstanceCollector<ParticleInstance> m_particleCollector;
 
-        std::vector<BehaviourInfluenced*> m_items;
+        particle_vec m_items;
+        particle_vec m_itemsToAdd;
 
         //temp
         Behaviour m_behaviour;
         vec3_path position;
         float_path size;
         color_path color;
+
+        void fireParticle(const Behaviour* pBehaviour);
+
+        particle_ptr getParticle();
+        void returnParticle(particle_ptr pParticle);
 
     protected:
 
