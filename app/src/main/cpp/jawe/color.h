@@ -12,10 +12,10 @@ namespace Math {
 	struct Color {
 		float m_data[4];
 
-		float a() { return m_data[A]; }
-		float r() { return m_data[R]; }
-		float g() { return m_data[G]; }
-		float b() { return m_data[B]; }
+		float a() const { return m_data[A]; }
+		float r() const { return m_data[R]; }
+		float g() const { return m_data[G]; }
+		float b() const { return m_data[B]; }
 
 		void read(JAWE::IO::BinaryReader *in) {
 			m_data[A] = in->read<float>();

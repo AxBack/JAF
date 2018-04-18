@@ -34,7 +34,14 @@ namespace JAF {
 
         void end(std::vector<T>& out)
         {
-            out.swap(m_instances);
+            if (m_index == 0)
+            {
+                out.clear();
+                return;
+            }
+
+            out.resize(m_index);
+            memcpy(&out[0], &m_instances[0], sizeof(T) * m_index);
         }
     };
 }

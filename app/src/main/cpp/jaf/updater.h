@@ -3,7 +3,7 @@
 #include "../jawe/updater.h"
 #include "vertex.h"
 #include "../jawe/mesh.h"
-#include "rocket.h"
+#include "particle.h"
 
 #include <random>
 
@@ -24,10 +24,12 @@ namespace JAF {
         std::mutex m_particleMutex;
         particle_vec m_particles;
 
-        Rocket m_rocket;
         InstanceCollector<ParticleInstance> m_particleCollector;
 
+        std::vector<BehaviourInfluenced*> m_items;
+
         //temp
+        Behaviour m_behaviour;
         vec3_path position;
         float_path size;
         color_path color;

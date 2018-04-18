@@ -21,7 +21,7 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/jaf/engine.cpp
                 src/main/cpp/jaf/particle_shader.cpp
                 src/main/cpp/jaf/updater.cpp
-                src/main/cpp/jaf/rocket.cpp
+                src/main/cpp/jaf/particle.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

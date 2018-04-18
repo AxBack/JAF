@@ -47,15 +47,16 @@ namespace JAF {
 
         virtual ~Engine()
         {
+            m_updater.pause();
         }
 
         virtual bool init(AAssetManager *pAssetManager) override;
 
         virtual bool render() override;
 
-        virtual void resume() override { }
+        virtual void resume() override { m_updater.resume(); }
 
-        virtual void pause() override { }
+        virtual void pause() override { m_updater.pause(); }
 
         virtual void setOffset(float x, float y) override
         {

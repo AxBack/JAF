@@ -58,10 +58,6 @@ public class MainActivity extends Activity {
         super.onResume();
     }
 
-    private String getWallpaperFilePath() {
-        return this.getFilesDir().getAbsolutePath() + "/WAE.dat";
-    }
-
     /**
      * Request to set this LWP through Android wallpaper picker.
      */
