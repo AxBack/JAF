@@ -12,6 +12,19 @@ namespace Math {
 	struct Color {
 		float m_data[4];
 
+        Color()
+        {
+            memset(m_data, 0, sizeof(m_data));
+        }
+
+        Color(float a, float r, float g, float b)
+        {
+            m_data[A] = a;
+            m_data[R] = r;
+            m_data[G] = g;
+            m_data[B] = b;
+        }
+
 		float a() const { return m_data[A]; }
 		float r() const { return m_data[R]; }
 		float g() const { return m_data[G]; }

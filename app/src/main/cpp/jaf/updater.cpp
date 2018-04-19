@@ -26,7 +26,10 @@ namespace JAF {
             size.add(time, 4, p);
         }
 
-        m_behaviour.init(time, &position, &size, &color);
+        m_behaviour.init(time);
+        m_behaviour.addPosition(1.0f, &position);
+        m_behaviour.addColor(1.0f, &color);
+        m_behaviour.addSize(1.0f, &size);
 
         fireParticle(&m_behaviour);
         return JAWE::Updater::init();
@@ -52,6 +55,7 @@ namespace JAF {
         particle_ptr p = getParticle();
         p->fire(pBehaviour);
         m_itemsToAdd.push_back(p);
+        pBehaviour->fire(p.get());
     }
 
     void Updater::advance(float dt)
