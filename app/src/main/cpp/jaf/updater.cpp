@@ -26,32 +26,21 @@ namespace JAF {
             size.add(time, 4, p);
         }
 
-        m_behaviour.init(time, &position, &size, &color);
+        m_behaviour.init(time);
+        m_behaviour.addPosition(1.0f, &position);
+        m_behaviour.addColor(1.0f, &color);
+        m_behaviour.addSize(1.0f, &size);
 
         fireParticle(&m_behaviour);
         return JAWE::Updater::init();
     }
 
-    auto Updater::getParticle()->particle_ptr
-    {
-        if(m_particleBank.size() == 0)
-            return particle_ptr(new Particle);
-
-        auto p = m_particleBank.front();
-        m_particleBank.pop();
-        return p;
-    }
-
-    void Updater::returnParticle(particle_ptr pParticle)
-    {
-        m_particleBank.push(pParticle);
-    }
-
     void Updater::fireParticle(const Behaviour *pBehaviour)
     {
-        particle_ptr p = getParticle();
+        particle_ptr p = m_particleBank.pop();
         p->fire(pBehaviour);
         m_itemsToAdd.push_back(p);
+        pBehaviour->fire(p.get());
     }
 
     void Updater::advance(float dt)
@@ -61,7 +50,7 @@ namespace JAF {
         {
             if(!(*it)->update(m_particleCollector, dt))
             {
-                returnParticle(*it);
+                m_particleBank.push(*it);
                 it = m_items.erase(it);
                 //temp
                 fireParticle(&m_behaviour);

@@ -7,10 +7,23 @@ namespace Math {
 #define R 0
 #define G 1
 #define B 2
-#define A 2
+#define A 3
 
 	struct Color {
 		float m_data[4];
+
+        Color()
+        {
+            memset(m_data, 0, sizeof(m_data));
+        }
+
+        Color(float a, float r, float g, float b)
+        {
+            m_data[A] = a;
+            m_data[R] = r;
+            m_data[G] = g;
+            m_data[B] = b;
+        }
 
 		float a() const { return m_data[A]; }
 		float r() const { return m_data[R]; }

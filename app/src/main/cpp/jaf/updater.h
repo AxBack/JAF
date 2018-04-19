@@ -4,9 +4,9 @@
 #include "vertex.h"
 #include "../jawe/mesh.h"
 #include "particle.h"
+#include "../jawe/bank.h"
 
 #include <random>
-#include <queue>
 
 namespace JAF {
 
@@ -21,11 +21,11 @@ namespace JAF {
         typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
         typedef std::shared_ptr<Particle> particle_ptr;
         typedef std::vector<particle_ptr> particle_vec;
-        typedef std::queue<particle_ptr> particle_queue;
+
 
         std::mt19937 m_generator;
 
-        particle_queue m_particleBank;
+        JAWE::Bank<Particle> m_particleBank;
 
         std::mutex m_particleMutex;
         instance_vec m_particles;
@@ -42,9 +42,6 @@ namespace JAF {
         color_path color;
 
         void fireParticle(const Behaviour* pBehaviour);
-
-        particle_ptr getParticle();
-        void returnParticle(particle_ptr pParticle);
 
     protected:
 
