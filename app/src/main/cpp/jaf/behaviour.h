@@ -1,5 +1,6 @@
 #pragma once
 
+#include <random>
 #include "../jawe/vector3.h"
 #include "../jawe/color.h"
 #include "../jawe/path.h"
@@ -23,7 +24,7 @@ namespace JAF {
 
         void setPositionWeights(int_float_vec&& weights) { m_positionWeights = std::move(weights);}
         void setSizeWeights(int_float_vec&& weights) { m_sizeWeights = std::move(weights);}
-        void setColornWeights(int_float_vec&& weights) { m_color_weights = std::move(weights);}
+        void setColorWeights(int_float_vec&& weights) { m_color_weights = std::move(weights);}
 
         const int_float_vec* getPositionWeights() { return &m_positionWeights; }
         const int_float_vec* getSizeWeights() { return &m_sizeWeights; }
@@ -37,6 +38,7 @@ namespace JAF {
     class Behaviour
     {
     private:
+
         float m_timeLimit;
 
         float m_totalPositionWeights;
@@ -48,11 +50,22 @@ namespace JAF {
         float m_totalColorWeights;
         std::vector<std::pair<float, const color_path*>> m_colors;
 
-        /*
-        const vec3_path* m_pPosition;
-        const float_path* m_pSize;
-        const color_path* m_pColor;
-         */
+        template <typename T>
+        void createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths, int_float_vec& out) const
+        {
+            std::uniform_real_distribution<float> dist(0.0f,1.0f);
+            float total = 0;
+            int i = 0;
+            for(auto& it : paths)
+            {
+                float v = it.first * dist(generator);
+                out.push_back(std::make_pair(i++, v));
+                total += v;
+            }
+
+            for(auto& it : out)
+                it.second /= total;
+        }
 
     public:
 
@@ -85,7 +98,7 @@ namespace JAF {
             m_colors.push_back(std::make_pair(weight, path));
         }
 
-        void fire(BehaviourInfluenced* pItem) const;
+        void fire(std::mt19937& generator, BehaviourInfluenced* pItem) const;
 
         bool update(BehaviourInfluenced* pItem, float time) const;
     };

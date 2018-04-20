@@ -37,9 +37,12 @@ namespace JAF {
 
         //temp
         Behaviour m_behaviour;
-        vec3_path position;
-        float_path size;
-        color_path color;
+        vec3_path position1;
+        vec3_path position2;
+        float_path size1;
+        float_path size2;
+        color_path color1;
+        color_path color2;
 
         void fireParticle(const Behaviour* pBehaviour);
 
@@ -52,6 +55,7 @@ namespace JAF {
         Updater()
             : JAWE::Updater()
             , m_generator(840331)
+            , m_behaviour()
         {}
 
         virtual bool init() override;

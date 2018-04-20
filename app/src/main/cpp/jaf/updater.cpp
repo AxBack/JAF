@@ -5,12 +5,22 @@ namespace JAF {
     bool Updater::init()
     {
         float time = 1.0f;
+        m_behaviour.init(time);
         {
             Math::Vector3 p[] {
-                    {50,-100,-20},
-                    {-50,100,2}
+                    {0,-100,0},
+                    {-50,100,-50}
             };
-            position.add(time, 2, p);
+            position1.add(time, 2, p);
+            m_behaviour.addPosition(1.0f, &position1);
+        }
+        {
+            Math::Vector3 p[] {
+                    {0,-100,0},
+                    {50,100,50}
+            };
+            position2.add(time, 2, p);
+            m_behaviour.addPosition(1.0f, &position2);
         }
 
         {
@@ -18,18 +28,28 @@ namespace JAF {
                     {1,0,1,1},
                     {1,1,0,1}
             };
-            color.add(time, 2, p);
+            color1.add(time, 2, p);
+            m_behaviour.addColor(1.0f, &color1);
+        }
+        {
+            Math::Color p[] {
+                    {0,0,1,1},
+                    {1,0,0,1}
+            };
+            color2.add(time, 2, p);
+            m_behaviour.addColor(1.0f, &color2);
         }
 
         {
             float p[] { 10,50,20,5};
-            size.add(time, 4, p);
+            size1.add(time, 4, p);
+            m_behaviour.addSize(1.0f, &size1);
         }
-
-        m_behaviour.init(time);
-        m_behaviour.addPosition(1.0f, &position);
-        m_behaviour.addColor(1.0f, &color);
-        m_behaviour.addSize(1.0f, &size);
+        {
+            float p[] { 50,5,10,50};
+            size2.add(time, 4, p);
+            m_behaviour.addSize(1.0f, &size2);
+        }
 
         fireParticle(&m_behaviour);
         return JAWE::Updater::init();
@@ -40,7 +60,7 @@ namespace JAF {
         particle_ptr p = m_particleBank.pop();
         p->fire(pBehaviour);
         m_itemsToAdd.push_back(p);
-        pBehaviour->fire(p.get());
+        pBehaviour->fire(m_generator, p.get());
     }
 
     void Updater::advance(float dt)
