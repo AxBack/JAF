@@ -43,6 +43,7 @@ namespace JAF {
         float_path size2;
         color_path color1;
         color_path color2;
+        float m_counter;
 
         void fireParticle(const Behaviour* pBehaviour);
 
@@ -56,6 +57,7 @@ namespace JAF {
             : JAWE::Updater()
             , m_generator(840331)
             , m_behaviour()
+            , m_counter(0)
         {}
 
         virtual bool init() override;

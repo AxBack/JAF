@@ -4,22 +4,28 @@ namespace JAF {
 
     bool Updater::init()
     {
-        float time = 1.0f;
+        float time = 3.0f;
         m_behaviour.init(time);
         {
             Math::Vector3 p[] {
-                    {0,-100,0},
-                    {-50,100,-50}
+                    {0,-300,0},
+                    {300,-150,300},
+                    {0,0,0},
+                    {-300,150,-300},
+                    {0,300,0},
             };
-            position1.add(time, 2, p);
+            position1.add(time, 5, p);
             m_behaviour.addPosition(1.0f, &position1);
         }
         {
             Math::Vector3 p[] {
-                    {0,-100,0},
-                    {50,100,50}
+                    {0,-300,0},
+                    {-300,-150,-300},
+                    {0,0,0},
+                    {300,150,300},
+                    {0,300,0}
             };
-            position2.add(time, 2, p);
+            position2.add(time, 5, p);
             m_behaviour.addPosition(1.0f, &position2);
         }
 
@@ -41,17 +47,16 @@ namespace JAF {
         }
 
         {
-            float p[] { 10,50,20,5};
+            float p[] { 2,6,5,1};
             size1.add(time, 4, p);
             m_behaviour.addSize(1.0f, &size1);
         }
         {
-            float p[] { 50,5,10,50};
+            float p[] { 3,15,25,2};
             size2.add(time, 4, p);
             m_behaviour.addSize(1.0f, &size2);
         }
 
-        fireParticle(&m_behaviour);
         return JAWE::Updater::init();
     }
 
@@ -72,8 +77,6 @@ namespace JAF {
             {
                 m_particleBank.push(*it);
                 it = m_items.erase(it);
-                //temp
-                fireParticle(&m_behaviour);
             }
             else
                 ++it;
@@ -82,6 +85,15 @@ namespace JAF {
         {
             std::lock_guard<std::mutex> _(m_particleMutex);
             m_particleCollector.end(m_particles);
+        }
+
+        //temp
+        m_counter -= dt;
+        if(m_counter <= 0)
+        {
+            m_counter += 0.05f;
+            for(int i=0; i<3; ++i)
+                fireParticle(&m_behaviour);
         }
 
         for(auto& it : m_itemsToAdd)
