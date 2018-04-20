@@ -4,24 +4,13 @@
 
 namespace JAF {
 
+	/** BEHAVIOUR **/
     void Behaviour::fire(std::mt19937& generator, BehaviourInfluenced *pItem) const
     {
-        //temp
-        {
-            int_float_vec w;
-            createDistribution(generator, m_positions, w);
-            pItem->setPositionWeights(std::move(w));
-        }
-        {
-            int_float_vec w;
-            createDistribution(generator, m_sizes, w);
-            pItem->setSizeWeights(std::move(w));
-        }
-        {
-            int_float_vec w;
-            createDistribution(generator, m_colors, w);
-            pItem->setColorWeights(std::move(w));
-        }
+		pItem->setPositionWeights(createDistribution(generator, m_positions));
+		pItem->setSizeWeights(createDistribution(generator, m_sizes));
+		pItem->setColorWeights(createDistribution(generator, m_colors));
+
     }
 
     bool Behaviour::update(BehaviourInfluenced* pItem, float time) const

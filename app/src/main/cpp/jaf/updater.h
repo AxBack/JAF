@@ -5,12 +5,13 @@
 #include "../jawe/mesh.h"
 #include "particle.h"
 #include "../jawe/bank.h"
+#include "../jawe/instance_collector.h"
 
 #include <random>
 
 namespace JAF {
 
-    class Updater : public JAWE::Updater
+    class Updater : public JAWE::Updater, OnReleaseListener
     {
     private:
 
@@ -36,16 +37,19 @@ namespace JAF {
         particle_vec m_itemsToAdd;
 
         //temp
-        Behaviour m_behaviour;
+        Behaviour m_rocketBehaviour;
+		Behaviour m_explosionBeaviour;
         vec3_path position1;
         vec3_path position2;
+		vec3_path position3;
+		vec3_path position4;
         float_path size1;
         float_path size2;
         color_path color1;
         color_path color2;
         float m_counter;
 
-        void fireParticle(const Behaviour* pBehaviour);
+        void fireParticle(const Behaviour* pBehaviour, const Math::Vector3& offset);
 
     protected:
 
@@ -56,8 +60,8 @@ namespace JAF {
         Updater()
             : JAWE::Updater()
             , m_generator(840331)
-            , m_behaviour()
             , m_counter(0)
+			, m_particleBank([this](){return new Particle(this); })
         {}
 
         virtual bool init() override;
@@ -65,5 +69,11 @@ namespace JAF {
         virtual ~Updater() {}
 
         void updateInstances(particle_mesh& mesh);
+
+		virtual void onRelease(int nr, const Math::Vector3& offset, const Behaviour* pBehaviour) override
+		{
+			for(UINT i=0; i<nr; ++i)
+				fireParticle(pBehaviour, offset);
+		}
     };
 }

@@ -1,1 +1,1 @@
-# AWE (Another Wallpaper Engine)
+# JAF

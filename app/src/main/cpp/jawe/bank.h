@@ -12,12 +12,18 @@ namespace JAWE {
 
         std::queue<std::shared_ptr<T>> m_queue;
 
+        std::function<T*()> newInstance;
+
     public:
+
+        Bank(std::function<T*()>&& newInstance)
+                : newInstance(newInstance)
+        {}
 
         std::shared_ptr<T> pop()
         {
             if(m_queue.size() == 0)
-                return std::shared_ptr<T>(new T);
+                return std::shared_ptr<T>(newInstance());
 
             auto t = m_queue.front();
             m_queue.pop();

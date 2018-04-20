@@ -11,20 +11,21 @@ namespace JAF {
     typedef JAWE::Path<float> float_path;
     typedef JAWE::Path<Math::Color> color_path;
     typedef std::vector<std::pair<int, float>> int_float_vec;
+	typedef std::vector<float> float_vec;
 
     class BehaviourInfluenced
     {
     protected:
 
-        int_float_vec m_positionWeights;
-        int_float_vec m_sizeWeights;
-        int_float_vec m_color_weights;
+        int_float_vec 	m_positionWeights;
+        int_float_vec 	m_sizeWeights;
+        int_float_vec 	m_color_weights;
 
     public:
 
-        void setPositionWeights(int_float_vec&& weights) { m_positionWeights = std::move(weights);}
-        void setSizeWeights(int_float_vec&& weights) { m_sizeWeights = std::move(weights);}
-        void setColorWeights(int_float_vec&& weights) { m_color_weights = std::move(weights);}
+        void setPositionWeights(int_float_vec&& weights) { m_positionWeights = weights;}
+        void setSizeWeights(int_float_vec&& weights) { m_sizeWeights = weights;}
+        void setColorWeights(int_float_vec&& weights) { m_color_weights = weights;}
 
         const int_float_vec* getPositionWeights() { return &m_positionWeights; }
         const int_float_vec* getSizeWeights() { return &m_sizeWeights; }
@@ -51,8 +52,9 @@ namespace JAF {
         std::vector<std::pair<float, const color_path*>> m_colors;
 
         template <typename T>
-        void createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths, int_float_vec& out) const
+		int_float_vec&& createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths) const
         {
+			int_float_vec out;
             std::uniform_real_distribution<float> dist(0.0f,1.0f);
             float total = 0;
             int i = 0;
@@ -65,6 +67,8 @@ namespace JAF {
 
             for(auto& it : out)
                 it.second /= total;
+
+			return std::move(out);
         }
 
     public:
@@ -76,7 +80,7 @@ namespace JAF {
                 , m_totalColorWeights(0)
         {}
 
-        virtual void init(float time)
+        void init(float time)
         {
             m_timeLimit = time;
         }
@@ -99,7 +103,7 @@ namespace JAF {
         }
 
         void fire(std::mt19937& generator, BehaviourInfluenced* pItem) const;
-
         bool update(BehaviourInfluenced* pItem, float time) const;
     };
-}
+
+};
