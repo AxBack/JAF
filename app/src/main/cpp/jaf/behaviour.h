@@ -11,7 +11,6 @@ namespace JAF {
     typedef JAWE::Path<float> float_path;
     typedef JAWE::Path<Math::Color> color_path;
     typedef std::vector<std::pair<int, float>> int_float_vec;
-	typedef std::vector<float> float_vec;
 
     class BehaviourInfluenced
     {
@@ -71,9 +70,17 @@ namespace JAF {
 			return std::move(out);
         }
 
+        template <typename T>
+        T update(T v, const int_float_vec* pWeights, const std::vector<std::pair<float, const JAWE::Path<T>*>>& paths, float time) const
+        {
+            for(auto& it : *pWeights)
+                v += paths[it.first].second->traverse(time) * it.second;
+            return v;
+        }
+
     public:
 
-        Behaviour()
+        Behaviour(std::mt19937& generator)
                 : m_timeLimit(0)
                 , m_totalPositionWeights(0)
                 , m_totalSizeWeights(0)

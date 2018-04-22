@@ -6,27 +6,22 @@
 
 namespace JAF {
 
-	class OnReleaseListener
+	class Particle;
+
+	class ParticleListener
 	{
 	public:
-		virtual void onRelease(int nr, const Math::Vector3& offset, const Behaviour* pBehaviour) = 0;
+		virtual void onDead(const Particle* p) = 0;
 	};
 
     class Particle : public BehaviourInfluenced
     {
     private:
 
-		struct Release
-		{
-			UINT nr;
-			const Behaviour* pBehaviour;
-		};
-
-		OnReleaseListener* m_pOnReleaseListener;
-
-		std::vector<Release> m_onEndReleases;
+		ParticleListener* m_pListener;
 
 		Math::Vector3 m_offset;
+		Math::Vector3 m_factors;
         ParticleInstance m_instance;
 
         float m_time;
@@ -34,34 +29,31 @@ namespace JAF {
 
     public:
 
-        Particle(OnReleaseListener* pOnReleaseListener)
+        Particle()
                 : m_time(0.0f)
                 , m_pBehaviour(nullptr)
 				, m_offset(0,0,0)
-				, m_pOnReleaseListener(pOnReleaseListener)
+				, m_factors(1,1,1)
+				, m_pListener(nullptr)
         {}
 
 		void clear()
 		{
-			m_onEndReleases.clear();
 		}
 
-		void addOnEndRelease(UINT nr, const Behaviour* pBehaviour)
-		{
-			m_onEndReleases.push_back({nr, pBehaviour});
-		}
-
-        void fire(const Behaviour* pBehaviour);
+        void fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
-		virtual void setOffset(const Math::Vector3& offset) { m_offset = offset; }
+		void setOffset(const Math::Vector3& offset) { m_offset = offset; }
+		void setFactors(const Math::Vector3& factors) { m_factors = factors; }
 
         virtual void setPosition(const Math::Vector3& position)
         {
-            m_instance.x = m_offset.x() + position.x();
-            m_instance.y = m_offset.y() + position.y();
-            m_instance.z = m_offset.z() + position.z();
+			Math::Vector3 p = position * m_factors;
+            m_instance.x = m_offset.x() + p.x();
+            m_instance.y = m_offset.y() + p.y();
+            m_instance.z = m_offset.z() + p.z();
         }
 
         virtual void setSize(const float size)

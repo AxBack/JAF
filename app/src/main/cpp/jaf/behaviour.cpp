@@ -1,7 +1,5 @@
 #include "behaviour.h"
 
-#include <random>
-
 namespace JAF {
 
 	/** BEHAVIOUR **/
@@ -10,7 +8,6 @@ namespace JAF {
 		pItem->setPositionWeights(createDistribution(generator, m_positions));
 		pItem->setSizeWeights(createDistribution(generator, m_sizes));
 		pItem->setColorWeights(createDistribution(generator, m_colors));
-
     }
 
     bool Behaviour::update(BehaviourInfluenced* pItem, float time) const
@@ -18,32 +15,9 @@ namespace JAF {
         if (time >= m_timeLimit)
             return false;
 
-        Math::Vector3 pos;
-        float size = 0;
-        Math::Color color;
-
-        {
-            const int_float_vec *p = pItem->getPositionWeights();
-            for(auto& it : *p)
-                pos += m_positions[it.first].second->traverse(time) * it.second;
-        }
-
-        {
-            const int_float_vec *p = pItem->getSizeWeights();
-            for(auto& it : *p)
-                size += m_sizes[it.first].second->traverse(time) * it.second;
-        }
-
-        {
-            const int_float_vec *p = pItem->getColorWeights();
-            for(auto& it : *p)
-                color += m_colors[it.first].second->traverse(time) * it.second;
-        }
-
-
-        pItem->setPosition( pos );
-        pItem->setSize( size );
-        pItem->setColor( color );
+        pItem->setPosition(update<Math::Vector3>({0,0,0}, pItem->getPositionWeights(), m_positions, time));
+        pItem->setSize(update(0.0f, pItem->getSizeWeights(), m_sizes, time));
+        pItem->setColor(update<Math::Color>({0,0,0,0}, pItem->getColorWeights(), m_colors, time));
 
         return true;
     }

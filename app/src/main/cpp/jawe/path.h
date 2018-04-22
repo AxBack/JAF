@@ -174,7 +174,7 @@ namespace JAWE {
             return (*m_traversables.rbegin())->traverse(1.0f);
         }
 
-        float getLength() { return m_totalLength; }
+        float getLength() const { return m_totalLength; }
     };
 
 }

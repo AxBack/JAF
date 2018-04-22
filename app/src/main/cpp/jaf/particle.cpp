@@ -2,10 +2,12 @@
 
 namespace JAF {
 
-    void Particle::fire(const Behaviour* pBehaviour)
+    void Particle::fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour)
     {
         m_time = 0;
+		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
+		pBehaviour->fire(generator, this);
     }
 
     bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
@@ -13,9 +15,8 @@ namespace JAF {
         m_time += dt;
         if(!m_pBehaviour->update(this, m_time))
         {
-            Math::Vector3 offset = {m_instance.x, m_instance.y, m_instance.z} ;
-            for(auto& it : m_onEndReleases)
-                m_pOnReleaseListener->onRelease(it.nr, offset, it.pBehaviour);
+            if(m_pListener)
+				m_pListener->onDead(this);
             return false;
         }
 

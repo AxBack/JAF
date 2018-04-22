@@ -14,7 +14,7 @@ namespace Math {
 
         Color()
         {
-            memset(m_data, 0, sizeof(m_data));
+            m_data[A] = m_data[R] = m_data[G] = m_data[B] = 0;
         }
 
         Color(float r, float g, float b, float a)
