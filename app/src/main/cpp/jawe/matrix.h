@@ -60,6 +60,10 @@ namespace Math {
 			return Matrix::project(*this, point);
 		}
 
+		void setIdentity() { return Matrix::identity(*this); }
+
+		void translate(float x, float y, float z) { Matrix::translate(*this, x, y ,z); }
+
 		static void identity(Matrix &matrix) {
 			memset(matrix.m_data, 0, sizeof(matrix));
 			matrix[M00] = matrix[M11] = matrix[M22] = matrix[M33] = 1.0f;

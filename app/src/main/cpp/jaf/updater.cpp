@@ -10,11 +10,12 @@ namespace JAF {
     }
 
     void Updater::fireParticle(ParticleListener* pListener, const Behaviour *pBehaviour,
-							   const Math::Vector3& offset, const Math::Vector3& factors)
+                               matrix_ptr pOffset, int type, const Math::Vector3& factors)
     {
         particle_ptr p = m_particleBank.pop();
 		p->clear();
-		p->setOffset(offset);
+        p->setType(type);
+		p->setOffset(pOffset);
 		p->setFactors(factors);
         p->fire(pListener, m_generator, pBehaviour);
         m_particlesToAdd.push_back(p);

@@ -19,9 +19,13 @@ namespace JAF {
     {
     private:
 
+        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
+
 		ParticleListener* m_pListener { nullptr };
 
-		Math::Vector3 m_offset{ 0,0,0 };
+        int m_type { 0 };
+
+        matrix_ptr m_pOffset;
 		Math::Vector3 m_factors{ 1,1,1 };
 		Math::Vector3 m_lastPosition { 0,0,0 };
 
@@ -36,32 +40,30 @@ namespace JAF {
 
 		void clear()
 		{
+            m_type = 0;
 		}
 
         void fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
-		Math::Quaternion calculateRotation() const;
+        Math::Matrix calculateTransform() const;
+		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
 
-		void setOffset(const Math::Vector3& offset) { m_offset = offset; }
+		void setOffset(matrix_ptr pOffset) { m_pOffset = pOffset; }
 		void setFactors(const Math::Vector3& factors) { m_factors = factors; }
 
-        virtual void setPosition(const Math::Vector3& position)
-        {
-			m_lastPosition = getPosition();
-			Math::Vector3 p = position * m_factors;
-            m_instance.x = m_offset.x() + p.x();
-            m_instance.y = m_offset.y() + p.y();
-            m_instance.z = m_offset.z() + p.z();
-        }
+        void setType(int type) { m_type = type; }
+        int getType() const { return m_type; }
 
-        virtual void setSize(const float size)
+        virtual void setPosition(const Math::Vector3& position) override;
+
+        virtual void setSize(const float size) override
         {
             m_instance.size = size;
         }
 
-        virtual void setColor(const Math::Color& color)
+        virtual void setColor(const Math::Color& color) override
         {
             m_instance.a = color.a();
             m_instance.r = color.r();

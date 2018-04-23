@@ -9,6 +9,8 @@ namespace JAF {
 	{
 	private:
 
+        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
+
 		int m_nrRelevantParticles { 0 };
 
 		//temp
@@ -16,8 +18,8 @@ namespace JAF {
 
 	protected:
 
-		void fire(Updater* pUpdater, const Behaviour* pBehaviour, const Math::Vector3& offset) const;
-		void fireRelevant(Updater* pUpdater, const Behaviour* pBehaviour, const Math::Vector3& offset);
+		void fire(Updater* pUpdater, const Behaviour* pBehaviour, matrix_ptr pOffset, int type = 0) const;
+		void fireRelevant(Updater* pUpdater, const Behaviour* pBehaviour, matrix_ptr pOffset, int type = 0);
 
 	public:
 

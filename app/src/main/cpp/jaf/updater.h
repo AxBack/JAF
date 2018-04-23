@@ -19,6 +19,7 @@ namespace JAF {
         typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
         typedef std::shared_ptr<Particle> particle_ptr;
         typedef std::vector<particle_ptr> particle_vec;
+        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
 
 
         std::mt19937 m_generator { 840331 };
@@ -47,6 +48,6 @@ namespace JAF {
         void updateInstances(particle_mesh& mesh);
 
 		void fireParticle(ParticleListener* pListener, const Behaviour* pBehaviour,
-						  const Math::Vector3& offset, const Math::Vector3& factors = {1,1,1});
+                          matrix_ptr pOffset, int type = 0, const Math::Vector3& factors = {1,1,1});
     };
 }
