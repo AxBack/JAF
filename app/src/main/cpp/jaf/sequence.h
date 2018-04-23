@@ -9,10 +9,10 @@ namespace JAF {
 	{
 	private:
 
-		int m_nrRelevantParticles;
+		int m_nrRelevantParticles { 0 };
 
 		//temp
-		const Behaviour* m_pBehaviour;
+		const Behaviour* m_pBehaviour { nullptr };
 
 	protected:
 
@@ -23,7 +23,6 @@ namespace JAF {
 
 		Sequence(const Behaviour* pBehaviour)
 				: m_pBehaviour(pBehaviour)
-				, m_nrRelevantParticles(0)
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0; }

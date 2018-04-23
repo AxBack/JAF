@@ -19,29 +19,20 @@ namespace JAF {
     {
     private:
 
-		ParticleListener* m_pListener;
+		ParticleListener* m_pListener { nullptr };
 
-		Math::Vector3 m_offset;
-		Math::Vector3 m_factors;
-		Math::Vector3 m_lastPosition;
+		Math::Vector3 m_offset{ 0,0,0 };
+		Math::Vector3 m_factors{ 1,1,1 };
+		Math::Vector3 m_lastPosition { 0,0,0 };
 
         ParticleInstance m_instance;
 
-        float m_time;
-        const Behaviour* m_pBehaviour;
+        float m_time { 0 };
+        const Behaviour* m_pBehaviour { nullptr };
 
 		Math::Vector3 getPosition() const { return {m_instance.x, m_instance.y, m_instance.z};}
 
     public:
-
-        Particle()
-                : m_time(0.0f)
-                , m_pBehaviour(nullptr)
-				, m_offset(0,0,0)
-				, m_lastPosition(0,0,0)
-				, m_factors(1,1,1)
-				, m_pListener(nullptr)
-        {}
 
 		void clear()
 		{

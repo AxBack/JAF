@@ -10,17 +10,12 @@ namespace JAWE {
 	{
 	protected:
 
-		GLuint m_vertexBuffer;
-		GLuint m_indexBuffer;
+		GLuint m_vertexBuffer { 0 };
+		GLuint m_indexBuffer { 0 };
 
-		GLuint m_nrIndices;
+		GLuint m_nrIndices { 0 };
 
 	public:
-
-		Mesh()
-			: m_nrIndices(0)
-		{
-		}
 
 		virtual ~Mesh()
 		{

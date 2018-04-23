@@ -11,7 +11,7 @@ namespace JAWE {
     {
     protected:
 
-        float m_length;
+        float m_length { 0 };
 
     public:
 
@@ -22,7 +22,7 @@ namespace JAWE {
 
         virtual ~Traversable() {}
 
-        float getLength() { return m_length; }
+        float getLength() const { return m_length; }
 
         virtual T traverse(float dt) const = 0;
     };

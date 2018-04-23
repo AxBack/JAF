@@ -14,26 +14,17 @@ namespace JAWE {
 
 	private:
 
-		DepthType m_depthType;
+		DepthType m_depthType { NONE };
 
-		GLsizei m_width;
-		GLsizei m_height;
+		GLsizei m_width { 0 };
+		GLsizei m_height{ 0 };
 
-		GLuint m_handle;
-		GLuint m_depth;
+		GLuint m_handle{ 0 };
+		GLuint m_depth{ 0 };
 
 		std::vector<GLuint> m_textures;
 
 	public:
-
-		Framebuffer()
-			: m_width(0)
-			, m_height(0)
-			, m_handle(0)
-			, m_depth(0)
-			, m_depthType(NONE)
-		{
-		}
 
 		virtual ~Framebuffer()
 		{

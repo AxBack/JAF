@@ -39,15 +39,15 @@ namespace JAF {
     {
     private:
 
-        float m_timeLimit;
+        float m_timeLimit { 0 };
 
-        float m_totalPositionWeights;
+        float m_totalPositionWeights { 0 };
         std::vector<std::pair<float, const vec3_path*>> m_positions;
 
-        float m_totalSizeWeights;
+        float m_totalSizeWeights { 0 };
         std::vector<std::pair<float, const float_path*>> m_sizes;
 
-        float m_totalColorWeights;
+        float m_totalColorWeights { 0 };
         std::vector<std::pair<float, const color_path*>> m_colors;
 
         template <typename T>
@@ -79,13 +79,6 @@ namespace JAF {
         }
 
     public:
-
-        Behaviour(std::mt19937& generator)
-                : m_timeLimit(0)
-                , m_totalPositionWeights(0)
-                , m_totalSizeWeights(0)
-                , m_totalColorWeights(0)
-        {}
 
         void init(float time)
         {

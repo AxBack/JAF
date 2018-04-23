@@ -21,10 +21,10 @@ namespace JAF {
         typedef std::vector<particle_ptr> particle_vec;
 
 
-        std::mt19937 m_generator;
+        std::mt19937 m_generator { 840331 };
 		Director m_director;
 
-        JAWE::Bank<Particle> m_particleBank;
+        JAWE::Bank<Particle> m_particleBank { [](){return new Particle(); } };
 
         std::mutex m_particleMutex;
         instance_vec m_particlesInstances;
@@ -40,17 +40,9 @@ namespace JAF {
 
     public:
 
-        Updater()
-            : JAWE::Updater()
-            , m_generator(840331)
-			, m_particleBank([](){return new Particle(); })
-        {}
-
         virtual bool init() override;
 
         virtual ~Updater() {}
-
-		UINT nrActiveParticles() const { return m_particles.size(); }
 
         void updateInstances(particle_mesh& mesh);
 

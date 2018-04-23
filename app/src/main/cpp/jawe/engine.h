@@ -16,15 +16,13 @@ namespace JAWE {
 
         static UINT sThreadCounter;
 
-        UINT m_id;
+        UINT m_id { sThreadCounter++ };
 
-        GLint m_viewport[4];
+        GLint m_viewport[4] { 0,0,0,0 };
 
     public:
 
         Engine() {
-            m_id = sThreadCounter;
-            ++sThreadCounter;
         }
 
         virtual ~Engine() {

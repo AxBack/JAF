@@ -13,7 +13,7 @@ namespace JAWE {
 
         static UINT sThreadCounter;
 
-        UINT m_id;
+        UINT m_id { 0 };
 
         std::atomic_bool m_running;
         std::thread m_workThread;

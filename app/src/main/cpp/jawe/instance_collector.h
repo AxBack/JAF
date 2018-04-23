@@ -9,7 +9,7 @@ namespace JAF {
     {
     private:
 
-        unsigned int m_index;
+        unsigned int m_index { 0 };
         std::vector<T> m_instances;
 
     public:

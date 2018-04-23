@@ -11,25 +11,19 @@ namespace JAWE {
 
 		typedef std::chrono::steady_clock::time_point time_point;
 
-		int m_id;
+		int m_id { -1 };
 
-		time_point m_lastRenderTime;
-		bool m_changed;
+		time_point m_lastRenderTime{ std::chrono::steady_clock::now() };
+		bool m_changed { false };
 
-		Math::Vector3 m_rotation;
+		Math::Vector3 m_rotation { 0,0,0 };
 
-		ASensorManager* m_pSensorManager;
-		const ASensor* m_pGyroscope;
-		ASensorEventQueue* m_pEventQueue;
-		ALooper* m_pLooper;
+		ASensorManager* m_pSensorManager { nullptr };
+		const ASensor* m_pGyroscope { nullptr };
+		ASensorEventQueue* m_pEventQueue { nullptr };
+		ALooper* m_pLooper { nullptr };
 
 	public:
-
-		Sensor()
-		: m_changed(false)
-		{
-
-		}
 
 		virtual ~Sensor()
 		{

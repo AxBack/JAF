@@ -33,9 +33,6 @@ namespace Math {
 
 	public:
 
-		Matrix() {
-		}
-
 		const float *const data() const { return m_data; }
 
 		Matrix operator*(const Matrix &rhs) const {

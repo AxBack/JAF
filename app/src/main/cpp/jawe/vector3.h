@@ -12,7 +12,10 @@ namespace Math {
 #define Z 2
 
 	struct Vector3 {
-		float m_data[3];
+    private:
+		float m_data[3] {0,0,0};
+
+    public:
 
 		Vector3()
 		{

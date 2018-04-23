@@ -22,9 +22,9 @@ namespace JAF {
 
         Updater m_updater;
 
-        std::atomic_bool m_sizeChanged;
+        std::atomic_bool m_sizeChanged { false };
 
-        std::atomic<float> m_offset;
+        std::atomic<float> m_offset { 0.5f };
 
         JAWE::Camera m_camera;
         float_path m_rotation;
@@ -36,8 +36,6 @@ namespace JAF {
 
         Engine()
             : JAWE::Engine()
-            , m_sizeChanged(false)
-            , m_offset(0.5f)
         {
             {
                 float points[] = { -90, 90 };

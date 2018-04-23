@@ -9,8 +9,8 @@ namespace JAWE { namespace IO {
 	{
 	private:
 
-		std::istream* m_pStream;
-		bool m_swapEndian = false;
+		std::istream* m_pStream { nullptr };
+		bool m_swapEndian { false };
 
 	public:
 

@@ -10,15 +10,10 @@ namespace JAWE {
 	class Texture
 	{
 	protected:
-		GLsizei m_nrHandles;
+		GLsizei m_nrHandles { 1 };
 		std::unique_ptr<GLuint[]> m_pHandles;
 
 	public:
-
-		Texture()
-		{
-			m_nrHandles = 1;
-		}
 
 		virtual ~Texture()
 		{

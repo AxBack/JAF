@@ -14,7 +14,7 @@ namespace JAF {
 		m_rocketSettings.colorPaths.push_back(createPath(3.0f, 2, (Math::Color[]){{1,0,0,1}, {0,1,0,1}}));
 		m_rocketSettings.colorPaths.push_back(createPath(3.0f, 2, (Math::Color[]){{1,1,0,1}, {1,0,1,1}}));
 
-		Behaviour b(m_generator);
+		Behaviour b;
 		b.init(3.0f);
 		b.addPosition(1.0f, &m_rocketSettings.vec3Paths[0]);
 		b.addPosition(1.0f, &m_rocketSettings.vec3Paths[1]);

@@ -10,11 +10,13 @@ namespace Math {
 #define A 3
 
 	struct Color {
-		float m_data[4];
+	private:
+		float m_data[4] { 0,0,0,0 };
+
+	public:
 
         Color()
         {
-            m_data[A] = m_data[R] = m_data[G] = m_data[B] = 0;
         }
 
         Color(float r, float g, float b, float a)

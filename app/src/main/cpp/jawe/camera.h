@@ -13,27 +13,19 @@ namespace JAWE {
 		typedef Math::Matrix Matrix;
 		typedef Math::Vector3 Vector3;
 
-		bool        m_vpDirty;
+		bool        m_vpDirty { true };
 		Matrix		m_viewProjection;
 
-		Vector3 	m_position;
-		Vector3 	m_at;
-		Vector3 	m_forward;
-		Vector3 	m_right;
-		Vector3		m_up;
+		Vector3 	m_position { 0,0,0 };
+		Vector3 	m_at { 0,0,1};
+		Vector3 	m_forward { 0,0,1};
+		Vector3 	m_right { 1,0,0 };
+		Vector3		m_up { 0,1,0};
 
 		Matrix      m_view;
 		Matrix      m_projection;
 
 	public:
-
-		Camera()
-        : m_vpDirty(true)
-        , m_position(0,0,0)
-        , m_right(1,0,0)
-        , m_up(0,1,0)
-		{
-		}
 
 		virtual ~Camera()
 		{

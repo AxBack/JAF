@@ -13,14 +13,12 @@ namespace Math {
 
     struct Quaternion {
 	private:
-        float m_data[4];
+        float m_data[4] { 0,1,0,0};
 
 	public:
 
 		Quaternion()
-			: Quaternion(0,1,0,0)
 		{
-
 		}
 
 		Quaternion(float x, float y, float z, float w)
