@@ -3,7 +3,6 @@
 #include <math.h>
 #include "../pch.h"
 #include "vector3.h"
-#include "matrix.h"
 
 namespace Math {
 
@@ -13,7 +12,10 @@ namespace Math {
 #define W 3
 
     struct Quaternion {
+	private:
         float m_data[4];
+
+	public:
 
 		Quaternion()
 			: Quaternion(0,1,0,0)
@@ -46,7 +48,7 @@ namespace Math {
             q.m_data[Y] = x1*z2 + y1*w2 + z1*x2 + w1*y2;
             q.m_data[Z] = x1*y2 - y1*x2 + z1*w2 + w1*z2;
             q.m_data[W] = x1*x2 - y1*y2 - z1*z2 + w1*w2;
-            return q;
+            return std::move(q);
         }
 
         virtual void operator*=(const Quaternion& rhs)
@@ -71,8 +73,7 @@ namespace Math {
 		{
 			Vector3 v(m_data[X], m_data[Y], m_data[Z]);
 			Vector3 r = rhs * (Vector3::dot(rhs, v) * 2.0f);
-			return
-					rhs * (Vector3::dot(rhs, v) * 2.0f)
+			return  rhs * (Vector3::dot(rhs, v) * 2.0f)
 					+ v * (m_data[W]*m_data[W] - Vector3::dot(rhs, rhs))
 					+ Vector3::cross(rhs, v) *(2.0f * m_data[W]); //TODO: does this work?
 		}
@@ -131,7 +132,14 @@ namespace Math {
         const float z() const { return m_data[Z]; }
         const float w() const { return m_data[W]; }
 
+		void x(float x) { m_data[X] = x;}
+		void y(float y) { m_data[Y] = y;}
+		void z(float z) { m_data[Z] = z;}
+		void w(float w) { m_data[W] = w;}
+
         const float* data() const { return m_data; }
+
+		static Quaternion identity() { return Quaternion(0,1,0,0); }
 
         static Quaternion fromEulerAngles(float x, float y, float z)
         {
@@ -151,7 +159,7 @@ namespace Math {
             q.m_data[Y] = cx*sy*cz + sx*cy*sz;
             q.m_data[Z] = cx*cy*sz - sx*sy*cz;
             q.m_data[W] = cx*cy*cz + sx*sy*sz;
-            return q;
+            return std::move(q);
         }
 
         static Quaternion fromAxisAngle(float x, float y, float z, float w)
@@ -170,14 +178,14 @@ namespace Math {
             q.m_data[Y] = axis.y();
             q.m_data[Z] = axis.z();
             q.m_data[W] = cosf(degrees * 0.5f);
-            return q;
+            return std::move(q);
         }
 
 		static Quaternion lerp(const Quaternion& q1, const Quaternion& q2, float dt)
 		{
 			Quaternion r = (q1 * (1.0f - dt)) + (q2 * dt);
 			r.normalize();
-			return r;
+			return std::move(r);
 		}
 
 		static Quaternion slerp(const Quaternion& q1, const Quaternion& q2, float dt)
@@ -206,5 +214,28 @@ namespace Math {
 		{
 			return q1.x()*q2.x() + q1.y()*q2.y() + q1.z()*q2.z() + q1.w()*q2.w();
 		}
+
+		static Quaternion rotationBetweenNormals(const Vector3& n1, const Vector3& n2)
+		{
+			float a = Vector3::dot(n1, n2);
+			Vector3 axis;
+			if (a < -1 + 0.001f)
+			{
+				axis = Vector3::cross({0,0,1}, n1);
+				if (axis.lengthSq() < 0.01f)
+					axis = Vector3::cross({1,0,0}, n1);
+
+				axis.normalize();
+				return {axis.x(), axis.y(), axis.z(), TO_RADIANS(180.0f)};
+			}
+
+			axis = Vector3::cross(n1, n2);
+			float s = sqrtf((1+a)*2);
+			float invs = 1 / s;
+
+			return {axis.x() * invs, axis.y() * invs, axis.z() * invs, s * 0.5f};
+		}
     };
 }
+
+#include "matrix.h"

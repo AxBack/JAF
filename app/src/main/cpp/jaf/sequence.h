@@ -28,10 +28,7 @@ namespace JAF {
 
 		bool active() const { return m_nrRelevantParticles > 0; }
 
-		virtual void onDead(const Particle* particle) override
-		{
-			m_nrRelevantParticles--;
-		}
+		virtual void onDead(const Particle* pParticle) override;
 
 		void start(Updater* pUpdater);
 		void update(Updater* pUpdater, float dt);

@@ -11,7 +11,7 @@ namespace JAF {
 
 	void Sequence::fireRelevant(Updater* pUpdater, const Behaviour* pBehaviour, const Math::Vector3& offset)
 	{
-		m_nrRelevantParticles++;
+		++m_nrRelevantParticles;
 		pUpdater->fireParticle(this, pBehaviour, offset);
 	}
 
@@ -19,6 +19,11 @@ namespace JAF {
 	{
 		//temp
 		fireRelevant(pUpdater, m_pBehaviour, {0,-300,0});
+	}
+
+	void Sequence::onDead(const Particle* pParticle)
+	{
+		--m_nrRelevantParticles;
 	}
 
 	void Sequence::update(Updater* pUpdater, float dt)

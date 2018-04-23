@@ -94,18 +94,17 @@ namespace Math {
 			ret[M23] = pR[M03] * pL[M20] + pR[M13] * pL[M21] + pR[M23] * pL[M22] + pR[M33] * pL[M23];
 			ret[M33] = pR[M03] * pL[M30] + pR[M13] * pL[M31] + pR[M23] * pL[M32] + pR[M33] * pL[M33];
 
-			return ret;
+			return std::move(ret);
 		}
 
-		static Matrix &perspective(Matrix &m, float fov, float aspect, float zNear, float zFar) {
+		static Matrix perspective(Matrix &m, float fov, float aspect, float zNear, float zFar) {
 			float fh = tanf(fov / 360.0f * static_cast<float>(M_PI)) * zNear;
 			float fw = fh * aspect;
 
 			return frustum(m, -fw, fw, -fh, fh, zNear, zFar);
 		}
 
-		static Matrix &
-		frustum(Matrix &m, float left, float right, float bottom, float top, float near,
+		static Matrix frustum(Matrix &m, float left, float right, float bottom, float top, float near,
 				float far) {
 			float width = 1.0f / (right - left);
 			float height = 1.0f / (top - bottom);
@@ -134,11 +133,10 @@ namespace Math {
 			m[M13] = 0.0f;
 			m[M33] = 0.0f;
 
-			return m;
+			return std::move(m);
 		}
 
-		static Matrix &
-		ortho(Matrix &m, float left, float right, float bottom, float top, float near,
+		static Matrix ortho(Matrix &m, float left, float right, float bottom, float top, float near,
 			  float far) {
 			m[M00] = 2.0f / (right - left);
 			m[M10] = 0.0f;
@@ -157,10 +155,10 @@ namespace Math {
 			m[M23] = -(near + far) / (far - near);
 			m[M33] = 1.0f;
 
-			return m;
+			return std::move(m);
 		}
 
-		static Matrix &lookAt(Matrix &m, const Vector3 &eye, const Vector3 &at, const Vector3 &up) {
+		static Matrix lookAt(Matrix &m, const Vector3 &eye, const Vector3 &at, const Vector3 &up) {
 			Vector3 f = at - eye;
 			f.normalize();
 
@@ -216,7 +214,7 @@ namespace Math {
 				   m[M00] * m[M11] * m[M22] * m[M33];
 		}
 
-		static inline Matrix& setRotate(Matrix& m, const Quaternion& q)
+		static inline Matrix setRotate(Matrix& m, const Quaternion& q)
 		{
 			float x=q.x();
 			float y=q.y();
@@ -245,20 +243,20 @@ namespace Math {
 			m.m_data[M23] = 0.0f;
 			m.m_data[M33] = 1.0f;
 
-			return m;
+			return std::move(m);
 		}
 
-        static inline Matrix& setRotate(Matrix& m, float x, float y, float z)
+        static inline Matrix setRotate(Matrix& m, float x, float y, float z)
         {
 			Quaternion q = Quaternion::fromEulerAngles(x,y,z);
             return setRotate(m, q);
         }
 
-		static Matrix &translate(Matrix &m, float x, float y, float z) {
+		static Matrix translate(Matrix &m, float x, float y, float z) {
 			for (int i = 0; i < 4; ++i) {
 				m[12 + i] += m[i] * x + m[i + 4] * y + m[i + 8] * z;
 			}
-			return m;
+			return std::move(m);
 		}
 
 		static inline float matrix4_det(float *m) {

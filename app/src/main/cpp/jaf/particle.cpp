@@ -25,4 +25,14 @@ namespace JAF {
 
         return true;
     }
+
+    Math::Quaternion Particle::calculateRotation() const
+    {
+        Math::Vector3 normal = getPosition() - m_lastPosition;
+        if (normal.lengthSq() == 0)
+            return Math::Quaternion::identity();
+
+        normal.normalize();
+        return Math::Quaternion::rotationBetweenNormals({0,1,0}, normal);
+    }
 }
