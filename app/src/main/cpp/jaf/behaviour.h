@@ -51,7 +51,7 @@ namespace JAF {
         std::vector<std::pair<float, const color_path*>> m_colors;
 
         template <typename T>
-		int_float_vec&& createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths) const
+		int_float_vec createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths) const
         {
 			int_float_vec out;
             std::uniform_real_distribution<float> dist(0.0f,1.0f);
