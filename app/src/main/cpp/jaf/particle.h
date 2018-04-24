@@ -27,6 +27,7 @@ namespace JAF {
 
         matrix_ptr m_pOffset;
 		Math::Vector3 m_factors{ 1,1,1 };
+		Math::Vector3 m_position { 0,0,0 };
 		Math::Vector3 m_lastPosition { 0,0,0 };
 
         ParticleInstance m_instance;
@@ -34,20 +35,21 @@ namespace JAF {
         float m_time { 0 };
         const Behaviour* m_pBehaviour { nullptr };
 
-		Math::Vector3 getPosition() const { return {m_instance.x, m_instance.y, m_instance.z};}
-
     public:
 
 		void clear()
 		{
             m_type = 0;
-		}
+			m_pListener = nullptr;
+			m_pBehaviour = nullptr;
+			m_position = m_lastPosition = {0,0,0};
+		};
 
         void fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
-        Math::Matrix calculateTransform() const;
+        matrix_ptr calculateTransform() const;
 		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
 
 		void setOffset(matrix_ptr pOffset) { m_pOffset = pOffset; }

@@ -63,6 +63,7 @@ namespace Math {
 		void setIdentity() { return Matrix::identity(*this); }
 
 		void translate(float x, float y, float z) { Matrix::translate(*this, x, y ,z); }
+		void translate(const Vector3& v) { Matrix::translate(v.x(), v.y(), v.z()); }
 
 		static void identity(Matrix &matrix) {
 			memset(matrix.m_data, 0, sizeof(matrix));
@@ -105,7 +106,7 @@ namespace Math {
 			return frustum(m, -fw, fw, -fh, fh, zNear, zFar);
 		}
 
-		static Matrix frustum(Matrix &m, float left, float right, float bottom, float top, float near,
+		static Matrix& frustum(Matrix &m, float left, float right, float bottom, float top, float near,
 				float far) {
 			float width = 1.0f / (right - left);
 			float height = 1.0f / (top - bottom);
@@ -134,10 +135,10 @@ namespace Math {
 			m[M13] = 0.0f;
 			m[M33] = 0.0f;
 
-			return std::move(m);
+			return m;
 		}
 
-		static Matrix ortho(Matrix &m, float left, float right, float bottom, float top, float near,
+		static Matrix& ortho(Matrix &m, float left, float right, float bottom, float top, float near,
 			  float far) {
 			m[M00] = 2.0f / (right - left);
 			m[M10] = 0.0f;
@@ -156,7 +157,7 @@ namespace Math {
 			m[M23] = -(near + far) / (far - near);
 			m[M33] = 1.0f;
 
-			return std::move(m);
+			return m;
 		}
 
 		static Matrix lookAt(Matrix &m, const Vector3 &eye, const Vector3 &at, const Vector3 &up) {
@@ -215,7 +216,7 @@ namespace Math {
 				   m[M00] * m[M11] * m[M22] * m[M33];
 		}
 
-		static inline Matrix setRotate(Matrix& m, const Quaternion& q)
+		static inline Matrix& setRotate(Matrix& m, const Quaternion& q)
 		{
 			float x=q.x();
 			float y=q.y();
@@ -244,7 +245,7 @@ namespace Math {
 			m.m_data[M23] = 0.0f;
 			m.m_data[M33] = 1.0f;
 
-			return std::move(m);
+			return m;
 		}
 
         static inline Matrix setRotate(Matrix& m, float x, float y, float z)
@@ -253,11 +254,13 @@ namespace Math {
             return setRotate(m, q);
         }
 
-		static Matrix translate(Matrix &m, float x, float y, float z) {
+		static Matrix& translate(Matrix& m, const Vector3& v) { return translate(m, v.x(), v.y(),v.z()); }
+
+		static Matrix& translate(Matrix &m, float x, float y, float z) {
 			for (int i = 0; i < 4; ++i) {
 				m[12 + i] += m[i] * x + m[i + 4] * y + m[i + 8] * z;
 			}
-			return std::move(m);
+			return m;
 		}
 
 		static inline float matrix4_det(float *m) {

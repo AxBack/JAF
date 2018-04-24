@@ -30,11 +30,11 @@ namespace JAF {
 	{
 		if(m_pSequence == nullptr)
 		{
-			m_pSequence.reset(new Sequence(&m_rocketBehaviours[0]));
-			m_pSequence->start(pUpdater);
+			m_pSequence.reset(new Sequence(pUpdater, &m_rocketBehaviours[0]));
+			m_pSequence->start();
 		}
 
-		m_pSequence->update(pUpdater, dt);
+		m_pSequence->update(dt);
 
 		if(!m_pSequence->active())
 			m_pSequence = nullptr;

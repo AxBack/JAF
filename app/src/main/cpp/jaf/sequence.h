@@ -1,6 +1,7 @@
 #pragma once
 
 #include "particle.h"
+
 namespace JAF {
 
 	class Updater;
@@ -11,6 +12,8 @@ namespace JAF {
 
         typedef std::shared_ptr<Math::Matrix> matrix_ptr;
 
+		Updater* m_pUpdater;
+
 		int m_nrRelevantParticles { 0 };
 
 		//temp
@@ -18,21 +21,22 @@ namespace JAF {
 
 	protected:
 
-		void fire(Updater* pUpdater, const Behaviour* pBehaviour, matrix_ptr pOffset, int type = 0) const;
-		void fireRelevant(Updater* pUpdater, const Behaviour* pBehaviour, matrix_ptr pOffset, int type = 0);
+		void fire(const Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factor = {1,1,1}) const;
+		void fireRelevant(const Behaviour* pBehaviour, matrix_ptr pOffset, int type = -1, const Math::Vector3& factor = {1,1,1});
 
 	public:
 
-		Sequence(const Behaviour* pBehaviour)
-				: m_pBehaviour(pBehaviour)
+		Sequence(Updater* pUpdater, const Behaviour* pBehaviour)
+				: m_pUpdater(pUpdater)
+				, m_pBehaviour(pBehaviour)
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0; }
 
 		virtual void onDead(const Particle* pParticle) override;
 
-		void start(Updater* pUpdater);
-		void update(Updater* pUpdater, float dt);
+		void start();
+		void update(float dt);
 
 	};
 }

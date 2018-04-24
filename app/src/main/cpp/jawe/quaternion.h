@@ -13,7 +13,7 @@ namespace Math {
 
     struct Quaternion {
 	private:
-        float m_data[4] { 0,1,0,0};
+        float m_data[4] { 0,0,0,1};
 
 	public:
 
@@ -28,6 +28,8 @@ namespace Math {
 			m_data[Z] = z;
 			m_data[W] = w;
 		}
+
+		bool isIdentity() { return m_data[X] == 0 && m_data[Y] == 0 && m_data[Z] == 0 && m_data[W] == 0; }
 
         virtual Quaternion operator*(const Quaternion& rhs) const
         {

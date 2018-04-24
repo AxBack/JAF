@@ -28,37 +28,45 @@ namespace JAF {
 
     void Particle::setPosition(const Math::Vector3& position)
     {
-        Math::Vector3 p = position * m_factors;
+		m_lastPosition = m_position;
+		m_position = position * m_factors;
+        Math::Vector3 p = m_position;
         if (m_pOffset)
             p = m_pOffset->transform(p);
 
-        m_lastPosition = getPosition();
         m_instance.x = p.x();
         m_instance.y = p.y();
         m_instance.z = p.z();
     }
 
-    Math::Matrix Particle::calculateTransform() const
+    auto Particle::calculateTransform() const->matrix_ptr
     {
         Math::Vector3 up = {0,1,0};
         if (m_pOffset)
-            up = m_pOffset->transform(up);
+            up = m_pOffset->transform(up, 0.0f);
+
+		matrix_ptr p(new Math::Matrix);
+		Math::Matrix& t = *p.get();
+		Math::Matrix::identity(t);
+		Math::Matrix::translate(t, m_position);
 
         Math::Quaternion rot = calculateRotation(up);
-
-        Math::Matrix t;
-        Math::Matrix::setRotate(t, rot);
-        Math::Matrix::translate(t, m_instance.x, m_instance.y, m_instance.z);
+		if(!rot.isIdentity())
+		{
+			Math::Matrix r;
+			Math::Matrix::setRotate(r, rot);
+			t = t * r;
+		}
 
         if(m_pOffset)
-            t = Math::Matrix::multiply(t, *m_pOffset.get());
+            t = Math::Matrix::multiply(*m_pOffset.get(), t);
 
-        return std::move(t);
+        return p;
     }
 
     Math::Quaternion Particle::calculateRotation(const Math::Vector3& up) const
     {
-        Math::Vector3 normal = getPosition() - m_lastPosition;
+        Math::Vector3 normal = m_position - m_lastPosition;
         if (normal.lengthSq() == 0)
             return Math::Quaternion::identity();
 
