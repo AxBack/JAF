@@ -13,6 +13,7 @@ namespace JAF {
 	{
 	public:
 		virtual void onDead(const Particle* p) = 0;
+		virtual void onInterval(const Particle* p) = 0;
 	};
 
     class Particle : public BehaviourInfluenced
@@ -23,6 +24,7 @@ namespace JAF {
 
 		ParticleListener* m_pListener { nullptr };
 
+		bool m_firstUpdate;
         int m_type { 0 };
 
         matrix_ptr m_pOffset;
@@ -33,19 +35,23 @@ namespace JAF {
         ParticleInstance m_instance;
 
         float m_time { 0 };
+		float m_interval { 0 };
+		float m_counter { 0 };
         const Behaviour* m_pBehaviour { nullptr };
 
     public:
 
 		void clear()
 		{
+			m_firstUpdate = true;
             m_type = 0;
+			m_interval = 0;
 			m_pListener = nullptr;
 			m_pBehaviour = nullptr;
 			m_position = m_lastPosition = {0,0,0};
 		};
 
-        void fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour);
+        void fire(ParticleListener* pListener, const Behaviour* pBehaviour);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
@@ -54,6 +60,8 @@ namespace JAF {
 
 		void setOffset(matrix_ptr pOffset) { m_pOffset = pOffset; }
 		void setFactors(const Math::Vector3& factors) { m_factors = factors; }
+
+		void setInterval(float interval) { m_interval = m_counter = interval; }
 
         void setType(int type) { m_type = type; }
         int getType() const { return m_type; }

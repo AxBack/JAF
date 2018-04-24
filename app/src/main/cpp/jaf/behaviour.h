@@ -4,6 +4,7 @@
 #include "../jawe/vector3.h"
 #include "../jawe/color.h"
 #include "../jawe/path.h"
+#include "../jawe/random.h"
 
 namespace JAF {
 
@@ -51,7 +52,7 @@ namespace JAF {
         std::vector<std::pair<float, const color_path*>> m_colors;
 
         template <typename T>
-		int_float_vec createDistribution(std::mt19937& generator, const std::vector<std::pair<float, T>>& paths) const
+		int_float_vec createDistribution(const std::vector<std::pair<float, T>>& paths) const
         {
 			int_float_vec out;
             std::uniform_real_distribution<float> dist(0.0f,1.0f);
@@ -59,7 +60,7 @@ namespace JAF {
             int i = 0;
             for(auto& it : paths)
             {
-                float v = it.first * dist(generator);
+                float v = it.first * JAWE::Random::rand(0, 1);
                 out.push_back(std::make_pair(i++, v));
                 total += v;
             }
@@ -102,7 +103,7 @@ namespace JAF {
             m_colors.push_back(std::make_pair(weight, path));
         }
 
-        void fire(std::mt19937& generator, BehaviourInfluenced* pItem) const;
+        void fire(BehaviourInfluenced* pItem) const;
         bool update(BehaviourInfluenced* pItem, float time) const;
     };
 

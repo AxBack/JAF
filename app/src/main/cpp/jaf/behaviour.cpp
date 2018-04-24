@@ -3,11 +3,11 @@
 namespace JAF {
 
 	/** BEHAVIOUR **/
-    void Behaviour::fire(std::mt19937& generator, BehaviourInfluenced *pItem) const
+    void Behaviour::fire(BehaviourInfluenced *pItem) const
     {
-		pItem->setPositionWeights(createDistribution(generator, m_positions));
-		pItem->setSizeWeights(createDistribution(generator, m_sizes));
-		pItem->setColorWeights(createDistribution(generator, m_colors));
+		pItem->setPositionWeights(createDistribution(m_positions));
+		pItem->setSizeWeights(createDistribution(m_sizes));
+		pItem->setColorWeights(createDistribution(m_colors));
     }
 
     bool Behaviour::update(BehaviourInfluenced* pItem, float time) const

@@ -47,7 +47,6 @@ namespace JAF {
 
         void updateInstances(particle_mesh& mesh);
 
-		void fireParticle(ParticleListener* pListener, const Behaviour* pBehaviour,
-                          matrix_ptr pOffset, int type = 0, const Math::Vector3& factors = {1,1,1});
+		Particle* fireParticle();
     };
 }

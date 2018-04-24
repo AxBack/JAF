@@ -2,12 +2,12 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, std::mt19937& generator, const Behaviour* pBehaviour)
+    void Particle::fire(ParticleListener* pListener, const Behaviour* pBehaviour)
     {
         m_time = 0;
 		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
-		pBehaviour->fire(generator, this);
+		pBehaviour->fire(this);
     }
 
     bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
@@ -23,12 +23,19 @@ namespace JAF {
         if (m_instance.radius > 0 && m_instance.a > 0)
             collector.add(m_instance);
 
+		if(m_pListener != nullptr && m_interval > 0 && (m_counter -= dt) <= 0)
+		{
+			m_counter += m_interval;
+			m_pListener->onInterval(this);
+		}
+
+		m_firstUpdate = false;
         return true;
     }
 
     void Particle::setPosition(const Math::Vector3& position)
     {
-		if(position == m_position)
+		if(!m_firstUpdate && position == m_position)
 			return;
 
 		m_lastPosition = m_position;

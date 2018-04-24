@@ -9,16 +9,12 @@ namespace JAF {
         return JAWE::Updater::init();
     }
 
-    void Updater::fireParticle(ParticleListener* pListener, const Behaviour *pBehaviour,
-                               matrix_ptr pOffset, int type, const Math::Vector3& factors)
+    Particle* Updater::fireParticle()
     {
         particle_ptr p = m_particleBank.pop();
 		p->clear();
-        p->setType(type);
-		p->setOffset(pOffset);
-		p->setFactors(factors);
-        p->fire(pListener, m_generator, pBehaviour);
         m_particlesToAdd.push_back(p);
+        return p.get();
     }
 
     void Updater::advance(float dt)

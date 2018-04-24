@@ -1,18 +1,27 @@
 #include "sequence.h"
 
 #include "updater.h"
+#include "../jawe/random.h"
 
 namespace JAF {
 
-	void Sequence::fire(const Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factor) const
+	void Sequence::fire(const Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factors)
 	{
-		m_pUpdater->fireParticle(nullptr, pBehaviour, pOffset, -1, factor);
+		Particle* p = m_pUpdater->fireParticle();
+		p->setOffset(pOffset);
+		p->setFactors(factors);
+		p->fire(nullptr, pBehaviour);
 	}
 
-	void Sequence::fireRelevant(const Behaviour* pBehaviour, matrix_ptr pOffset, int type, const Math::Vector3& factor)
+	void Sequence::fireRelevant(const Behaviour* pBehaviour, matrix_ptr pOffset, int type, const Math::Vector3& factors)
 	{
 		++m_nrRelevantParticles;
-		m_pUpdater->fireParticle(this, pBehaviour, pOffset, type, factor);
+		Particle* p = m_pUpdater->fireParticle();
+		p->setType(type);
+		p->setOffset(pOffset);
+		p->setFactors(factors);
+		p->setInterval(0.01f);
+		p->fire(this, pBehaviour);
 	}
 
 	void Sequence::start()
@@ -33,8 +42,8 @@ namespace JAF {
 			matrix_ptr p = pParticle->calculateTransform();
 			for(int i=0; i<100; ++i)
 			{
-				float x = dist(m_generator);
-				float z = dist(m_generator);
+				float x = JAWE::Random::rand(-180, 180);
+				float z = JAWE::Random::rand(-180, 180);
 
 				matrix_ptr offset(new Math::Matrix);
 				Math::Matrix& t = *offset.get();
@@ -44,6 +53,12 @@ namespace JAF {
 				fire(m_pFlare, offset, {1,-1,1});
 			}
         }
+	}
+
+	void Sequence::onInterval(const Particle* pParticle)
+	{
+		matrix_ptr p = pParticle->calculateTransform();
+		fire(m_pTrail, p);
 	}
 
 	void Sequence::update(float dt)

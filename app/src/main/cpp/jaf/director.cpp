@@ -27,7 +27,7 @@ namespace JAF {
 		}
 
 		m_flareSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {0,100,0}}));
-		m_flareSettings.floatPaths.push_back(createPath(time, 2, (float[]){0.1, 0.5}));
+		m_flareSettings.floatPaths.push_back(createPath(time, 4, (float[]){0.1, 0.5, 0.5, 0}));
 		m_flareSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,0,1}, {1,1,1,1}}));
 
 		{
@@ -36,7 +36,20 @@ namespace JAF {
 			b.addPosition(1.0f, &m_flareSettings.vec3Paths[0]);
 			b.addSize(1.0f, &m_flareSettings.floatPaths[0]);
 			b.addColor(1.0f, &m_flareSettings.colorPaths[0]);
-			m_flareBehaviour.push_back(b);
+			m_flareBehaviours.push_back(b);
+		}
+
+		m_trailSettings.vec3Paths.push_back(createPath(time, 1, (Math::Vector3[]){{0,0,0}}));
+		m_trailSettings.floatPaths.push_back(createPath(time, 2, (float[]){1, 0.0}));
+		m_trailSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,1,1}, {0,0,0,0}}));
+
+		{
+			Behaviour b;
+			b.init(time);
+			b.addPosition(1.0f, &m_trailSettings.vec3Paths[0]);
+			b.addSize(1.0f, &m_trailSettings.floatPaths[0]);
+			b.addColor(1.0f, &m_trailSettings.colorPaths[0]);
+			m_trailBehaviours.push_back(b);
 		}
 
 		m_generator = generator;
@@ -46,7 +59,7 @@ namespace JAF {
 	{
 		if(m_pSequence == nullptr)
 		{
-			m_pSequence.reset(new Sequence(m_generator, pUpdater, &m_rocketBehaviours[0], &m_flareBehaviour[0]));
+			m_pSequence.reset(new Sequence(m_generator, pUpdater, &m_rocketBehaviours[0], &m_flareBehaviours[0], &m_trailBehaviours[0]));
 			m_pSequence->start();
 		}
 
