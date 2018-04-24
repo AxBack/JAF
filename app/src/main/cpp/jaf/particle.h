@@ -60,9 +60,9 @@ namespace JAF {
 
         virtual void setPosition(const Math::Vector3& position) override;
 
-        virtual void setSize(const float size) override
+        virtual void setRadius(const float radius) override
         {
-            m_instance.size = size;
+            m_instance.radius = radius;
         }
 
         virtual void setColor(const Math::Color& color) override

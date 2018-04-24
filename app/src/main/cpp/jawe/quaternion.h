@@ -31,6 +31,14 @@ namespace Math {
 
 		bool isIdentity() { return m_data[X] == 0 && m_data[Y] == 0 && m_data[Z] == 0 && m_data[W] == 0; }
 
+		bool operator==(const Quaternion& rhs) const
+		{
+			return m_data[X] == rhs.m_data[X] &&
+				   m_data[Y] == rhs.m_data[Y] &&
+				   m_data[Z] == rhs.m_data[Z] &&
+				   m_data[W] == rhs.m_data[W];
+		}
+
         virtual Quaternion operator*(const Quaternion& rhs) const
         {
             float x1 = m_data[X];

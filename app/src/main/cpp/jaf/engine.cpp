@@ -6,17 +6,17 @@ namespace JAF {
     {
         LOGI("JAF::Engine( Init begin: %d )", m_id);
         {
-            PositionVertex vertices[] = {
-                    {-0.5f, 0.5f,  0},
-                    {0.5f,  0.5f,  0},
-                    {0.5f,  -0.5f, 0},
-                    {-0.5f, -0.5f, 0}
-            };
+			PositionVertex vertices[] = {
+					{-1, 1, 0},
+					{ 1, 1, 0},
+					{ 1,-1, 0},
+					{-1,-1, 0}
+			};
 
-            GLushort indices[] = {0, 1, 2, 0, 2, 3};
+			GLushort indices[] = {0, 1, 2, 0, 2, 3};
 
-            if(!m_particleMesh.init(4, vertices, 6, indices))
-                return false;
+			if(!m_particleMesh.init(4, vertices, 6, indices))
+				return false;
 
             if (!m_particleShader.init(pAssetManager, m_particleMesh))
                 return false;
@@ -65,7 +65,7 @@ namespace JAF {
         glCullFace(GL_BACK);
 
         glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glBlendFunc(GL_ONE, GL_ONE);
         glBlendEquation(GL_FUNC_ADD);
 
         glViewport(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);

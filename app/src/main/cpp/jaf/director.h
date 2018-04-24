@@ -34,7 +34,10 @@ namespace JAF {
 
 		Settings m_rocketSettings;
 
+		Settings m_flareSettings;
+
 		behaviour_vec m_rocketBehaviours;
+		behaviour_vec m_flareBehaviour;
 
 		sequence_ptr m_pSequence;
 

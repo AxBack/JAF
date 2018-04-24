@@ -20,7 +20,7 @@ namespace JAF {
             return false;
         }
 
-        if (m_instance.size > 0 && m_instance.a > 0)
+        if (m_instance.radius > 0 && m_instance.a > 0)
             collector.add(m_instance);
 
         return true;
@@ -28,6 +28,9 @@ namespace JAF {
 
     void Particle::setPosition(const Math::Vector3& position)
     {
+		if(position == m_position)
+			return;
+
 		m_lastPosition = m_position;
 		m_position = position * m_factors;
         Math::Vector3 p = m_position;

@@ -6,22 +6,38 @@ namespace JAF {
 
 	void Director::init(std::mt19937& generator)
 	{
-		m_rocketSettings.vec3Paths.push_back(createPath(3.0f, 2, (Math::Vector3[]){{0,0,0}, {-300,600,-300}}));
-		m_rocketSettings.vec3Paths.push_back(createPath(3.0f, 2, (Math::Vector3[]){{0,0,0}, {300,600,300}}));
+		float time = 1.0f;
+		m_rocketSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {-300,600,-300}}));
+		m_rocketSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {300,600,300}}));
 
-		m_rocketSettings.floatPaths.push_back(createPath(3.0f, 1, (float[]){10}));
+		m_rocketSettings.floatPaths.push_back(createPath(time, 1, (float[]){1}));
 
-		m_rocketSettings.colorPaths.push_back(createPath(3.0f, 2, (Math::Color[]){{1,0,0,1}, {0,1,0,1}}));
-		m_rocketSettings.colorPaths.push_back(createPath(3.0f, 2, (Math::Color[]){{1,1,0,1}, {1,0,1,1}}));
+		m_rocketSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,0,0,1}, {0,1,0,1}}));
+		m_rocketSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,0,1}, {1,0,1,1}}));
 
-		Behaviour b;
-		b.init(3.0f);
-		b.addPosition(1.0f, &m_rocketSettings.vec3Paths[0]);
-		b.addPosition(1.0f, &m_rocketSettings.vec3Paths[1]);
-		b.addSize(1.0f, &m_rocketSettings.floatPaths[0]);
-		b.addColor(1.0f, &m_rocketSettings.colorPaths[0]);
-		b.addColor(1.0f, &m_rocketSettings.colorPaths[1]);
-		m_rocketBehaviours.push_back(b);
+		{
+			Behaviour b;
+			b.init(time);
+			b.addPosition(1.0f, &m_rocketSettings.vec3Paths[0]);
+			b.addPosition(1.0f, &m_rocketSettings.vec3Paths[1]);
+			b.addSize(1.0f, &m_rocketSettings.floatPaths[0]);
+			b.addColor(1.0f, &m_rocketSettings.colorPaths[0]);
+			b.addColor(1.0f, &m_rocketSettings.colorPaths[1]);
+			m_rocketBehaviours.push_back(b);
+		}
+
+		m_flareSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {0,100,0}}));
+		m_flareSettings.floatPaths.push_back(createPath(time, 2, (float[]){0.1, 0.5}));
+		m_flareSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,0,1}, {1,1,1,1}}));
+
+		{
+			Behaviour b;
+			b.init(time);
+			b.addPosition(1.0f, &m_flareSettings.vec3Paths[0]);
+			b.addSize(1.0f, &m_flareSettings.floatPaths[0]);
+			b.addColor(1.0f, &m_flareSettings.colorPaths[0]);
+			m_flareBehaviour.push_back(b);
+		}
 
 		m_generator = generator;
 	}
@@ -30,7 +46,7 @@ namespace JAF {
 	{
 		if(m_pSequence == nullptr)
 		{
-			m_pSequence.reset(new Sequence(pUpdater, &m_rocketBehaviours[0]));
+			m_pSequence.reset(new Sequence(m_generator, pUpdater, &m_rocketBehaviours[0], &m_flareBehaviour[0]));
 			m_pSequence->start();
 		}
 

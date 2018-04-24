@@ -21,7 +21,7 @@ namespace JAF {
         matrix_ptr p(new Math::Matrix);
         p->setIdentity();
         p->translate(0,-300,0);
-		fireRelevant(m_pBehaviour, p, 84);
+		fireRelevant(m_pRocket, p, 84);
 	}
 
 	void Sequence::onDead(const Particle* pParticle)
@@ -29,8 +29,20 @@ namespace JAF {
 		--m_nrRelevantParticles;
         if (pParticle->getType() == 84)
         {
+			std::uniform_real_distribution<float> dist(-180, 180);
 			matrix_ptr p = pParticle->calculateTransform();
-			fire(m_pBehaviour, p, {1,-1,1});
+			for(int i=0; i<100; ++i)
+			{
+				float x = dist(m_generator);
+				float z = dist(m_generator);
+
+				matrix_ptr offset(new Math::Matrix);
+				Math::Matrix& t = *offset.get();
+				Math::Matrix::setRotate(*offset.get(), x, 0, z);
+				t = *p.get() * t;
+
+				fire(m_pFlare, offset, {1,-1,1});
+			}
         }
 	}
 

@@ -17,7 +17,9 @@ namespace JAF {
 		int m_nrRelevantParticles { 0 };
 
 		//temp
-		const Behaviour* m_pBehaviour { nullptr };
+		std::mt19937 m_generator;
+		const Behaviour* m_pRocket { nullptr };
+		const Behaviour* m_pFlare { nullptr };
 
 	protected:
 
@@ -26,9 +28,11 @@ namespace JAF {
 
 	public:
 
-		Sequence(Updater* pUpdater, const Behaviour* pBehaviour)
-				: m_pUpdater(pUpdater)
-				, m_pBehaviour(pBehaviour)
+		Sequence(std::mt19937 generator, Updater* pUpdater, const Behaviour* pRocket, const Behaviour* pFlare)
+				: m_generator(generator)
+				, m_pUpdater(pUpdater)
+				, m_pRocket(pRocket)
+				, m_pFlare(pFlare)
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0; }

@@ -35,7 +35,18 @@ namespace Math {
 
 		const float *const data() const { return m_data; }
 
-		Matrix operator*(const Matrix &rhs) const {
+		bool operator==(const Matrix& rhs)
+		{
+			for(UINT i=0; i<16; ++i)
+			{
+				if(m_data[i] != rhs.m_data[i])
+					return false;
+			}
+
+			return true;
+		}
+
+		Matrix operator*(const Matrix& rhs) const {
 			return multiply(*this, rhs);
 		}
 

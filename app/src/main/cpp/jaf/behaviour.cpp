@@ -16,7 +16,7 @@ namespace JAF {
             return false;
 
         pItem->setPosition(update<Math::Vector3>({0,0,0}, pItem->getPositionWeights(), m_positions, time));
-        pItem->setSize(update(0.0f, pItem->getSizeWeights(), m_sizes, time));
+		pItem->setRadius(update(0.0f, pItem->getSizeWeights(), m_sizes, time));
         pItem->setColor(update<Math::Color>({0,0,0,0}, pItem->getColorWeights(), m_colors, time));
 
         return true;

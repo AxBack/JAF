@@ -9,6 +9,6 @@ namespace JAF {
     };
 
     struct ParticleInstance {
-        GLfloat x,y,z,size,r,g,b,a;
+        GLfloat x,y,z,radius,r,g,b,a;
     };
 }

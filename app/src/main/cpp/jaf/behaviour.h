@@ -18,20 +18,20 @@ namespace JAF {
 
         int_float_vec 	m_positionWeights;
         int_float_vec 	m_sizeWeights;
-        int_float_vec 	m_color_weights;
+        int_float_vec 	m_colorWeights;
 
     public:
 
         void setPositionWeights(int_float_vec&& weights) { m_positionWeights = weights;}
         void setSizeWeights(int_float_vec&& weights) { m_sizeWeights = weights;}
-        void setColorWeights(int_float_vec&& weights) { m_color_weights = weights;}
+        void setColorWeights(int_float_vec&& weights) { m_colorWeights = weights;}
 
         const int_float_vec* getPositionWeights() { return &m_positionWeights; }
         const int_float_vec* getSizeWeights() { return &m_sizeWeights; }
-        const int_float_vec* getColorWeights() { return &m_color_weights; }
+        const int_float_vec* getColorWeights() { return &m_colorWeights; }
 
         virtual void setPosition(const Math::Vector3& position) = 0;
-        virtual void setSize(const float size) = 0;
+        virtual void setRadius(const float size) = 0;
         virtual void setColor(const Math::Color& color) = 0;
     };
 
