@@ -58,7 +58,8 @@ namespace JAF {
 	void Sequence::onInterval(const Particle* pParticle)
 	{
 		matrix_ptr p = pParticle->calculateTransform();
-		fire(m_pTrail, p);
+		Math::Vector3 factors {JAWE::Random::rand(-1, 1), 1, JAWE::Random::rand(-1, 1)};
+		fire(m_pTrail, p, factors);
 	}
 
 	void Sequence::update(float dt)

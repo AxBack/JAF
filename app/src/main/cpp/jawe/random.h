@@ -1,6 +1,7 @@
 #pragma once
 
 #include <random>
+#include <mutex>
 
 namespace JAWE {
 
@@ -9,6 +10,8 @@ namespace JAWE {
 	private:
 
 		static std::mt19937 s_generator;
+		static std::mutex s_mutex;
+
 
 	public:
 
@@ -16,6 +19,7 @@ namespace JAWE {
 
 		static float rand(float min, float max)
 		{
+			std::lock_guard<std::mutex> _(s_mutex);
 			std::uniform_real_distribution<float> dist(min, max);
 			return dist(s_generator);
 		}

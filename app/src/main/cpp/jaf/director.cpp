@@ -39,7 +39,8 @@ namespace JAF {
 			m_flareBehaviours.push_back(b);
 		}
 
-		m_trailSettings.vec3Paths.push_back(createPath(time, 1, (Math::Vector3[]){{0,0,0}}));
+		m_trailSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {0,-150,0}}));
+		m_trailSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {-50,-50,-50}}));
 		m_trailSettings.floatPaths.push_back(createPath(time, 2, (float[]){1, 0.0}));
 		m_trailSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,1,1}, {0,0,0,0}}));
 
@@ -47,6 +48,7 @@ namespace JAF {
 			Behaviour b;
 			b.init(time);
 			b.addPosition(1.0f, &m_trailSettings.vec3Paths[0]);
+			b.addPosition(1.0f, &m_trailSettings.vec3Paths[1]);
 			b.addSize(1.0f, &m_trailSettings.floatPaths[0]);
 			b.addColor(1.0f, &m_trailSettings.colorPaths[0]);
 			m_trailBehaviours.push_back(b);
