@@ -33,11 +33,9 @@ namespace JAF {
 			color_path_vec colorPaths;
 		};
 
-		Settings m_rocketSettings;
 		Settings m_flareSettings;
 		Settings m_trailSettings;
 
-		behaviour_vec m_rocketBehaviours;
 		behaviour_vec m_flareBehaviours;
 		behaviour_vec m_trailBehaviours;
 

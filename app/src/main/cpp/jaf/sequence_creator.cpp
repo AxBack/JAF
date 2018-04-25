@@ -4,14 +4,16 @@ namespace JAF {
 
 	void SequenceCreator::create(Sequence& out)
 	{
-		std::shared_ptr<Math::Matrix> p(new Math::Matrix);
-		p->setIdentity();
-		p->translate(0,-300,0);
+		const Behaviour* pBehaviour = m_rocketCreator.create();
+
+		std::shared_ptr<Math::Matrix> pTransform(new Math::Matrix);
+		pTransform->setIdentity();
+		pTransform->translate(0,-1000,0);
 
 		int nrRockets = m_nrRockets.front();
 		if(nrRockets == 1)
 		{
-			out.add(0.0f, p, {1,1,1});
+			out.add(0.0f, pBehaviour, pTransform, {1,1,1});
 			return;
 		}
 
@@ -23,27 +25,27 @@ namespace JAF {
 			default:
 			case SAME:
 				for(int i=0; i<nrRockets; ++i)
-					out.add(interval, p, {1,1,1});
+					out.add(interval, pBehaviour, pTransform, {1,1,1});
 				break;
 			case OPPOSITE:
 				for(int i=0; i<nrRockets; ++i)
 				{
 					float f = i%2 == 0 ? 1.0f : -1.0f;
-					out.add(interval, p, {f, 1, f});
+					out.add(interval, pBehaviour, pTransform, {f, 1, f});
 				}
 				break;
 			case OPPOSITE_X:
 				for(int i=0; i<nrRockets; ++i)
 				{
 					float f = i%2 == 0 ? 1.0f : -1.0f;
-					out.add(interval, p, {f, 1, 1});
+					out.add(interval, pBehaviour, pTransform, {f, 1, 1});
 				}
 				break;
 			case OPPOSITE_Z:
 				for(int i=0; i<nrRockets; ++i)
 				{
 					float f = i%2 == 0 ? 1.0f : -1.0f;
-					out.add(interval, p, {1, 1, f});
+					out.add(interval, pBehaviour, pTransform, {1, 1, f});
 				}
 				break;
 		}

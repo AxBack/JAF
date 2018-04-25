@@ -49,7 +49,7 @@ namespace JAF {
             Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
             Matrix rot;
             Matrix::setRotate(rot, yaw);
-            Vector3 pos = Matrix::transform(rot, {0,0,-500});
+            Vector3 pos = Matrix::transform(rot, {0,0,-1000});
             Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0f);
             Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
 

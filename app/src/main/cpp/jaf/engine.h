@@ -36,6 +36,7 @@ namespace JAF {
 
         Engine()
             : JAWE::Engine()
+            , m_camera(1.0f, 2000.0f)
         {
             {
                 float points[] = { -90, 90 };

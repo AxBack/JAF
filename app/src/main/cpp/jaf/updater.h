@@ -43,7 +43,8 @@ namespace JAF {
 
         virtual bool init() override;
 
-        virtual ~Updater() {}
+        virtual ~Updater()
+		{}
 
         void updateInstances(particle_mesh& mesh);
 

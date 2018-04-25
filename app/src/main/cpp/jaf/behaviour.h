@@ -15,21 +15,7 @@ namespace JAF {
 
     class BehaviourInfluenced
     {
-    protected:
-
-        int_float_vec 	m_positionWeights;
-        int_float_vec 	m_sizeWeights;
-        int_float_vec 	m_colorWeights;
-
     public:
-
-        void setPositionWeights(int_float_vec&& weights) { m_positionWeights = weights;}
-        void setSizeWeights(int_float_vec&& weights) { m_sizeWeights = weights;}
-        void setColorWeights(int_float_vec&& weights) { m_colorWeights = weights;}
-
-        const int_float_vec* getPositionWeights() { return &m_positionWeights; }
-        const int_float_vec* getSizeWeights() { return &m_sizeWeights; }
-        const int_float_vec* getColorWeights() { return &m_colorWeights; }
 
         virtual void setPosition(const Math::Vector3& position) = 0;
         virtual void setRadius(const float size) = 0;
@@ -42,42 +28,28 @@ namespace JAF {
 
         float m_timeLimit { 0 };
 
-        float m_totalPositionWeights { 0 };
         std::vector<std::pair<float, const vec3_path*>> m_positions;
-
-        float m_totalSizeWeights { 0 };
         std::vector<std::pair<float, const float_path*>> m_sizes;
-
-        float m_totalColorWeights { 0 };
         std::vector<std::pair<float, const color_path*>> m_colors;
 
         template <typename T>
-		int_float_vec createDistribution(const std::vector<std::pair<float, T>>& paths) const
+        T update(T v, const std::vector<std::pair<float, const JAWE::Path<T>*>>& paths, float time) const
         {
-			int_float_vec out;
-            std::uniform_real_distribution<float> dist(0.0f,1.0f);
-            float total = 0;
-            int i = 0;
             for(auto& it : paths)
-            {
-                float v = it.first * JAWE::Random::rand(0, 1);
-                out.push_back(std::make_pair(i++, v));
-                total += v;
-            }
-
-            for(auto& it : out)
-                it.second /= total;
-
-			return std::move(out);
-        }
-
-        template <typename T>
-        T update(T v, const int_float_vec* pWeights, const std::vector<std::pair<float, const JAWE::Path<T>*>>& paths, float time) const
-        {
-            for(auto& it : *pWeights)
-                v += paths[it.first].second->traverse(time) * it.second;
+                v += it.second->traverse(time) * it.first;
             return v;
         }
+
+		template <typename T>
+		void normalize(std::vector<std::pair<float, T>>& vec)
+		{
+			float total = 0;
+			for(auto& it : vec)
+				total += it.first;
+
+			for(auto& it : vec)
+				it.first = it.first / total;
+		}
 
     public:
 
@@ -86,24 +58,27 @@ namespace JAF {
             m_timeLimit = time;
         }
 
+		void normalize()
+		{
+			normalize(m_positions);
+			normalize(m_sizes);
+			normalize(m_colors);
+		}
+
         void addPosition(float weight, const vec3_path* path)
         {
-            m_totalPositionWeights += weight;
             m_positions.push_back(std::make_pair(weight, path));
         }
 
         void addSize(float weight, const float_path* path)
         {
-            m_totalSizeWeights += weight;
             m_sizes.push_back(std::make_pair(weight, path));
         }
         void addColor(float weight, const color_path* path)
         {
-            m_totalColorWeights += weight;
             m_colors.push_back(std::make_pair(weight, path));
         }
 
-        void fire(BehaviourInfluenced* pItem) const;
         bool update(BehaviourInfluenced* pItem, float time) const;
     };
 

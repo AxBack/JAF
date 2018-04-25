@@ -34,12 +34,12 @@ namespace JAF {
 		--m_nrRelevantParticles;
         if (pParticle->getType() == 84)
         {
-			std::uniform_real_distribution<float> dist(-180, 180);
+			std::uniform_real_distribution<float> dist(-180.0f, 180.0f);
 			matrix_ptr p = pParticle->calculateTransform();
 			for(int i=0; i<100; ++i)
 			{
-				float x = JAWE::Random::rand(-180, 180);
-				float z = JAWE::Random::rand(-180, 180);
+				float x = JAWE::Random::rand(-180.0f, 180.0f);
+				float z = JAWE::Random::rand(-180.0f, 180.0f);
 
 				matrix_ptr offset(new Math::Matrix);
 				Math::Matrix& t = *offset.get();
@@ -54,7 +54,7 @@ namespace JAF {
 	void Sequence::onInterval(const Particle* pParticle)
 	{
 		matrix_ptr p = pParticle->calculateTransform();
-		Math::Vector3 factors {JAWE::Random::rand(-1, 1), 1, JAWE::Random::rand(-1, 1)};
+		Math::Vector3 factors {JAWE::Random::rand(-1.0f, 1.0f), 1, JAWE::Random::rand(-1.0f, 1.0f)};
 		fire(m_pTrail, p, factors);
 	}
 
@@ -63,13 +63,12 @@ namespace JAF {
 		if(m_rockets.size() > 0)
 		{
 			m_rockets.front().offsetTime -= dt;
-			while(m_rockets.front().offsetTime <= 0.0f)
+
+			if(m_rockets.front().offsetTime <= 0)
 			{
 				Rocket& r = m_rockets.front();
-				fireRelevant(m_pRocket, r.pTransform, 84, r.factors);
+				fireRelevant(r.pBehaviour, r.pTransform, 84, r.factors);
 				m_rockets.pop();
-				if(m_rockets.size() == 0)
-					break;
 			}
 		}
 	}

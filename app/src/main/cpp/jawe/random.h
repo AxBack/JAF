@@ -24,5 +24,12 @@ namespace JAWE {
 			return dist(s_generator);
 		}
 
+		static int rand(int min, int max)
+		{
+			std::lock_guard<std::mutex> _(s_mutex);
+			std::uniform_int_distribution<int> dist(min, max);
+			return dist(s_generator);
+		}
+
 	};
 };

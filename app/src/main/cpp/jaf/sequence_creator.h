@@ -4,6 +4,7 @@
 #include "../jawe/path.h"
 #include "../jawe/vector3.h"
 #include "sequence.h"
+#include "rocket_creator.h"
 
 namespace JAF {
 
@@ -16,6 +17,8 @@ namespace JAF {
 		BalancedCollection<int> m_nrRockets;
 		BalancedCollection<float> m_intervals;
 		BalancedCollection<FACTOR_TYPE> m_factors;
+
+		RocketCreator m_rocketCreator;
 
 	public:
 

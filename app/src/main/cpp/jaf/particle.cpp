@@ -7,7 +7,6 @@ namespace JAF {
         m_time = 0;
 		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
-		pBehaviour->fire(this);
     }
 
     bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
@@ -17,6 +16,7 @@ namespace JAF {
         {
             if(m_pListener)
 				m_pListener->onDead(this);
+
             return false;
         }
 

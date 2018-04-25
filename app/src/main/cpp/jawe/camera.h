@@ -16,6 +16,9 @@ namespace JAWE {
 		bool        m_vpDirty { true };
 		Matrix		m_viewProjection;
 
+		float 		m_zMin;
+		float 		m_zMax;
+
 		Vector3 	m_position { 0,0,0 };
 		Vector3 	m_at { 0,0,1};
 		Vector3 	m_forward { 0,0,1};
@@ -26,6 +29,13 @@ namespace JAWE {
 		Matrix      m_projection;
 
 	public:
+
+		Camera(float zMin, float zMax)
+				: m_zMin(zMin)
+				, m_zMax(zMax)
+		{
+		}
+
 
 		virtual ~Camera()
 		{
@@ -60,7 +70,7 @@ namespace JAWE {
 
 		void updateProjection(float w, float h)
 		{
-			Matrix::perspective(m_projection, 90.0f, w / h, 1.0f, 1000.0f);
+			Matrix::perspective(m_projection, 90.0f, w / h, m_zMin, m_zMax);
 			m_vpDirty = true;
 		}
 	};
