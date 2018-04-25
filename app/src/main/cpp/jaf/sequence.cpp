@@ -26,11 +26,7 @@ namespace JAF {
 
 	void Sequence::start()
 	{
-		//temp
-        matrix_ptr p(new Math::Matrix);
-        p->setIdentity();
-        p->translate(0,-300,0);
-		fireRelevant(m_pRocket, p, 84);
+
 	}
 
 	void Sequence::onDead(const Particle* pParticle)
@@ -64,7 +60,18 @@ namespace JAF {
 
 	void Sequence::update(float dt)
 	{
-
+		if(m_rockets.size() > 0)
+		{
+			m_rockets.front().offsetTime -= dt;
+			while(m_rockets.front().offsetTime <= 0.0f)
+			{
+				Rocket& r = m_rockets.front();
+				fireRelevant(m_pRocket, r.pTransform, 84, r.factors);
+				m_rockets.pop();
+				if(m_rockets.size() == 0)
+					break;
+			}
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <queue>
 #include "particle.h"
 
 namespace JAF {
@@ -12,9 +13,18 @@ namespace JAF {
 
         typedef std::shared_ptr<Math::Matrix> matrix_ptr;
 
+		struct Rocket
+		{
+			float offsetTime;
+			matrix_ptr pTransform;
+			Math::Vector3 factors;
+		};
+
 		Updater* m_pUpdater;
 
 		int m_nrRelevantParticles { 0 };
+
+		std::queue<Rocket> m_rockets;
 
 		//temp
 		const Behaviour* m_pRocket { nullptr };
@@ -28,7 +38,7 @@ namespace JAF {
 
 	public:
 
-		Sequence(std::mt19937& generator, Updater* pUpdater, const Behaviour* pRocket, const Behaviour* pFlare, const Behaviour* pTrail)
+		Sequence(Updater* pUpdater, const Behaviour* pRocket, const Behaviour* pFlare, const Behaviour* pTrail)
 				: m_pUpdater(pUpdater)
 				, m_pRocket(pRocket)
 				, m_pFlare(pFlare)
@@ -36,6 +46,8 @@ namespace JAF {
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0; }
+
+		void add(float offsetTime, std::shared_ptr<Math::Matrix> p, const Math::Vector3& factors) { m_rockets.push({offsetTime, p, factors}); }
 
 		virtual void onDead(const Particle* pParticle) override;
 		virtual void onInterval(const Particle* pParticle) override;

@@ -61,7 +61,8 @@ namespace JAF {
 	{
 		if(m_pSequence == nullptr)
 		{
-			m_pSequence.reset(new Sequence(m_generator, pUpdater, &m_rocketBehaviours[0], &m_flareBehaviours[0], &m_trailBehaviours[0]));
+			m_pSequence.reset(new Sequence(pUpdater, &m_rocketBehaviours[0], &m_flareBehaviours[0], &m_trailBehaviours[0]));
+			m_creator.create(*m_pSequence.get());
 			m_pSequence->start();
 		}
 

@@ -26,6 +26,7 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/jaf/behaviour.cpp
                 src/main/cpp/jaf/director.cpp
                 src/main/cpp/jaf/sequence.cpp
+                src/main/cpp/jaf/sequence_creator.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

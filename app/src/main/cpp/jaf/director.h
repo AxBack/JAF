@@ -5,6 +5,7 @@
 #include "../jawe/vector3.h"
 #include "behaviour.h"
 #include "sequence.h"
+#include "sequence_creator.h"
 
 namespace JAF {
 
@@ -20,7 +21,7 @@ namespace JAF {
 		typedef std::vector<float_path> float_path_vec;
 		typedef JAWE::Path<Math::Color> color_path;
 		typedef std::vector<color_path> color_path_vec;
-		typedef std::vector<Behaviour>  behaviour_vec;
+		typedef std::vector<Behaviour> behaviour_vec;
 		typedef std::shared_ptr<Sequence> sequence_ptr;
 
 		std::mt19937 m_generator;
@@ -40,10 +41,11 @@ namespace JAF {
 		behaviour_vec m_flareBehaviours;
 		behaviour_vec m_trailBehaviours;
 
+		SequenceCreator m_creator;
+
 		sequence_ptr m_pSequence;
 
-
-		template <typename T>
+		template<typename T>
 		JAWE::Path<T> createPath(float time, UINT nrPoints, T* p)
 		{
 			JAWE::Path<T> path;
@@ -54,6 +56,7 @@ namespace JAF {
 	public:
 
 		void init(std::mt19937& generator);
+
 		void update(Updater* pUpdater, float dt);
 	};
 };
