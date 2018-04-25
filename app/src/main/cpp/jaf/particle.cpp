@@ -81,6 +81,6 @@ namespace JAF {
             return Math::Quaternion::identity();
 
         normal.normalize();
-        return Math::Quaternion::rotationBetweenNormals(up, normal);
+        return Math::Quaternion::rotationBetweenNormals(normal, up);
     }
 }

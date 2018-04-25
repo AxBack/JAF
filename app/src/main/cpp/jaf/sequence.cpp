@@ -43,7 +43,7 @@ namespace JAF {
 
 				matrix_ptr offset(new Math::Matrix);
 				Math::Matrix& t = *offset.get();
-				Math::Matrix::setRotate(*offset.get(), x, 0, z);
+				Math::Matrix::setRotate(t, x, 0, z);
 				t = *p.get() * t;
 
 				fire(m_pFlare, offset, {1,-1,1});
