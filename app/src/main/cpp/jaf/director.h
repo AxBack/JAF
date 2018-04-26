@@ -26,17 +26,6 @@ namespace JAF {
 
 		std::mt19937 m_generator;
 
-		struct Settings
-		{
-			vec3_path_vec vec3Paths;
-			float_path_vec floatPaths;
-			color_path_vec colorPaths;
-		};
-
-		Settings m_trailSettings;
-
-		behaviour_vec m_trailBehaviours;
-
 		SequenceCreator m_creator;
 
 		sequence_ptr m_pSequence;

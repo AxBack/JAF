@@ -6,7 +6,7 @@
 
 namespace JAF {
 
-	class BurstCreator : public Creator
+	class TrailCreator : public Creator
 	{
 	private:
 
@@ -18,11 +18,14 @@ namespace JAF {
 
 
 
-		BurstCreator()
-				: Creator(5)
+		TrailCreator()
+				: Creator(10)
 		{
-			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,500,0}}));
-			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,300,0}}));
+			float l = 200.0f;
+			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,-l,0}}));
+			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {-l,-l*0.2f,-l}}));
+			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {l,-l*0.2f,l}}));
+
 
 			m_sizes.push(createPath(1.0f, 4, (float[]){0.1,1,1,0}));
 			m_sizes.push(createPath(1.0f, 4, (float[]){1,2,0.1,0}));
@@ -37,7 +40,7 @@ namespace JAF {
 		{
 			behaviour_ptr p = getBehaviour();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_positions);
+			fill(p.get(), JAWE::Random::rand(2,3), &m_positions);
 			fill(p.get(), JAWE::Random::rand(1,2), &m_sizes);
 			fill(p.get(), JAWE::Random::rand(1,2), &m_colors);
 

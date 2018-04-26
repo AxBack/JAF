@@ -54,7 +54,7 @@ namespace JAF {
 	{
 		matrix_ptr p = pParticle->calculateTransform();
 		Math::Vector3 factors {JAWE::Random::rand(-1.0f, 1.0f), 1, JAWE::Random::rand(-1.0f, 1.0f)};
-		fire(m_pTrail, p, factors);
+		fire(m_trail.pBehaviour, p, factors);
 	}
 
 	void Sequence::update(float dt)

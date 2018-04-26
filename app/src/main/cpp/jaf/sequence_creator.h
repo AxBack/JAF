@@ -5,6 +5,7 @@
 #include "../jawe/vector3.h"
 #include "sequence.h"
 #include "rocket_creator.h"
+#include "trail_creator.h"
 
 namespace JAF {
 
@@ -22,9 +23,11 @@ namespace JAF {
 
 		RocketCreator m_rocketCreator;
 		BurstCreator m_burstCreator;
+		TrailCreator m_trailCreator;
 
 		void createRockets(Sequence& out);
 		void createBursts(Sequence& out);
+		void createTrails(Sequence& out);
 
 	public:
 

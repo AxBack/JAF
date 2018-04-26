@@ -19,7 +19,7 @@ namespace JAF {
 
 	public:
 		RocketCreator()
-		: Creator()
+		: Creator(2)
 		{
 			m_positions.push(createPath(2.0f, 3, (Math::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
 			m_positions.push(createPath(2.0f, 3, (Math::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));

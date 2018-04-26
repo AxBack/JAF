@@ -27,6 +27,11 @@ namespace JAF {
 			const Behaviour* pBehaviour;
 		};
 
+		struct Trail
+		{
+			const Behaviour* pBehaviour;
+		};
+
 		Updater* m_pUpdater;
 
 		int m_nrRelevantParticles { 0 };
@@ -34,9 +39,7 @@ namespace JAF {
 		std::queue<Rocket> m_rockets;
 
 		Burst m_burst;
-
-		//temp
-		const Behaviour* m_pTrail { nullptr };
+		Trail m_trail;
 
 	protected:
 
@@ -45,9 +48,8 @@ namespace JAF {
 
 	public:
 
-		Sequence(Updater* pUpdater, const Behaviour* pTrail)
+		Sequence(Updater* pUpdater)
 				: m_pUpdater(pUpdater)
-				, m_pTrail(pTrail)
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0 || m_rockets.size() > 0; }
@@ -61,6 +63,11 @@ namespace JAF {
 		{
 			m_burst.nrParticles = nrParticles;
 			m_burst.pBehaviour = pBehaviour;
+		}
+
+		void addTrail(const Behaviour* pBehaviour)
+		{
+			m_trail.pBehaviour = pBehaviour;
 		}
 
 		virtual void onDead(const Particle* pParticle) override;

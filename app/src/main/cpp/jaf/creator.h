@@ -26,14 +26,12 @@ namespace JAF {
 
 		behaviour_bank m_behaviourBank;
 
-
 	protected:
 
-		Creator()
+		Creator(UINT size)
 			: m_behaviourBank([](){return new Behaviour();})
 		{
-			for(UINT i=0; i<10; ++i)
-				m_behaviourBank.push(m_behaviourBank.pop());
+			m_behaviourBank.resize(size);
 		}
 
 		behaviour_ptr getBehaviour()

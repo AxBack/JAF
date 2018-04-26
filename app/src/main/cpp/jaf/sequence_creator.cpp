@@ -56,10 +56,16 @@ namespace JAF {
 		out.addBurst(m_nrParticlesPerBurst.front(), m_burstCreator.create());
 	}
 
+	void SequenceCreator::createTrails(Sequence& out)
+	{
+		out.addTrail(m_trailCreator.create());
+	}
+
 	void SequenceCreator::create(Sequence& out)
 	{
 		createRockets(out);
 		createBursts(out);
+		createTrails(out);
 	}
 
 }
