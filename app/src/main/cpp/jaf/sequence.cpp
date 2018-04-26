@@ -34,9 +34,8 @@ namespace JAF {
 		--m_nrRelevantParticles;
         if (pParticle->getType() == 84)
         {
-			std::uniform_real_distribution<float> dist(-180.0f, 180.0f);
 			matrix_ptr p = pParticle->calculateTransform();
-			for(int i=0; i<100; ++i)
+			for(UINT i=0; i < m_burst.nrParticles; ++i)
 			{
 				float x = JAWE::Random::rand(-180.0f, 180.0f);
 				float z = JAWE::Random::rand(-180.0f, 180.0f);
@@ -46,7 +45,7 @@ namespace JAF {
 				Math::Matrix::setRotate(t, x, 0, z);
 				t = *p.get() * t;
 
-				fire(m_pFlare, offset, {1,-1,1});
+				fire(m_burst.pBehaviour, offset);
 			}
         }
 	}

@@ -22,7 +22,10 @@ namespace JAF {
 				: m_modifier(modifier)
 		{}
 
+		UINT size() { return (UINT)m_items.size(); }
+
 		void push(T v) { m_items.push_back(std::make_pair(0.0f, v)); }
+
 		T front()
 		{
 			if(m_items.size() == 0)

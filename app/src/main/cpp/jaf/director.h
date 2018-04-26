@@ -33,10 +33,8 @@ namespace JAF {
 			color_path_vec colorPaths;
 		};
 
-		Settings m_flareSettings;
 		Settings m_trailSettings;
 
-		behaviour_vec m_flareBehaviours;
 		behaviour_vec m_trailBehaviours;
 
 		SequenceCreator m_creator;

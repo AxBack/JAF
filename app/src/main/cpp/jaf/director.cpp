@@ -7,19 +7,6 @@ namespace JAF {
 	void Director::init(std::mt19937& generator)
 	{
 		float time = 1.0f;
-		m_flareSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {0,100,0}}));
-		m_flareSettings.floatPaths.push_back(createPath(time, 4, (float[]){0.1, 0.5, 0.5, 0}));
-		m_flareSettings.colorPaths.push_back(createPath(time, 2, (Math::Color[]){{1,1,0,1}, {1,1,1,1}}));
-
-		{
-			Behaviour b;
-			b.init(time);
-			b.addPosition(1.0f, &m_flareSettings.vec3Paths[0]);
-			b.addSize(1.0f, &m_flareSettings.floatPaths[0]);
-			b.addColor(1.0f, &m_flareSettings.colorPaths[0]);
-			b.normalize();
-			m_flareBehaviours.push_back(b);
-		}
 
 		m_trailSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {0,-150,0}}));
 		m_trailSettings.vec3Paths.push_back(createPath(time, 2, (Math::Vector3[]){{0,0,0}, {-50,-50,-50}}));
@@ -29,10 +16,10 @@ namespace JAF {
 		{
 			Behaviour b;
 			b.init(time);
-			b.addPosition(1.0f, &m_trailSettings.vec3Paths[0]);
-			b.addPosition(1.0f, &m_trailSettings.vec3Paths[1]);
-			b.addSize(1.0f, &m_trailSettings.floatPaths[0]);
-			b.addColor(1.0f, &m_trailSettings.colorPaths[0]);
+			b.add(1.0f, &m_trailSettings.vec3Paths[0]);
+			b.add(1.0f, &m_trailSettings.vec3Paths[1]);
+			b.add(1.0f, &m_trailSettings.floatPaths[0]);
+			b.add(1.0f, &m_trailSettings.colorPaths[0]);
 			b.normalize();
 			m_trailBehaviours.push_back(b);
 		}
@@ -44,7 +31,7 @@ namespace JAF {
 	{
 		if(m_pSequence == nullptr)
 		{
-			m_pSequence.reset(new Sequence(pUpdater, &m_flareBehaviours[0], &m_trailBehaviours[0]));
+			m_pSequence.reset(new Sequence(pUpdater, &m_trailBehaviours[0]));
 			m_creator.create(*m_pSequence.get());
 			m_pSequence->start();
 		}

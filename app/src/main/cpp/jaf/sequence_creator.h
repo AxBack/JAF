@@ -18,7 +18,13 @@ namespace JAF {
 		BalancedCollection<float> m_intervals;
 		BalancedCollection<FACTOR_TYPE> m_factors;
 
+		BalancedCollection<UINT> m_nrParticlesPerBurst;
+
 		RocketCreator m_rocketCreator;
+		BurstCreator m_burstCreator;
+
+		void createRockets(Sequence& out);
+		void createBursts(Sequence& out);
 
 	public:
 
@@ -38,6 +44,10 @@ namespace JAF {
 			m_factors.push(OPPOSITE);
 			m_factors.push(OPPOSITE_X);
 			m_factors.push(OPPOSITE_Z);
+
+			m_nrParticlesPerBurst.push(50);
+			m_nrParticlesPerBurst.push(100);
+			m_nrParticlesPerBurst.push(150);
 		}
 
 		void create(Sequence& out);

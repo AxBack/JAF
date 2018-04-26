@@ -11,7 +11,6 @@ namespace JAF {
     typedef JAWE::Path<Math::Vector3> vec3_path;
     typedef JAWE::Path<float> float_path;
     typedef JAWE::Path<Math::Color> color_path;
-    typedef std::vector<std::pair<int, float>> int_float_vec;
 
     class BehaviourInfluenced
     {
@@ -65,18 +64,18 @@ namespace JAF {
 			normalize(m_colors);
 		}
 
-        void addPosition(float weight, const vec3_path* path)
+        void add(float weight, const vec3_path* pPosition)
         {
-            m_positions.push_back(std::make_pair(weight, path));
+            m_positions.push_back(std::make_pair(weight, pPosition));
         }
 
-        void addSize(float weight, const float_path* path)
+        void add(float weight, const float_path* pSize)
         {
-            m_sizes.push_back(std::make_pair(weight, path));
+            m_sizes.push_back(std::make_pair(weight, pSize));
         }
-        void addColor(float weight, const color_path* path)
+        void add(float weight, const color_path* pColor)
         {
-            m_colors.push_back(std::make_pair(weight, path));
+            m_colors.push_back(std::make_pair(weight, pColor));
         }
 
         bool update(BehaviourInfluenced* pItem, float time) const;

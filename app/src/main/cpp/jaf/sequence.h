@@ -21,14 +21,21 @@ namespace JAF {
 			Math::Vector3 factors;
 		};
 
+		struct Burst
+		{
+			UINT nrParticles;
+			const Behaviour* pBehaviour;
+		};
+
 		Updater* m_pUpdater;
 
 		int m_nrRelevantParticles { 0 };
 
 		std::queue<Rocket> m_rockets;
 
+		Burst m_burst;
+
 		//temp
-		const Behaviour* m_pFlare { nullptr };
 		const Behaviour* m_pTrail { nullptr };
 
 	protected:
@@ -38,17 +45,22 @@ namespace JAF {
 
 	public:
 
-		Sequence(Updater* pUpdater, const Behaviour* pFlare, const Behaviour* pTrail)
+		Sequence(Updater* pUpdater, const Behaviour* pTrail)
 				: m_pUpdater(pUpdater)
-				, m_pFlare(pFlare)
 				, m_pTrail(pTrail)
 		{}
 
 		bool active() const { return m_nrRelevantParticles > 0 || m_rockets.size() > 0; }
 
-		void add(float offsetTime, const Behaviour* pBehaviour, matrix_ptr pTransform, const Math::Vector3& factors)
+		void addRocket(float offsetTime, const Behaviour* pBehaviour, matrix_ptr pTransform, const Math::Vector3& factors)
 		{
 			m_rockets.push({offsetTime, pBehaviour, pTransform, factors});
+		}
+
+		void addBurst(UINT nrParticles, const Behaviour* pBehaviour)
+		{
+			m_burst.nrParticles = nrParticles;
+			m_burst.pBehaviour = pBehaviour;
 		}
 
 		virtual void onDead(const Particle* pParticle) override;

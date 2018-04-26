@@ -48,8 +48,9 @@ namespace JAF {
 			m_interval = 0;
 			m_pListener = nullptr;
 			m_pBehaviour = nullptr;
-			m_position = m_lastPosition = {0,0,0};
-		};
+			m_position = m_lastPosition = m_factors = {0,0,0};
+			m_pOffset = nullptr;
+		}
 
         void fire(ParticleListener* pListener, const Behaviour* pBehaviour);
 
