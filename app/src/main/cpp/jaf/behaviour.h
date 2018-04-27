@@ -43,11 +43,7 @@ namespace JAF {
 
     class PathBehaviour : public Behaviour
     {
-    private:
-
-        std::vector<std::pair<float, vec3_path_ptr>> m_positions;
-        std::vector<std::pair<float, float_path_ptr>> m_sizes;
-        std::vector<std::pair<float, color_path_ptr>> m_colors;
+	protected:
 
         template <typename T>
         T update(T v, const std::vector<std::pair<float, std::shared_ptr<JAWE::Path<T>>>>& paths, float time)
@@ -70,29 +66,7 @@ namespace JAF {
 
     public:
 
-		void normalize()
-		{
-			normalize(m_positions);
-			normalize(m_sizes);
-			normalize(m_colors);
-		}
-
-        void add(float weight, vec3_path_ptr pPosition)
-        {
-            m_positions.push_back(std::make_pair(weight, pPosition));
-        }
-
-        void add(float weight, float_path_ptr pSize)
-        {
-            m_sizes.push_back(std::make_pair(weight, pSize));
-        }
-        void add(float weight, color_path_ptr pColor)
-        {
-            m_colors.push_back(std::make_pair(weight, pColor));
-        }
-
-		virtual void fire(Particle* pParticle) override {}
-        virtual bool update(BehaviourInfluenced* pItem, float time) override;
+		virtual void normalize() = 0;
     };
 
 };

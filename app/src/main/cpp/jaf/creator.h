@@ -37,11 +37,11 @@ namespace JAF {
 
 	};
 
-	class PathBehaviourCreator : public Creator<PathBehaviour>
+	template <class T>
+	class PathBehaviourCreator : public Creator<T>
 	{
 	protected:
 
-		typedef std::shared_ptr<PathBehaviour> behaviour_ptr;
 		typedef Math::Vector3 Vector3;
 		typedef Math::Color Color;
 		typedef JAWE::Path<Vector3> vec3_path;
@@ -51,14 +51,16 @@ namespace JAF {
 		typedef std::shared_ptr<float_path> float_path_ptr;
 		typedef std::shared_ptr<color_path> color_path_ptr;
 
-		template <typename T> std::shared_ptr<JAWE::Path<T>> createPath(float time, UINT nrPoints, T* p)
+		template <typename K>
+		std::shared_ptr<JAWE::Path<K>> createPath(UINT nrPoints, K* p) const
 		{
-			std::shared_ptr<JAWE::Path<T>> pPath( new JAWE::Path<T>);
-			pPath->add(time, nrPoints, p);
+			std::shared_ptr<JAWE::Path<K>> pPath( new JAWE::Path<K>);
+			pPath->add(1.0f, nrPoints, p);
 			return pPath;
 		}
 
-		template <typename T> void fill(PathBehaviour* pBehaviour, int nr, BalancedCollection<std::shared_ptr<JAWE::Path<T>>>* pPaths)
+		template <class V, typename K>
+		void fill(V* pBehaviour, int nr, BalancedCollection<std::shared_ptr<JAWE::Path<K>>>* pPaths) const
 		{
 			nr = std::min(nr, (int)pPaths->size());
 			int i = 0;
@@ -72,9 +74,8 @@ namespace JAF {
 	public:
 
 		PathBehaviourCreator(UINT size)
-				: Creator(size)
+				: Creator<T>(size)
 		{
 		}
-
 	};
 };

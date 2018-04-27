@@ -23,6 +23,7 @@ namespace JAWE {
         virtual ~Traversable() {}
 
         float getLength() const { return m_length; }
+		float setLength(float length) { return m_length = length; }
 
         virtual T traverse(float dt) = 0;
     };
@@ -155,6 +156,14 @@ namespace JAWE {
 
             m_totalLength += length;
             m_traversables.push_back(p);
+        }
+
+        void normalize()
+        {
+            for(auto& it : m_traversables)
+                it->setLength(it->getLength() / m_totalLength);
+
+            m_totalLength = 1.0f;
         }
 
         T traverse(float time)
