@@ -6,7 +6,7 @@
 
 namespace JAF {
 
-	class BurstCreator : public Creator
+	class BurstCreator : public PathBehaviourCreator
 	{
 	private:
 
@@ -19,13 +19,13 @@ namespace JAF {
 
 
 		BurstCreator()
-				: Creator(5)
+				: PathBehaviourCreator(5)
 		{
 			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,500,0}}));
 			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,300,0}}));
 
-			m_sizes.push(createPath(1.0f, 4, (float[]){0.1,1,1,0} ));
-			m_sizes.push(createPath(1.0f, 4, (float[]){1,2,0.1,0}));
+			m_sizes.push(createPath(1.0f, 4, (float[]){1,1,1,0} ));
+			m_sizes.push(createPath(1.0f, 4, (float[]){1,5,1,0}));
 
 			m_colors.push(createPath(1.0f, 3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
 			m_colors.push(createPath(1.0f, 3, (Color[]){{1,0,0,1}, {1,0,0,1}, {1,0,0,0}}));
@@ -35,11 +35,11 @@ namespace JAF {
 
 		virtual behaviour_ptr create() override
 		{
-			behaviour_ptr p = getBehaviour();
+			behaviour_ptr p = get();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_positions);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_sizes);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_colors);
+			fill(p.get(), JAWE::Random::randi(1,2), &m_positions);
+			fill(p.get(), JAWE::Random::randi(1,2), &m_sizes);
+			fill(p.get(), JAWE::Random::randi(1,2), &m_colors);
 
 			p->normalize();
 

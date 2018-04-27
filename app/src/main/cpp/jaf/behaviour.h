@@ -12,6 +12,8 @@ namespace JAF {
     typedef std::shared_ptr<JAWE::Path<float>> float_path_ptr;
     typedef std::shared_ptr<JAWE::Path<Math::Color>> color_path_ptr;
 
+	class Particle;
+
     class BehaviourInfluenced
     {
     public:
@@ -21,11 +23,27 @@ namespace JAF {
         virtual void setColor(const Math::Color& color) = 0;
     };
 
-    class Behaviour
+	class Behaviour
+	{
+	protected:
+		float m_timeLimit { 0 };
+
+	public:
+
+		virtual void init(float time)
+		{
+			m_timeLimit = time;
+		}
+
+		virtual void fire(Particle* pParticle) = 0;
+
+		virtual bool update(BehaviourInfluenced* pItem, float dt) = 0;
+
+	};
+
+    class PathBehaviour : public Behaviour
     {
     private:
-
-        float m_timeLimit { 0 };
 
         std::vector<std::pair<float, vec3_path_ptr>> m_positions;
         std::vector<std::pair<float, float_path_ptr>> m_sizes;
@@ -52,11 +70,6 @@ namespace JAF {
 
     public:
 
-        void init(float time)
-        {
-            m_timeLimit = time;
-        }
-
 		void normalize()
 		{
 			normalize(m_positions);
@@ -78,7 +91,8 @@ namespace JAF {
             m_colors.push_back(std::make_pair(weight, pColor));
         }
 
-        bool update(BehaviourInfluenced* pItem, float time);
+		virtual void fire(Particle* pParticle) override {}
+        virtual bool update(BehaviourInfluenced* pItem, float time) override;
     };
 
 };

@@ -2,7 +2,7 @@
 
 namespace JAF {
 
-    bool Behaviour::update(BehaviourInfluenced* pItem, float time)
+    bool PathBehaviour::update(BehaviourInfluenced* pItem, float time)
     {
         if (time >= m_timeLimit)
 		{

@@ -50,7 +50,6 @@ namespace JAF {
 
 			m_nrParticlesPerBurst.push(50);
 			m_nrParticlesPerBurst.push(100);
-			m_nrParticlesPerBurst.push(150);
 		}
 
 		void create(Sequence& out);

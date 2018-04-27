@@ -17,14 +17,18 @@ namespace JAWE {
 
 		static void seed(unsigned int seed) { s_generator = std::mt19937(seed); }
 
-		static float rand(float min, float max)
+		static float randf()
 		{
-			std::lock_guard<std::mutex> _(s_mutex);
-			std::uniform_real_distribution<float> dist(min, max);
+			static std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 			return dist(s_generator);
 		}
 
-		static int rand(int min, int max)
+		static float randf(float min, float max)
+		{
+			return min + (randf() * (max - min));
+		}
+
+		static int randi(int min, int max)
 		{
 			std::lock_guard<std::mutex> _(s_mutex);
 			std::uniform_int_distribution<int> dist(min, max);

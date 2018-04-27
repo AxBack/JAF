@@ -30,6 +30,7 @@ namespace JAF {
 
 		struct Trail
 		{
+			float interval;
 			behaviour_ptr pBehaviour;
 		};
 
@@ -66,8 +67,9 @@ namespace JAF {
 			m_burst.pBehaviour = pBehaviour;
 		}
 
-		void addTrail(behaviour_ptr pBehaviour)
+		void addTrail(float interval, behaviour_ptr pBehaviour)
 		{
+			m_trail.interval = interval;
 			m_trail.pBehaviour = pBehaviour;
 		}
 

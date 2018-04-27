@@ -7,7 +7,7 @@
 
 namespace JAF {
 
-	class RocketCreator : public Creator
+	class RocketCreator : public PathBehaviourCreator
 	{
 	private:
 
@@ -19,7 +19,7 @@ namespace JAF {
 
 	public:
 		RocketCreator()
-		: Creator(2)
+		: PathBehaviourCreator(2)
 		{
 			m_positions.push(createPath(2.0f, 3, (Math::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
 			m_positions.push(createPath(2.0f, 3, (Math::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));
@@ -33,9 +33,9 @@ namespace JAF {
 
 		virtual behaviour_ptr create() override
 		{
-			behaviour_ptr p = getBehaviour();
+			behaviour_ptr p = get();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::rand(1,3), &m_positions);
+			fill(p.get(), JAWE::Random::randi(1,3), &m_positions);
 
 			p->normalize();
 

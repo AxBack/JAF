@@ -24,6 +24,8 @@ namespace JAF {
 		{
 			default:
 			case SAME:
+				if(interval == 0.0f)
+					nrRockets = 1;
 				for(int i=0; i<nrRockets; ++i)
 					out.addRocket(interval, pBehaviour, pTransform, {1,1,1});
 				break;
@@ -58,7 +60,7 @@ namespace JAF {
 
 	void SequenceCreator::createTrails(Sequence& out)
 	{
-		out.addTrail(m_trailCreator.create());
+		out.addTrail(0.025, m_trailCreator.create());
 	}
 
 	void SequenceCreator::create(Sequence& out)

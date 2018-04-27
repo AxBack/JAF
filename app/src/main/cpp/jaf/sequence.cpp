@@ -20,7 +20,7 @@ namespace JAF {
 		p->setType(type);
 		p->setOffset(pOffset);
 		p->setFactors(factors);
-		p->setInterval(0.01f);
+		p->setInterval(m_trail.interval);
 		p->fire(this, pBehaviour);
 	}
 
@@ -37,8 +37,8 @@ namespace JAF {
 			matrix_ptr p = pParticle->calculateTransform();
 			for(UINT i=0; i < m_burst.nrParticles; ++i)
 			{
-				float x = JAWE::Random::rand(-180.0f, 180.0f);
-				float z = JAWE::Random::rand(-180.0f, 180.0f);
+				float x = JAWE::Random::randf(-180.0f, 180.0f);
+				float z = JAWE::Random::randf(-180.0f, 180.0f);
 
 				matrix_ptr offset(new Math::Matrix);
 				Math::Matrix& t = *offset.get();
@@ -53,7 +53,7 @@ namespace JAF {
 	void Sequence::onInterval(const Particle* pParticle)
 	{
 		matrix_ptr p = pParticle->calculateTransform();
-		Math::Vector3 factors {JAWE::Random::rand(-1.0f, 1.0f), 1, JAWE::Random::rand(-1.0f, 1.0f)};
+		Math::Vector3 factors {JAWE::Random::randf(-1.0f, 1.0f), 1, JAWE::Random::randf(-1.0f, 1.0f)};
 		fire(m_trail.pBehaviour, p, factors);
 	}
 
@@ -62,7 +62,6 @@ namespace JAF {
 		if(m_rockets.size() > 0)
 		{
 			m_rockets.front().offsetTime -= dt;
-
 			if(m_rockets.front().offsetTime <= 0)
 			{
 				Rocket& r = m_rockets.front();

@@ -6,7 +6,7 @@
 
 namespace JAF {
 
-	class TrailCreator : public Creator
+	class TrailCreator : public PathBehaviourCreator
 	{
 	private:
 
@@ -16,16 +16,13 @@ namespace JAF {
 
 	public:
 
-
-
 		TrailCreator()
-				: Creator(10)
+				: PathBehaviourCreator(10)
 		{
 			float l = 200.0f;
 			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {0,-l,0}}));
 			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {-l,-l*0.2f,-l}}));
 			m_positions.push(createPath(1.0f, 2, (Vector3[]){{0,0,0}, {l,-l*0.2f,l}}));
-
 
 			m_sizes.push(createPath(1.0f, 4, (float[]){0.1,1,1,0}));
 			m_sizes.push(createPath(1.0f, 4, (float[]){1,2,0.1,0}));
@@ -38,11 +35,11 @@ namespace JAF {
 
 		virtual behaviour_ptr create() override
 		{
-			behaviour_ptr p = getBehaviour();
+			behaviour_ptr p = get();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::rand(2,3), &m_positions);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_sizes);
-			fill(p.get(), JAWE::Random::rand(1,2), &m_colors);
+			fill(p.get(), JAWE::Random::randi(2,3), &m_positions);
+			fill(p.get(), JAWE::Random::randi(1,2), &m_sizes);
+			fill(p.get(), JAWE::Random::randi(1,2), &m_colors);
 
 			p->normalize();
 
