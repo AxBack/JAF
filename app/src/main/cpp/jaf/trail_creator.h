@@ -11,8 +11,6 @@ namespace JAF {
 	{
 	private:
 
-		typedef std::shared_ptr<TrailBehaviour> behaviour_ptr;
-
 		BalancedCollection<vec3_path_ptr> m_positions;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
@@ -22,13 +20,12 @@ namespace JAF {
 		TrailCreator()
 				: PathBehaviourCreator(10)
 		{
-			float l = 200.0f;
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,-l,0}}));
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {-l,-l*0.2f,-l}}));
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {l,-l*0.2f,l}}));
+			float l = 100.0f;
+			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {-l,0,-l}}));
+			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {l,0,l}}));
 
-			m_sizes.push(createPath(4, (float[]){0.1,1,1,0}));
-			m_sizes.push(createPath(4, (float[]){1,2,0.1,0}));
+			m_sizes.push(createPath(4, (float[]){1,3,1,0}));
+			m_sizes.push(createPath(4, (float[]){1,2,2,0}));
 
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,0,0,1}, {1,0,0,1}, {1,0,0,0}}));
@@ -36,13 +33,13 @@ namespace JAF {
 			m_colors.push(createPath(4, (Color[]){{0,0,1,1}, {0,0,1,1}, {0,0,1,0}}));
 		}
 
-		virtual behaviour_ptr create() override
+		virtual TrailBehaviour* create() override
 		{
-			behaviour_ptr p = get();
-			p->init(1.0f);
-			fill(p.get(), JAWE::Random::randi(2,3), &m_positions);
-			fill(p.get(), JAWE::Random::randi(1,2), &m_sizes);
-			fill(p.get(), JAWE::Random::randi(1,2), &m_colors);
+			TrailBehaviour* p = getBehaviour();
+			p->init(0.2f);
+			fill(p, JAWE::Random::randi(2,3), &m_positions);
+			fill(p, JAWE::Random::randi(1,2), &m_sizes);
+			fill(p, JAWE::Random::randi(1,2), &m_colors);
 
 			p->normalize();
 

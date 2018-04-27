@@ -11,10 +11,10 @@ namespace JAF {
 
     Particle* Updater::fireParticle()
     {
-        particle_ptr p = m_particleBank.pop();
+        Particle* p = m_particleBank.pop();
 		p->clear();
         m_particlesToAdd.push_back(p);
-        return p.get();
+        return p;
     }
 
     void Updater::advance(float dt)

@@ -8,32 +8,40 @@
 namespace JAF {
 
 	template <class T>
-	class Creator
+	class Creator : public BehaviourListener
 	{
 	protected:
 
-		std::shared_ptr<T> get()
+		T* getBehaviour()
 		{
-			std::shared_ptr<T> p = m_bank.pop();
-			m_bank.push(p);
-			return p;
+			T* item = m_bank.pop();
+			item->setListener(this);
+			return item;
+		}
+
+		void returnBehaviour(T* pItem)
+		{
+			m_bank.push(pItem);
 		}
 
 	private:
 
-		JAWE::Bank<T> m_bank;
+		JAWE::Bank<T*> m_bank;
 
 	protected:
 
 		Creator(UINT size)
-			: m_bank([](){return new T();})
+			: m_bank([](){return new T();}, [](T* p) { delete p; })
 		{
 			m_bank.resize(size);
 		}
 
 	public:
 
-		virtual std::shared_ptr<T> create() = 0;
+		// TODO: Ill probably have to refactor this at some point. Not really wise to have a strict dependence on Behaviour*.
+		virtual void onNotActive(Behaviour* pItem) override { returnBehaviour(dynamic_cast<T*>(pItem)); }
+
+		virtual T* create() = 0;
 
 	};
 

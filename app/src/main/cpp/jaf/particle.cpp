@@ -2,7 +2,7 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, behaviour_ptr pBehaviour)
+    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour)
     {
         m_time = 0;
 		m_pListener = pListener;
@@ -15,6 +15,7 @@ namespace JAF {
         m_time += dt;
         if(!m_pBehaviour->update(this, m_time))
         {
+			m_pBehaviour->end(this);
             if(m_pListener)
 				m_pListener->onDead(this);
 

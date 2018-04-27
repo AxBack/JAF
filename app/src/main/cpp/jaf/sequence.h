@@ -17,7 +17,7 @@ namespace JAF {
 		struct Rocket
 		{
 			float offsetTime;
-			behaviour_ptr pBehaviour;
+			Behaviour* pBehaviour;
 			matrix_ptr pTransform;
 			Math::Vector3 factors;
 		};
@@ -25,13 +25,13 @@ namespace JAF {
 		struct Burst
 		{
 			UINT nrParticles;
-			behaviour_ptr pBehaviour;
+			Behaviour* pBehaviour;
 		};
 
 		struct Trail
 		{
 			float interval;
-			behaviour_ptr pBehaviour;
+			Behaviour* pBehaviour;
 		};
 
 		Updater* m_pUpdater;
@@ -45,8 +45,8 @@ namespace JAF {
 
 	protected:
 
-		void fire(behaviour_ptr pBehaviour, matrix_ptr pOffset, const Math::Vector3& factor = {1,1,1});
-		void fireRelevant(behaviour_ptr pBehaviour, matrix_ptr pOffset, int type = -1, const Math::Vector3& factor = {1,1,1});
+		void fire(Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factor = {1,1,1});
+		void fireRelevant(Behaviour* pBehaviour, matrix_ptr pOffset, int type = -1, const Math::Vector3& factor = {1,1,1});
 
 	public:
 
@@ -56,18 +56,18 @@ namespace JAF {
 
 		bool active() const { return m_nrRelevantParticles > 0 || m_rockets.size() > 0; }
 
-		void addRocket(float offsetTime, behaviour_ptr pBehaviour, matrix_ptr pTransform, const Math::Vector3& factors)
+		void addRocket(float offsetTime, Behaviour* pBehaviour, matrix_ptr pTransform, const Math::Vector3& factors)
 		{
 			m_rockets.push({offsetTime, pBehaviour, pTransform, factors});
 		}
 
-		void addBurst(UINT nrParticles, behaviour_ptr pBehaviour)
+		void addBurst(UINT nrParticles, Behaviour* pBehaviour)
 		{
 			m_burst.nrParticles = nrParticles;
 			m_burst.pBehaviour = pBehaviour;
 		}
 
-		void addTrail(float interval, behaviour_ptr pBehaviour)
+		void addTrail(float interval, Behaviour* pBehaviour)
 		{
 			m_trail.interval = interval;
 			m_trail.pBehaviour = pBehaviour;

@@ -21,11 +21,10 @@ namespace JAF {
     private:
 
         typedef std::shared_ptr<Math::Matrix> matrix_ptr;
-		typedef std::shared_ptr<Behaviour> behaviour_ptr;
 
 		ParticleListener* m_pListener { nullptr };
 
-		bool m_firstUpdate;
+		bool m_firstUpdate { true };
         int m_type { 0 };
 
         matrix_ptr m_pOffset;
@@ -38,7 +37,7 @@ namespace JAF {
         float m_time { 0 };
 		float m_interval { 0 };
 		float m_counter { 0 };
-		behaviour_ptr m_pBehaviour { nullptr };
+		Behaviour* m_pBehaviour { nullptr };
 
     public:
 
@@ -53,7 +52,7 @@ namespace JAF {
 			m_pOffset = nullptr;
 		}
 
-        void fire(ParticleListener* pListener, behaviour_ptr pBehaviour);
+        void fire(ParticleListener* pListener, Behaviour* pBehaviour);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 

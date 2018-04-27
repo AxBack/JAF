@@ -11,8 +11,6 @@ namespace JAF {
 	{
 	private:
 
-		typedef std::shared_ptr<BurstBehaviour> behaviour_ptr;
-
 		BalancedCollection<vec3_path_ptr> m_positions;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
@@ -36,13 +34,13 @@ namespace JAF {
 			m_colors.push(createPath(4, (Color[]){{0,0,1,1}, {0,0,1,1}, {0,0,1,0}}));
 		}
 
-		virtual behaviour_ptr create() override
+		virtual BurstBehaviour* create() override
 		{
-			behaviour_ptr p = get();
+			BurstBehaviour* p = getBehaviour();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::randi(1,2), &m_positions);
-			fill(p.get(), JAWE::Random::randi(1,2), &m_sizes);
-			fill(p.get(), JAWE::Random::randi(1,2), &m_colors);
+			fill(p, JAWE::Random::randi(1,2), &m_positions);
+			fill(p, JAWE::Random::randi(1,2), &m_sizes);
+			fill(p, JAWE::Random::randi(1,2), &m_colors);
 
 			p->normalize();
 

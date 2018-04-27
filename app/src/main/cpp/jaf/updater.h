@@ -17,15 +17,14 @@ namespace JAF {
 
         typedef std::vector<ParticleInstance> instance_vec;
         typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
-        typedef std::shared_ptr<Particle> particle_ptr;
-        typedef std::vector<particle_ptr> particle_vec;
+        typedef std::vector<Particle*> particle_vec;
         typedef std::shared_ptr<Math::Matrix> matrix_ptr;
 
 
         std::mt19937 m_generator { 840331 };
 		Director m_director;
 
-        JAWE::Bank<Particle> m_particleBank { [](){return new Particle(); } };
+        JAWE::Bank<Particle*> m_particleBank { [](){return new Particle();}, [](Particle* p) { delete p; } };
 
         std::mutex m_particleMutex;
         instance_vec m_particlesInstances;

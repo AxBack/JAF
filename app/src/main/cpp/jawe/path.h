@@ -74,6 +74,37 @@ namespace JAWE {
         }
     };
 
+	template <typename T>
+	class Bilinear : public Traversable<T>
+	{
+	private:
+
+		T m_start;
+		T m_middle;
+		T m_end;
+
+	public:
+
+		Bilinear(float length, T start, T middle, T end)
+				: Traversable<T>(length)
+				, m_start(start)
+			    , m_middle(middle)
+				, m_end(end)
+		{
+		}
+
+		virtual T traverse(float dt) override
+		{
+			if(dt <= 0.0f)
+				return m_start;
+			if(dt >= 1.0f)
+				return m_end;
+
+			float inv = 1.0f - dt;
+			return (((m_start * inv) + (m_middle * dt)) * inv) + (((m_middle * inv) + (m_end * dt)) * dt);
+		}
+	};
+
     template <typename T>
     class Bezier : public Traversable<T>
     {
@@ -149,6 +180,9 @@ namespace JAWE {
                 case 2:
                     p = traversable_ptr(new Linear<T>(length, pControlPoints[0], pControlPoints[1]));
                     break;
+				case 3:
+					p = traversable_ptr(new Bilinear<T>(length, pControlPoints[0], pControlPoints[1], pControlPoints[2]));
+					break;
                 default:
                     p = traversable_ptr(new Bezier<T>(length, nrControlPoints, pControlPoints));
                     break;

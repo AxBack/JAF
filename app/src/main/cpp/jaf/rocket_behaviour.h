@@ -17,9 +17,9 @@ namespace JAF {
 			m_positions.push_back(std::make_pair(weight, pPosition));
 		}
 
-		virtual void fire(Particle* pParticle) override
+		virtual void fire(BehaviourInfluenced* pItem) override
 		{
-
+			PathBehaviour::fire(pItem);
 		}
 
 		virtual void normalize() override

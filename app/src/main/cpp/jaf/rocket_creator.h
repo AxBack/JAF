@@ -12,7 +12,6 @@ namespace JAF {
 	{
 	private:
 
-		typedef std::shared_ptr<RocketBehaviour> behaviour_ptr;
 		typedef Math::Vector3 Vector3;
 		typedef JAWE::Path<Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
@@ -33,11 +32,11 @@ namespace JAF {
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-600,1000,0}, {0,1500,0}}));
 		}
 
-		virtual behaviour_ptr create() override
+		virtual RocketBehaviour* create() override
 		{
-			behaviour_ptr p = get();
+			RocketBehaviour* p = getBehaviour();
 			p->init(2.0f);
-			fill(p.get(), JAWE::Random::randi(1,3), &m_positions);
+			fill(p, JAWE::Random::randi(1,3), &m_positions);
 
 			p->normalize();
 

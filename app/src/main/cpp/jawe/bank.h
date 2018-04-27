@@ -10,18 +10,30 @@ namespace JAWE {
     {
     private:
 
-        std::queue<std::shared_ptr<T>> m_queue;
+        std::queue<T> m_queue;
 
-        std::function<T*()> newInstance;
+        std::function<T()> m_allocator;
+		std::function<void(T)> m_deleter;
 
-		std::shared_ptr<T> createNew() { return std::shared_ptr<T>(newInstance()); }
+		T createNew() { return m_allocator(); }
 
     public:
 
-        Bank(std::function<T*()>&& newInstance)
-                : newInstance(newInstance)
+        Bank(std::function<T()>&& allocator, std::function<void(T)>&& deleter = [](T){})
+                : m_allocator(allocator)
+				, m_deleter(deleter)
         {
         }
+
+		virtual ~Bank()
+		{
+			while(m_queue.size() > 0)
+			{
+				T p = m_queue.front();
+				m_queue.pop();
+				m_deleter(p);
+			}
+		}
 
 		void resize(UINT size)
 		{
@@ -32,7 +44,7 @@ namespace JAWE {
 				m_queue.push(createNew());
 		}
 
-        std::shared_ptr<T> pop()
+        T pop()
         {
             if(m_queue.size() == 0)
                 return createNew();
@@ -42,7 +54,7 @@ namespace JAWE {
             return t;
         }
 
-        void push(std::shared_ptr<T> p)
+        void push(T p)
         {
             m_queue.push(p);
         }

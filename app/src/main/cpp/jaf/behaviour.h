@@ -12,8 +12,6 @@ namespace JAF {
     typedef std::shared_ptr<JAWE::Path<float>> float_path_ptr;
     typedef std::shared_ptr<JAWE::Path<Math::Color>> color_path_ptr;
 
-	class Particle;
-
     class BehaviourInfluenced
     {
     public:
@@ -23,20 +21,42 @@ namespace JAF {
         virtual void setColor(const Math::Color& color) = 0;
     };
 
+	class Behaviour;
+
+	class BehaviourListener
+	{
+	public:
+
+		virtual void onNotActive(Behaviour* pBehaviour) = 0;
+	};
+
 	class Behaviour
 	{
 	protected:
+
+		BehaviourListener* m_pListener { nullptr };
+
+		int m_nrActive { 0 };
 		float m_timeLimit { 0 };
 
 	public:
+
+		void setListener(BehaviourListener* pListener) { m_pListener = pListener; }
 
 		virtual void init(float time)
 		{
 			m_timeLimit = time;
 		}
 
-		virtual void fire(Particle* pParticle) = 0;
+		bool active() const { return m_nrActive > 0; }
 
+		virtual void fire(BehaviourInfluenced* pItem) {++m_nrActive; }
+		virtual void end(BehaviourInfluenced* pItem)
+		{
+			--m_nrActive;
+			if(m_pListener && m_nrActive <= 0)
+				m_pListener->onNotActive(this);
+		}
 		virtual bool update(BehaviourInfluenced* pItem, float dt) = 0;
 
 	};

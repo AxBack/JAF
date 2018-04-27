@@ -36,9 +36,9 @@ namespace JAF {
 			PathBehaviour::normalize(m_colors);
 		}
 
-		virtual void fire(Particle* pParticle) override
+		virtual void fire(BehaviourInfluenced* pItem) override
 		{
-
+			PathBehaviour::fire(pItem);
 		}
 
 		virtual bool update(BehaviourInfluenced* pItem, float time) override
