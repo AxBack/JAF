@@ -8,6 +8,15 @@ namespace JAF {
 	{
 	private:
 
+		struct TransformData : public BehaviourInfluenced::Data
+		{
+			Math::Vector3 offset {0,0,0};
+			Math::Vector3 factors {1,1,1};
+		};
+
+		typedef JAWE::Bank<TransformData*> data_bank;
+		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
+
 		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 
 	public:
@@ -17,9 +26,25 @@ namespace JAF {
 			m_positions.push_back(std::make_pair(weight, pPosition));
 		}
 
-		virtual void fire(BehaviourInfluenced* pItem) override
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
-			PathBehaviour::fire(pItem);
+			PathBehaviour::start(pItem, offset);
+
+			TransformData* pData = m_data.pop();
+
+			pData->offset = offset.transform({0,0,0}, 1);
+			pData->factors = {1,1,1};
+
+			pItem->setData(pData);
+		}
+
+		virtual void end(BehaviourInfluenced* pItem) override
+		{
+			PathBehaviour::end(pItem);
+
+			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+			if(pData != nullptr)
+				m_data.push(pData);
 		}
 
 		virtual void normalize() override
@@ -34,7 +59,10 @@ namespace JAF {
 
 			float delta = time / m_timeLimit;
 
-			pItem->setPosition(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta));
+			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+			Math::Vector3 p = pData->offset + (PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta) * pData->factors);
+
+			pItem->setPosition(p);
 			pItem->setRadius(0);
 
 			return true;

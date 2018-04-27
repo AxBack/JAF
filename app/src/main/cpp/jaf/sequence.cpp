@@ -8,9 +8,7 @@ namespace JAF {
 	void Sequence::fire(Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factors)
 	{
 		Particle* p = m_pUpdater->fireParticle();
-		p->setOffset(pOffset);
-		p->setFactors(factors);
-		p->fire(nullptr, pBehaviour);
+		p->fire(nullptr, pBehaviour, pOffset);
 	}
 
 	void Sequence::fireRelevant(Behaviour* pBehaviour, matrix_ptr pOffset, int type, const Math::Vector3& factors)
@@ -18,10 +16,8 @@ namespace JAF {
 		++m_nrRelevantParticles;
 		Particle* p = m_pUpdater->fireParticle();
 		p->setType(type);
-		p->setOffset(pOffset);
-		p->setFactors(factors);
 		p->setInterval(m_trail.interval);
-		p->fire(this, pBehaviour);
+		p->fire(this, pBehaviour, pOffset);
 	}
 
 	void Sequence::start()

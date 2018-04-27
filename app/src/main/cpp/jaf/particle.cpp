@@ -2,12 +2,12 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour)
+    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour, std::shared_ptr<Math::Matrix> pOffset)
     {
         m_time = 0;
 		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
-		m_pBehaviour->fire(this);
+		m_pBehaviour->start(this, *pOffset.get());
     }
 
     bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
@@ -18,7 +18,6 @@ namespace JAF {
 			m_pBehaviour->end(this);
             if(m_pListener)
 				m_pListener->onDead(this);
-
             return false;
         }
 
@@ -31,33 +30,24 @@ namespace JAF {
 			m_pListener->onInterval(this);
 		}
 
-		m_firstUpdate = false;
         return true;
     }
 
     void Particle::setPosition(const Math::Vector3& position)
     {
-		if(!m_firstUpdate && position == m_position)
-			return;
-
 		m_lastPosition = m_position;
-		m_position = position * m_factors;
-        Math::Vector3 p = m_position;
-        if (m_pOffset)
-            p = m_pOffset->transform(p);
+		m_position = position;
 
-        m_instance.x = p.x();
-        m_instance.y = p.y();
-        m_instance.z = p.z();
+        m_instance.x = m_position.x();
+        m_instance.y = m_position.y();
+        m_instance.z = m_position.z();
     }
 
-    auto Particle::calculateTransform() const->matrix_ptr
+    auto Particle::calculateTransform() const->std::shared_ptr<Math::Matrix>
     {
         Math::Vector3 up = {0,1,0};
-        if (m_pOffset)
-            up = m_pOffset->transform(up, 0.0f);
 
-		matrix_ptr p(new Math::Matrix);
+		std::shared_ptr<Math::Matrix> p(new Math::Matrix);
 		Math::Matrix& t = *p.get();
 		Math::Matrix::identity(t);
 		Math::Matrix::translate(t, m_position);
@@ -69,9 +59,6 @@ namespace JAF {
 			Math::Matrix::setRotate(r, rot);
 			t = t * r;
 		}
-
-        if(m_pOffset)
-            t = Math::Matrix::multiply(*m_pOffset.get(), t);
 
         return p;
     }

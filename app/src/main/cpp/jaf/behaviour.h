@@ -5,6 +5,7 @@
 #include "../jawe/color.h"
 #include "../jawe/path.h"
 #include "../jawe/random.h"
+#include "../jawe/matrix.h"
 
 namespace JAF {
 
@@ -14,7 +15,20 @@ namespace JAF {
 
     class BehaviourInfluenced
     {
+	public:
+
+		struct Data
+		{
+		};
+
+	private:
+
+		Data* m_pData;
+
     public:
+
+		void setData(Data* pData) { m_pData = pData; }
+		Data* getData() { return m_pData; }
 
         virtual void setPosition(const Math::Vector3& position) = 0;
         virtual void setRadius(const float size) = 0;
@@ -50,7 +64,7 @@ namespace JAF {
 
 		bool active() const { return m_nrActive > 0; }
 
-		virtual void fire(BehaviourInfluenced* pItem) {++m_nrActive; }
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) {++m_nrActive; }
 		virtual void end(BehaviourInfluenced* pItem)
 		{
 			--m_nrActive;

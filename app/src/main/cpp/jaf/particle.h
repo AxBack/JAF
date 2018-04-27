@@ -20,15 +20,10 @@ namespace JAF {
     {
     private:
 
-        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
-
 		ParticleListener* m_pListener { nullptr };
 
-		bool m_firstUpdate { true };
         int m_type { 0 };
 
-        matrix_ptr m_pOffset;
-		Math::Vector3 m_factors{ 1,1,1 };
 		Math::Vector3 m_position { 0,0,0 };
 		Math::Vector3 m_lastPosition { 0,0,0 };
 
@@ -43,24 +38,19 @@ namespace JAF {
 
 		void clear()
 		{
-			m_firstUpdate = true;
             m_type = 0;
 			m_interval = 0;
 			m_pListener = nullptr;
 			m_pBehaviour = nullptr;
-			m_position = m_lastPosition = m_factors = {0,0,0};
-			m_pOffset = nullptr;
+			m_position = m_lastPosition = {0,0,0};
 		}
 
-        void fire(ParticleListener* pListener, Behaviour* pBehaviour);
+        void fire(ParticleListener* pListener, Behaviour* pBehaviour, std::shared_ptr<Math::Matrix> pOffset);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
-        matrix_ptr calculateTransform() const;
+        std::shared_ptr<Math::Matrix> calculateTransform() const;
 		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
-
-		void setOffset(matrix_ptr pOffset) { m_pOffset = pOffset; }
-		void setFactors(const Math::Vector3& factors) { m_factors = factors; }
 
 		void setInterval(float interval) { m_interval = m_counter = interval; }
 

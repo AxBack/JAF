@@ -12,7 +12,6 @@ namespace JAF {
 	private:
 
         typedef std::shared_ptr<Math::Matrix> matrix_ptr;
-		typedef std::shared_ptr<Behaviour> behaviour_ptr;
 
 		struct Rocket
 		{

@@ -8,6 +8,14 @@ namespace JAF {
 	{
 	private:
 
+		struct TransformData : public BehaviourInfluenced::Data
+		{
+			Math::Matrix offset;
+		};
+
+		typedef JAWE::Bank<TransformData*> data_bank;
+		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
+
 		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
@@ -36,9 +44,21 @@ namespace JAF {
 			PathBehaviour::normalize(m_colors);
 		}
 
-		virtual void fire(BehaviourInfluenced* pItem) override
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
-			PathBehaviour::fire(pItem);
+			PathBehaviour::start(pItem, offset);
+
+			TransformData* pData = m_data.pop();
+			pData->offset = offset;
+			pItem->setData(pData);
+		}
+
+		virtual void end(BehaviourInfluenced* pItem) override
+		{
+			PathBehaviour::end(pItem);
+
+			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+			m_data.push(pData);
 		}
 
 		virtual bool update(BehaviourInfluenced* pItem, float time) override
@@ -48,7 +68,10 @@ namespace JAF {
 
 			float delta = time / m_timeLimit;
 
-			pItem->setPosition(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta));
+			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+			Math::Vector3 p = pData->offset.transform(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta), 1);
+
+			pItem->setPosition(p);
 			pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
 			pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
 
