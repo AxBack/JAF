@@ -54,14 +54,14 @@ namespace JAF {
 			int i = 0;
 			while(i < nr)
 			{
-				pBehaviour->add(JAWE::Random::rand(1.0f, 2.0f), pPaths->front().get());
+				pBehaviour->add(JAWE::Random::rand(1.0f, 2.0f), pPaths->front());
 				++i;
 			}
 		}
 
 	public:
 
-		virtual const Behaviour* create() = 0;
+		virtual behaviour_ptr create() = 0;
 
 	};
 };

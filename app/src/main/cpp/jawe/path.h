@@ -24,7 +24,7 @@ namespace JAWE {
 
         float getLength() const { return m_length; }
 
-        virtual T traverse(float dt) const = 0;
+        virtual T traverse(float dt) = 0;
     };
 
     template <typename T>
@@ -42,7 +42,7 @@ namespace JAWE {
         {
         }
 
-        virtual T traverse(float dt) const override { return m_value; }
+        virtual T traverse(float dt) override { return m_value; }
     };
 
     template <typename T>
@@ -62,7 +62,7 @@ namespace JAWE {
         {
         }
 
-        virtual T traverse(float dt) const override
+        virtual T traverse(float dt) override
         {
             if(dt <= 0.0f)
                 return m_start;
@@ -79,6 +79,7 @@ namespace JAWE {
     private:
 
         std::vector<T> m_points;
+		std::vector<T> m_backup;
 
     public:
 
@@ -86,26 +87,27 @@ namespace JAWE {
                 :Traversable<T>(length)
         {
             m_points = std::vector<T>(pPoints, pPoints+nrPoints);
+			m_backup = std::vector<T>(m_points);
         }
 
-        virtual T traverse(float dt) const override
+        virtual T traverse(float dt) override
         {
             if(dt <= 0.0f)
                 return m_points[0];
             if(dt >= 1.0f)
                 return m_points[m_points.size()-1];
 
-            std::vector<T> points = m_points;
-            UINT i = static_cast<UINT>(points.size())-1;
+			memcpy(&m_backup[0], &m_points[0], sizeof(T) * m_points.size());
+            UINT i = static_cast<UINT>(m_points.size())-1;
             while(i > 0 )
             {
                 for(UINT j=0; j<i; ++j)
-                    points[j] += (points[j+1] - points[j]) * dt;
+					m_backup[j] += (m_backup[j+1] - m_backup[j]) * dt;
 
                 --i;
             }
 
-            return points[0];
+            return m_backup[0];
         }
     };
 
@@ -155,7 +157,7 @@ namespace JAWE {
             m_traversables.push_back(p);
         }
 
-        T traverse(float time) const
+        T traverse(float time)
         {
             if(m_traversables.size() <= 0)
                 return T();

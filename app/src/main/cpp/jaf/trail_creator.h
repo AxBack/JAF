@@ -36,7 +36,7 @@ namespace JAF {
 			m_colors.push(createPath(1.0f, 4, (Color[]){{0,0,1,1}, {0,0,1,1}, {0,0,1,0}}));
 		}
 
-		virtual const Behaviour* create() override
+		virtual behaviour_ptr create() override
 		{
 			behaviour_ptr p = getBehaviour();
 			p->init(2.0f);
@@ -46,7 +46,7 @@ namespace JAF {
 
 			p->normalize();
 
-			return p.get();
+			return p;
 		}
 
 	};

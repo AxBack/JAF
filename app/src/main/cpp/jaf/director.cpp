@@ -22,7 +22,6 @@ namespace JAF {
 
 		if(!m_pSequence->active())
 			m_pSequence = nullptr;
-
 	}
 }
 

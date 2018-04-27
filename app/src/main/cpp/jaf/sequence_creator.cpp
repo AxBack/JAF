@@ -4,7 +4,7 @@ namespace JAF {
 
 	void SequenceCreator::createRockets(Sequence& out)
 	{
-		const Behaviour* pBehaviour = m_rocketCreator.create();
+		std::shared_ptr<Behaviour> pBehaviour = m_rocketCreator.create();
 
 		std::shared_ptr<Math::Matrix> pTransform(new Math::Matrix);
 		pTransform->setIdentity();

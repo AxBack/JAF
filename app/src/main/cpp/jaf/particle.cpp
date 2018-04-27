@@ -2,7 +2,7 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, const Behaviour* pBehaviour)
+    void Particle::fire(ParticleListener* pListener, behaviour_ptr pBehaviour)
     {
         m_time = 0;
 		m_pListener = pListener;

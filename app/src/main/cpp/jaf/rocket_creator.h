@@ -31,7 +31,7 @@ namespace JAF {
 			m_positions.push(createPath(2.0f, 3, (Math::Vector3[]){{0,0,0}, {-600,1000,0}, {0,1500,0}}));
 		}
 
-		virtual const Behaviour* create() override
+		virtual behaviour_ptr create() override
 		{
 			behaviour_ptr p = getBehaviour();
 			p->init(2.0f);
@@ -39,7 +39,7 @@ namespace JAF {
 
 			p->normalize();
 
-			return p.get();
+			return p;
 		}
 
 	};

@@ -5,7 +5,7 @@
 
 namespace JAF {
 
-	void Sequence::fire(const Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factors)
+	void Sequence::fire(behaviour_ptr pBehaviour, matrix_ptr pOffset, const Math::Vector3& factors)
 	{
 		Particle* p = m_pUpdater->fireParticle();
 		p->setOffset(pOffset);
@@ -13,7 +13,7 @@ namespace JAF {
 		p->fire(nullptr, pBehaviour);
 	}
 
-	void Sequence::fireRelevant(const Behaviour* pBehaviour, matrix_ptr pOffset, int type, const Math::Vector3& factors)
+	void Sequence::fireRelevant(behaviour_ptr pBehaviour, matrix_ptr pOffset, int type, const Math::Vector3& factors)
 	{
 		++m_nrRelevantParticles;
 		Particle* p = m_pUpdater->fireParticle();

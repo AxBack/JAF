@@ -8,9 +8,9 @@
 
 namespace JAF {
 
-    typedef JAWE::Path<Math::Vector3> vec3_path;
-    typedef JAWE::Path<float> float_path;
-    typedef JAWE::Path<Math::Color> color_path;
+    typedef std::shared_ptr<JAWE::Path<Math::Vector3>> vec3_path_ptr;
+    typedef std::shared_ptr<JAWE::Path<float>> float_path_ptr;
+    typedef std::shared_ptr<JAWE::Path<Math::Color>> color_path_ptr;
 
     class BehaviourInfluenced
     {
@@ -27,12 +27,12 @@ namespace JAF {
 
         float m_timeLimit { 0 };
 
-        std::vector<std::pair<float, const vec3_path*>> m_positions;
-        std::vector<std::pair<float, const float_path*>> m_sizes;
-        std::vector<std::pair<float, const color_path*>> m_colors;
+        std::vector<std::pair<float, vec3_path_ptr>> m_positions;
+        std::vector<std::pair<float, float_path_ptr>> m_sizes;
+        std::vector<std::pair<float, color_path_ptr>> m_colors;
 
         template <typename T>
-        T update(T v, const std::vector<std::pair<float, const JAWE::Path<T>*>>& paths, float time) const
+        T update(T v, const std::vector<std::pair<float, std::shared_ptr<JAWE::Path<T>>>>& paths, float time)
         {
             for(auto& it : paths)
                 v += it.second->traverse(time) * it.first;
@@ -64,21 +64,21 @@ namespace JAF {
 			normalize(m_colors);
 		}
 
-        void add(float weight, const vec3_path* pPosition)
+        void add(float weight, vec3_path_ptr pPosition)
         {
             m_positions.push_back(std::make_pair(weight, pPosition));
         }
 
-        void add(float weight, const float_path* pSize)
+        void add(float weight, float_path_ptr pSize)
         {
             m_sizes.push_back(std::make_pair(weight, pSize));
         }
-        void add(float weight, const color_path* pColor)
+        void add(float weight, color_path_ptr pColor)
         {
             m_colors.push_back(std::make_pair(weight, pColor));
         }
 
-        bool update(BehaviourInfluenced* pItem, float time) const;
+        bool update(BehaviourInfluenced* pItem, float time);
     };
 
 };
