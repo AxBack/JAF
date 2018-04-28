@@ -241,7 +241,8 @@ namespace Math {
 			float s = sqrtf((1+a)*2);
 			float invs = 1 / s;
 
-			return {axis.x() * invs, axis.y() * invs, axis.z() * invs, s * 0.5f};
+			Quaternion q ={axis.x() * invs, axis.y() * invs, axis.z() * invs, s * 0.5f};
+			return std::move(q);
 		}
     };
 }

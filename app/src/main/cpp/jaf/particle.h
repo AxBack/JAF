@@ -45,11 +45,11 @@ namespace JAF {
 			m_position = m_lastPosition = {0,0,0};
 		}
 
-        void fire(ParticleListener* pListener, Behaviour* pBehaviour, std::shared_ptr<Math::Matrix> pOffset);
+        void fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset);
 
         bool update(InstanceCollector<ParticleInstance>& collector, float dt);
 
-        std::shared_ptr<Math::Matrix> calculateTransform() const;
+        Math::Matrix calculateTransform() const;
 		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
 
 		void setInterval(float interval) { m_interval = m_counter = interval; }

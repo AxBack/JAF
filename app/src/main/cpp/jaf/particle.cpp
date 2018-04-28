@@ -2,12 +2,12 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour, std::shared_ptr<Math::Matrix> pOffset)
+    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset)
     {
         m_time = 0;
 		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
-		m_pBehaviour->start(this, *pOffset.get());
+		m_pBehaviour->start(this, offset);
     }
 
     bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
@@ -43,12 +43,11 @@ namespace JAF {
         m_instance.z = m_position.z();
     }
 
-    auto Particle::calculateTransform() const->std::shared_ptr<Math::Matrix>
+    Math::Matrix Particle::calculateTransform() const
     {
         Math::Vector3 up = {0,1,0};
 
-		std::shared_ptr<Math::Matrix> p(new Math::Matrix);
-		Math::Matrix& t = *p.get();
+		Math::Matrix t;
 		Math::Matrix::identity(t);
 		Math::Matrix::translate(t, m_position);
 
@@ -60,7 +59,7 @@ namespace JAF {
 			t = t * r;
 		}
 
-        return p;
+        return std::move(t);
     }
 
     Math::Quaternion Particle::calculateRotation(const Math::Vector3& up) const

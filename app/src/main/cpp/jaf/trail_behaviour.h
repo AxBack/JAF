@@ -11,22 +11,18 @@ namespace JAF {
 
 		struct TransformData : public BehaviourInfluenced::Data
 		{
-			Math::Matrix offset;
+			Math::Vector3 position;
+			Math::Vector3 force;
+			float time;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
-		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
 
 	public:
-
-		void add(float weight, vec3_path_ptr pPosition)
-		{
-			m_positions.push_back(std::make_pair(weight, pPosition));
-		}
 
 		void add(float weight, float_path_ptr pSize)
 		{
@@ -40,7 +36,6 @@ namespace JAF {
 
 		virtual void normalize() override
 		{
-			PathBehaviour::normalize(m_positions);
 			PathBehaviour::normalize(m_sizes);
 			PathBehaviour::normalize(m_colors);
 		}
@@ -50,7 +45,13 @@ namespace JAF {
 			PathBehaviour::start(pItem, offset);
 
 			TransformData* pData = m_data.pop();
-			pData->offset = offset;
+
+			Math::Vector3 dir {JAWE::Random::randf(-1.0f, 1.0f), 1, JAWE::Random::randf(-1.0f, 1.0f)};
+			dir.normalize();
+			dir *= 50.0f;
+			pData->force = offset.transform(dir, 0.0f);
+			pData->position = offset.transform({0,0,0});
+			pData->time = 0.0f;
 			pItem->setData(pData);
 		}
 
@@ -70,9 +71,13 @@ namespace JAF {
 			float delta = time / m_timeLimit;
 
 			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-			Math::Vector3 p = pData->offset.transform(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta), 1);
+			float dt  = time - pData->time;
+			pData->time = time;
 
-			pItem->setPosition(p);
+			pData->force += (pData->force * -dt) + Math::Vector3(0, -980 ,0) * dt;
+			pData->position += pData->force * dt;
+
+			pItem->setPosition(pData->position);
 			pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
 			pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
 

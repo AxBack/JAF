@@ -49,7 +49,11 @@ namespace JAF {
 			PathBehaviour::start(pItem, offset);
 
 			TransformData* pData = m_data.pop();
-			pData->offset = offset;
+
+			float x = JAWE::Random::randf(-180.0f, 180.0f);
+			float z = JAWE::Random::randf(-180.0f, 180.0f);
+			pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x,0,z));
+
 			pItem->setData(pData);
 		}
 

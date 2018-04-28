@@ -37,7 +37,6 @@ namespace JAF {
 		{
 			TrailBehaviour* p = getBehaviour();
 			p->init(0.2f);
-			fill(p, JAWE::Random::randi(2,3), &m_positions);
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
 

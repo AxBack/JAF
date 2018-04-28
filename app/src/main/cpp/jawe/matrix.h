@@ -71,6 +71,20 @@ namespace Math {
 			return Matrix::project(*this, point);
 		}
 
+		void rotate(float x, float y, float z)
+		{
+			Matrix r;
+			r = multiply(setRotate(r, x, y, z), *this);
+			memcpy(m_data, r.m_data, sizeof(m_data));
+		}
+
+		void rotate(const Quaternion& rotation)
+		{
+			Matrix r;
+			r = multiply(setRotate(r, rotation), *this);
+			memcpy(m_data, r.m_data, sizeof(m_data));
+		}
+
 		void setIdentity() { return Matrix::identity(*this); }
 
 		void translate(float x, float y, float z) { Matrix::translate(*this, x, y ,z); }
@@ -227,7 +241,21 @@ namespace Math {
 				   m[M00] * m[M11] * m[M22] * m[M33];
 		}
 
-		static inline Matrix& setRotate(Matrix& m, const Quaternion& q)
+		static Matrix setRotate(const Quaternion& q)
+		{
+			Matrix r;
+			setRotate(r, q);
+			return std::move(r);
+		}
+
+		static Matrix setRotate(float x, float y, float z)
+		{
+			Matrix r;
+			setRotate(r, x, y, z);
+			return std::move(r);
+		}
+
+		static Matrix& setRotate(Matrix& m, const Quaternion& q)
 		{
 			float x=q.x();
 			float y=q.y();

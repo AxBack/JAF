@@ -13,11 +13,8 @@ namespace JAF {
 	{
 	private:
 
-		enum FACTOR_TYPE { SAME, OPPOSITE, OPPOSITE_X, OPPOSITE_Z };
-
 		BalancedCollection<int> m_nrRockets;
 		BalancedCollection<float> m_intervals;
-		BalancedCollection<FACTOR_TYPE> m_factors;
 
 		BalancedCollection<UINT> m_nrParticlesPerBurst;
 
@@ -42,11 +39,6 @@ namespace JAF {
 			m_intervals.push(0.5f);
 			m_intervals.push(1.0f);
 			m_intervals.push(2.0f);
-
-			m_factors.push(SAME);
-			m_factors.push(OPPOSITE);
-			m_factors.push(OPPOSITE_X);
-			m_factors.push(OPPOSITE_Z);
 
 			m_nrParticlesPerBurst.push(50);
 			m_nrParticlesPerBurst.push(100);

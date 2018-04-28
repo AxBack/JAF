@@ -11,14 +11,11 @@ namespace JAF {
 	{
 	private:
 
-        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
-
 		struct Rocket
 		{
 			float offsetTime;
 			Behaviour* pBehaviour;
-			matrix_ptr pTransform;
-			Math::Vector3 factors;
+			Math::Matrix offset;
 		};
 
 		struct Burst
@@ -44,8 +41,8 @@ namespace JAF {
 
 	protected:
 
-		void fire(Behaviour* pBehaviour, matrix_ptr pOffset, const Math::Vector3& factor = {1,1,1});
-		void fireRelevant(Behaviour* pBehaviour, matrix_ptr pOffset, int type = -1, const Math::Vector3& factor = {1,1,1});
+		void fire(Behaviour* pBehaviour, const Math::Matrix& offset);
+		void fireRelevant(Behaviour* pBehaviour, const Math::Matrix& offset, int type = -1);
 
 	public:
 
@@ -55,9 +52,9 @@ namespace JAF {
 
 		bool active() const { return m_nrRelevantParticles > 0 || m_rockets.size() > 0; }
 
-		void addRocket(float offsetTime, Behaviour* pBehaviour, matrix_ptr pTransform, const Math::Vector3& factors)
+		void addRocket(float offsetTime, Behaviour* pBehaviour, const Math::Matrix& offset)
 		{
-			m_rockets.push({offsetTime, pBehaviour, pTransform, factors});
+			m_rockets.push({offsetTime, pBehaviour, offset});
 		}
 
 		void addBurst(UINT nrParticles, Behaviour* pBehaviour)
