@@ -22,6 +22,8 @@ namespace JAF {
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
 
+		float m_dispersion { 2.0f };
+
 	public:
 
 		virtual void clear() override
@@ -29,6 +31,8 @@ namespace JAF {
 			m_sizes.clear();
 			m_colors.clear();
 		}
+
+		void setDispersion(float dispersion) { m_dispersion = dispersion; }
 
 		void add(float weight, float_path_ptr pSize)
 		{
@@ -46,18 +50,7 @@ namespace JAF {
 			PathBehaviour::normalize(m_colors);
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
-		{
-			TransformData* pData = m_data.pop();
-
-			Math::Vector3 dir {JAWE::Random::randf(-1.0f, 1.0f), 1, JAWE::Random::randf(-1.0f, 1.0f)};
-			dir.normalize();
-			dir *= 50.0f;
-			pData->force = offset.transform(dir, 0.0f);
-			pData->position = offset.transform({0,0,0});
-			pData->time = 0.0f;
-			pItem->setData(pData);
-		}
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{
@@ -65,25 +58,6 @@ namespace JAF {
 			m_data.push(pData);
 		}
 
-		virtual bool update(BehaviourInfluenced* pItem, float time) override
-		{
-			if(time >= m_timeLimit)
-				return false;
-
-			float delta = time / m_timeLimit;
-
-			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-			float dt  = time - pData->time;
-			pData->time = time;
-
-			pData->force += (pData->force * -dt) + Math::Vector3(0, -980 ,0) * dt;
-			pData->position += pData->force * dt;
-
-			pItem->setPosition(pData->position);
-			pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
-			pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
-
-			return true;
-		}
+		virtual bool update(BehaviourInfluenced* pItem, float time) override;
 	};
 };

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "behaviour.h"
+#include "../jawe/bank.h"
 
 namespace JAF {
 
@@ -51,16 +52,7 @@ namespace JAF {
 			PathBehaviour::normalize(m_colors);
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
-		{
-			TransformData* pData = m_data.pop();
-
-			float x = JAWE::Random::randf(-180.0f, 180.0f);
-			float z = JAWE::Random::randf(-180.0f, 180.0f);
-			pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x,0,z));
-
-			pItem->setData(pData);
-		}
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{
@@ -68,21 +60,6 @@ namespace JAF {
 			m_data.push(pData);
 		}
 
-		virtual bool update(BehaviourInfluenced* pItem, float time) override
-		{
-			if(time >= m_timeLimit)
-				return false;
-
-			float delta = time / m_timeLimit;
-
-			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-			Math::Vector3 p = pData->offset.transform(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta), 1);
-
-			pItem->setPosition(p);
-			pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
-			pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
-
-			return true;
-		}
+		virtual bool update(BehaviourInfluenced* pItem, float time) override;
 	};
 };

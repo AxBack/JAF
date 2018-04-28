@@ -37,8 +37,11 @@ namespace JAF {
 			m_nrRockets.push(4);
 
 			m_intervals.push(0.0f);
+			m_intervals.push(0.25f);
 			m_intervals.push(0.5f);
+			m_intervals.push(0.75f);
 			m_intervals.push(1.0f);
+			m_intervals.push(1.5f);
 			m_intervals.push(2.0f);
 
 			m_offsets.push(RocketBehaviour::POINT);

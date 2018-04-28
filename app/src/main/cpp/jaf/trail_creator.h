@@ -31,9 +31,10 @@ namespace JAF {
 		virtual TrailBehaviour* create() override
 		{
 			TrailBehaviour* p = getBehaviour();
-			p->init(0.4f);
+			p->init(JAWE::Random::randf(0.1f, 1.0f));
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
+			p->setDispersion(JAWE::Random::randf(0.5, 3.0f));
 
 			p->normalize();
 
