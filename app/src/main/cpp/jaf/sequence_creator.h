@@ -15,6 +15,7 @@ namespace JAF {
 
 		BalancedCollection<int> m_nrRockets;
 		BalancedCollection<float> m_intervals;
+		BalancedCollection<RocketBehaviour::OffsetType> m_offsets;
 
 		BalancedCollection<UINT> m_nrParticlesPerBurst;
 
@@ -38,6 +39,10 @@ namespace JAF {
 			m_intervals.push(0.5f);
 			m_intervals.push(1.0f);
 			m_intervals.push(2.0f);
+
+			m_offsets.push(RocketBehaviour::POINT);
+			m_offsets.push(RocketBehaviour::LINE);
+			m_offsets.push(RocketBehaviour::CIRCLE);
 
 			m_nrParticlesPerBurst.push(50);
 			m_nrParticlesPerBurst.push(100);

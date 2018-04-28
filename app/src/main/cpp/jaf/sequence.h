@@ -15,7 +15,6 @@ namespace JAF {
 		{
 			float offsetTime;
 			Behaviour* pBehaviour;
-			Math::Matrix offset;
 		};
 
 		struct Burst
@@ -41,6 +40,8 @@ namespace JAF {
 		Burst m_burst;
 		Trail m_trail;
 
+		Math::Matrix m_offset;
+
 	protected:
 
 		void fire(Behaviour* pBehaviour, const Math::Matrix& offset);
@@ -50,14 +51,17 @@ namespace JAF {
 
 		Sequence(Updater* pUpdater)
 				: m_pUpdater(pUpdater)
-		{}
+		{
+			m_offset.setIdentity();
+			m_offset.translate(0,-1000,0);
+		}
 
 		bool active() const { return m_active; }
 
-		void addRocket(float offsetTime, Behaviour* pBehaviour, const Math::Matrix& offset)
+		void addRocket(float offsetTime, Behaviour* pBehaviour)
 		{
 			pBehaviour->incrementUsers();
-			m_rockets.push({offsetTime, pBehaviour, offset});
+			m_rockets.push({offsetTime, pBehaviour});
 		}
 
 		void addBurst(UINT nrParticles, Behaviour* pBehaviour)

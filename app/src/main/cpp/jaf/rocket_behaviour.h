@@ -6,6 +6,10 @@ namespace JAF {
 
 	class RocketBehaviour : public PathBehaviour
 	{
+	public:
+
+		enum OffsetType { POINT, LINE, CIRCLE };
+
 	private:
 
 		struct TransformData : public BehaviourInfluenced::Data
@@ -19,11 +23,18 @@ namespace JAF {
 
 		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 
+
+		OffsetType m_offsetType { POINT };
+		Math::Vector3 m_offset { 0,0,0 };
+		float m_tag { 0 };
+		UINT m_nrReleased { 0 };
+
 	public:
 
 		virtual void clear() override
 		{
 			m_positions.clear();
+			m_nrReleased = 0;
 		}
 
 		void add(float weight, vec3_path_ptr pPosition)
@@ -31,14 +42,34 @@ namespace JAF {
 			m_positions.push_back(std::make_pair(weight, pPosition));
 		}
 
+		void setOffset(OffsetType type, const Math::Vector3& v, float t)
+		{
+			m_offsetType = type;
+			m_offset = v;
+			m_tag = t;
+		}
+
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
 			TransformData* pData = m_data.pop();
 
-			pData->offset = offset.transform({0,0,0}, 1);
+			Math::Vector3 p = m_offset;
+			switch(m_offsetType)
+			{
+				case LINE:
+					p.normalize();
+					p = m_offset - (p * m_tag * static_cast<float>(m_nrReleased));
+					break;
+				case CIRCLE:
+					p = Math::Matrix::transform(Math::Matrix::setRotate(0, static_cast<float>(m_nrReleased) * m_tag, 0), p, 0.0f);
+					break;
+			}
+
+			pData->offset = offset.transform(p);
 			pData->factors = {1,1,1};
 
 			pItem->setData(pData);
+			++m_nrReleased;
 		}
 
 		virtual void end(BehaviourInfluenced* pItem) override

@@ -35,9 +35,8 @@ namespace JAF {
 		virtual RocketBehaviour* create() override
 		{
 			RocketBehaviour* p = getBehaviour();
-			p->init(2.0f);
+			p->init(JAWE::Random::randf(2.0f, 3.0f));
 			fill(p, JAWE::Random::randi(1,3), &m_positions);
-
 			p->normalize();
 
 			return p;

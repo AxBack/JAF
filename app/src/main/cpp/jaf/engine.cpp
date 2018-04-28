@@ -81,9 +81,7 @@ namespace JAF {
 			m_bloomTarget.init(m_viewport[2], m_viewport[3], 1, formats, JAWE::Framebuffer::READ_WRITE);
         }
 
-        {
-            m_updater.updateInstances(m_particleMesh);
-        }
+		m_updater.updateInstances(m_particleMesh);
 
         {
             Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));

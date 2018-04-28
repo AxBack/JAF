@@ -57,7 +57,7 @@ namespace JAF {
 			if(m_rockets.front().offsetTime <= 0)
 			{
 				Rocket& r = m_rockets.front();
-				fireRelevant(r.pBehaviour, r.offset, ++m_rocketCounter);
+				fireRelevant(r.pBehaviour, m_offset, ++m_rocketCounter);
 				r.pBehaviour->decrementUsers();
 				m_rockets.pop();
 			}
