@@ -27,6 +27,8 @@ namespace JAF {
 
     public:
 
+		virtual Math::Matrix calculateTransform() const = 0;
+
 		void setData(Data* pData) { m_pData = pData; }
 		Data* getData() { return m_pData; }
 
@@ -36,6 +38,7 @@ namespace JAF {
     };
 
 	class Behaviour;
+	class UpdateData;
 
 	class BehaviourListener
 	{
@@ -77,7 +80,7 @@ namespace JAF {
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) = 0;
 		virtual void end(BehaviourInfluenced* pItem) = 0;
-		virtual bool update(BehaviourInfluenced* pItem, float dt) = 0;
+		virtual bool update(UpdateData* pData, BehaviourInfluenced* pItem, float dt) = 0;
 	};
 
     class PathBehaviour : public Behaviour

@@ -27,17 +27,9 @@ namespace JAF {
 
 	void Sequence::onDead(const Particle* pParticle)
 	{
-		Math::Matrix t = pParticle->calculateTransform();
-		for(UINT i=0; i < m_burst.nrParticles; ++i)
-		{
-			fire(m_burst.pBehaviour, t);
-		}
-
 		if(m_nrRelevantParticles == pParticle->getType())
 		{
 			m_active = false;
-			m_burst.pBehaviour->decrementUsers();
-			m_burst.pBehaviour = nullptr;
 			m_trail.pBehaviour->decrementUsers();
 			m_trail.pBehaviour = nullptr;
 		}

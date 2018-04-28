@@ -1,5 +1,7 @@
 #include "particle.h"
 
+#include "update_data.h"
+
 namespace JAF {
 
     void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset)
@@ -11,10 +13,10 @@ namespace JAF {
 		m_pBehaviour->start(this, offset);
     }
 
-    bool Particle::update(InstanceCollector<ParticleInstance>& collector, float dt)
+    bool Particle::update(UpdateData* pData)
     {
-        m_time += dt;
-        if(!m_pBehaviour->update(this, m_time))
+        m_time += pData->dt;
+        if(!m_pBehaviour->update(pData, this, m_time))
         {
 			m_pBehaviour->end(this);
 			m_pBehaviour->decrementUsers();
@@ -24,9 +26,9 @@ namespace JAF {
         }
 
         if (m_instance.radius > 0 && m_instance.a > 0)
-            collector.add(m_instance);
+            pData->pInstanceCollector->add(m_instance);
 
-		if(m_pListener != nullptr && m_interval > 0 && (m_counter -= dt) <= 0)
+		if(m_pListener != nullptr && m_interval > 0 && (m_counter -= pData->dt) <= 0)
 		{
 			m_counter += m_interval;
 			m_pListener->onInterval(this);

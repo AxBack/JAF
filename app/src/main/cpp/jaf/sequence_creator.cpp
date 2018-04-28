@@ -38,11 +38,12 @@ namespace JAF {
 		}
 
 		pBehaviour->setOffset(type, offset, tag);
+		createBursts(pBehaviour);
 	}
 
-	void SequenceCreator::createBursts(Sequence& out)
+	void SequenceCreator::createBursts(RocketBehaviour* p)
 	{
-		out.addBurst(m_nrParticlesPerBurst.front(), m_burstCreator.create());
+		p->add(m_nrParticlesPerBurst.front(), m_burstCreator.create());
 	}
 
 	void SequenceCreator::createTrails(Sequence& out)
@@ -53,7 +54,6 @@ namespace JAF {
 	void SequenceCreator::create(Sequence& out)
 	{
 		createRockets(out);
-		createBursts(out);
 		createTrails(out);
 	}
 

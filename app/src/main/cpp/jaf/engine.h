@@ -9,6 +9,7 @@
 #include "particle_shader.h"
 #include "updater.h"
 #include "bloom_shader.h"
+#include "../jawe/counter.h"
 
 namespace JAF {
 
@@ -26,9 +27,12 @@ namespace JAF {
         std::atomic_bool m_sizeChanged { false };
 
         std::atomic<float> m_offset { 0.5f };
+        float m_extra { 0 };
 
         JAWE::Camera m_camera;
         float_path m_rotation;
+
+		JAWE::Counter m_counter;
 
         ParticleShader m_particleShader;
         JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
@@ -61,7 +65,7 @@ namespace JAF {
 
         virtual bool render() override;
 
-        virtual void resume() override { m_updater.resume(); }
+        virtual void resume() override { m_counter.step(); m_updater.resume(); }
 
         virtual void pause() override { m_updater.pause(); }
 

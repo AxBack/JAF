@@ -1,4 +1,5 @@
 #include "updater.h"
+#include "update_data.h"
 
 namespace JAF {
 
@@ -19,10 +20,12 @@ namespace JAF {
 
     void Updater::advance(float dt)
     {
+		UpdateData data = {this, &m_particleCollector, dt };
+
         m_particleCollector.begin();
         for(auto it = m_particles.begin(); it != m_particles.end();)
         {
-            if(!(*it)->update(m_particleCollector, dt))
+            if(!(*it)->update(&data))
             {
                 m_particleBank.push(*it);
                 it = m_particles.erase(it);

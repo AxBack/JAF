@@ -27,15 +27,13 @@ namespace JAF {
 		LOGI("JAF::Engine( SetupParticles begin: %d )", m_id);
 
         PositionVertex vertices[] = {
-                {-1, 1, 0},
-                { 1, 1, 0},
-                { 1,-1, 0},
-                {-1,-1, 0}
+                {-1, 0, 0}, {0, 0.5f, 0}, {1, 0, 0}, {0, -0.5f, 0},
+				{0, 1, 0}, {0.5f, 0, 0}, {0, -1, 0}, {-0.5f, 0, 0}
         };
 
-        GLushort indices[] = {0, 1, 2, 0, 2, 3};
+        GLushort indices[] = {0,1,2, 0,2,3, 4,5,6, 4,6,7};
 
-        if(!m_particleMesh.init(4, vertices, 6, indices))
+        if(!m_particleMesh.init(8, vertices, 12, indices))
             return false;
 
         if (!m_particleShader.init(pAssetManager, m_particleMesh))
@@ -84,7 +82,8 @@ namespace JAF {
 		m_updater.updateInstances(m_particleMesh);
 
         {
-            Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
+			m_extra += m_counter.step() * 3.0f;
+            Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_extra + m_rotation.traverse(m_offset));
             Matrix rot;
             Matrix::setRotate(rot, yaw);
             Vector3 pos = Matrix::transform(rot, {0,0,-1000});

@@ -1,13 +1,14 @@
 #pragma once
 
-#include "vertex.h"
 #include "behaviour.h"
 #include "../jawe/instance_collector.h"
 #include "../jawe/quaternion.h"
+#include "vertex.h"
 
 namespace JAF {
 
 	class Particle;
+	struct UpdateData;
 
 	class ParticleListener
 	{
@@ -47,9 +48,9 @@ namespace JAF {
 
         void fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset);
 
-        bool update(InstanceCollector<ParticleInstance>& collector, float dt);
+        bool update(UpdateData* pData);
 
-        Math::Matrix calculateTransform() const;
+        virtual Math::Matrix calculateTransform() const override;
 		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
 
 		void setInterval(float interval) { m_interval = m_counter = interval; }

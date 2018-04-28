@@ -23,13 +23,16 @@ namespace JAF {
 			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,500,0}}));
 			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
 
-			m_sizes.push(createPath(4, (float[]){1,1,1,0} ));
-			m_sizes.push(createPath(4, (float[]){1,5,1,0}));
+			m_sizes.push(createPath(4, (float[]){1,4,2,0} ));
+			m_sizes.push(createPath(4, (float[]){1,8,6,0}));
 
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,0,1}, {0,1,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,0,1,1}, {0,0,1,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,0,1}, {1,1,0,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
 		}
 
 		virtual void onNotActive(Behaviour* pItem) override

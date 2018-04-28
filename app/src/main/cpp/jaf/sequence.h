@@ -17,12 +17,6 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
-		struct Burst
-		{
-			UINT nrParticles;
-			Behaviour* pBehaviour;
-		};
-
 		struct Trail
 		{
 			float interval;
@@ -37,7 +31,6 @@ namespace JAF {
 
 		std::queue<Rocket> m_rockets;
 
-		Burst m_burst;
 		Trail m_trail;
 
 		Math::Matrix m_offset;
@@ -62,13 +55,6 @@ namespace JAF {
 		{
 			pBehaviour->incrementUsers();
 			m_rockets.push({offsetTime, pBehaviour});
-		}
-
-		void addBurst(UINT nrParticles, Behaviour* pBehaviour)
-		{
-			pBehaviour->incrementUsers();
-			m_burst.nrParticles = nrParticles;
-			m_burst.pBehaviour = pBehaviour;
 		}
 
 		void addTrail(float interval, Behaviour* pBehaviour)

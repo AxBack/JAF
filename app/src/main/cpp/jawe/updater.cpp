@@ -1,4 +1,5 @@
 #include "updater.h"
+#include "counter.h"
 
 #include <chrono>
 #include <cmath>
@@ -42,23 +43,10 @@ namespace JAWE {
     }
 
     void Updater::run() {
-        //using framerate = std::chrono::duration<std::chrono::steady_clock::rep, std::ratio<1, 60>>;
-        //auto next = std::chrono::steady_clock::now() + framerate(1);
-        //float dt = 1.0f / 60.0f;
-
-		auto now = std::chrono::steady_clock::now();
-		auto last = now;
+        Counter counter;
 
         while (true) {
-            //std::this_thread::sleep_until(next);
-            //next = next + framerate{1};
-
-			last = now;
-			now = std::chrono::steady_clock::now();
-
-			std::chrono::duration<float> fsec = now - last;
-            advance(fsec.count());
-
+            advance(counter.step());
             if (!m_running)
                 break;
         }

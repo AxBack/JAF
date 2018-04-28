@@ -18,8 +18,6 @@ namespace JAF {
         typedef std::vector<ParticleInstance> instance_vec;
         typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
         typedef std::vector<Particle*> particle_vec;
-        typedef std::shared_ptr<Math::Matrix> matrix_ptr;
-
 
         std::mt19937 m_generator { 840331 };
 		Director m_director;
