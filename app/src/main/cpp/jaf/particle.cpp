@@ -7,6 +7,7 @@ namespace JAF {
         m_time = 0;
 		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
+		m_pBehaviour->incrementUsers();
 		m_pBehaviour->start(this, offset);
     }
 
@@ -16,6 +17,7 @@ namespace JAF {
         if(!m_pBehaviour->update(this, m_time))
         {
 			m_pBehaviour->end(this);
+			m_pBehaviour->decrementUsers();
             if(m_pListener)
 				m_pListener->onDead(this);
             return false;

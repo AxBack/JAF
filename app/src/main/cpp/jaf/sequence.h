@@ -33,6 +33,8 @@ namespace JAF {
 		Updater* m_pUpdater;
 
 		int m_nrRelevantParticles { 0 };
+		int m_rocketCounter {0 };
+		bool m_active { false };
 
 		std::queue<Rocket> m_rockets;
 
@@ -50,21 +52,24 @@ namespace JAF {
 				: m_pUpdater(pUpdater)
 		{}
 
-		bool active() const { return m_nrRelevantParticles > 0 || m_rockets.size() > 0; }
+		bool active() const { return m_active; }
 
 		void addRocket(float offsetTime, Behaviour* pBehaviour, const Math::Matrix& offset)
 		{
+			pBehaviour->incrementUsers();
 			m_rockets.push({offsetTime, pBehaviour, offset});
 		}
 
 		void addBurst(UINT nrParticles, Behaviour* pBehaviour)
 		{
+			pBehaviour->incrementUsers();
 			m_burst.nrParticles = nrParticles;
 			m_burst.pBehaviour = pBehaviour;
 		}
 
 		void addTrail(float interval, Behaviour* pBehaviour)
 		{
+			pBehaviour->incrementUsers();
 			m_trail.interval = interval;
 			m_trail.pBehaviour = pBehaviour;
 		}

@@ -39,7 +39,10 @@ namespace JAF {
 	public:
 
 		// TODO: Ill probably have to refactor this at some point. Not really wise to have a strict dependence on Behaviour*.
-		virtual void onNotActive(Behaviour* pItem) override { returnBehaviour(dynamic_cast<T*>(pItem)); }
+		virtual void onNotActive(Behaviour* pItem) override
+		{
+			returnBehaviour(dynamic_cast<T*>(pItem));
+		}
 
 		virtual T* create() = 0;
 

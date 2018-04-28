@@ -35,7 +35,6 @@ namespace JAF {
 			m_nrRockets.push(3);
 			m_nrRockets.push(4);
 
-			m_intervals.push(0.0f);
 			m_intervals.push(0.5f);
 			m_intervals.push(1.0f);
 			m_intervals.push(2.0f);

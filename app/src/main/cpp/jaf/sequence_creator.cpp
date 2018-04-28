@@ -10,10 +10,10 @@ namespace JAF {
 		offset.setIdentity();
 		offset.translate(0, -1000, 0);
 
-		float interval = m_intervals.front();
 		int nrRockets = m_nrRockets.front();
+		float interval = m_intervals.front();
 		for(int i = 0; i < nrRockets; ++i)
-			out.addRocket(interval, pBehaviour, offset);
+			out.addRocket(i == 0 ? 0.0f : interval, pBehaviour, offset);
 	}
 
 	void SequenceCreator::createBursts(Sequence& out)

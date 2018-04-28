@@ -21,6 +21,11 @@ namespace JAF {
 
 	public:
 
+		virtual void clear() override
+		{
+			m_positions.clear();
+		}
+
 		void add(float weight, vec3_path_ptr pPosition)
 		{
 			m_positions.push_back(std::make_pair(weight, pPosition));
@@ -28,8 +33,6 @@ namespace JAF {
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
-			PathBehaviour::start(pItem, offset);
-
 			TransformData* pData = m_data.pop();
 
 			pData->offset = offset.transform({0,0,0}, 1);
@@ -40,8 +43,6 @@ namespace JAF {
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{
-			PathBehaviour::end(pItem);
-
 			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
 			if(pData != nullptr)
 				m_data.push(pData);

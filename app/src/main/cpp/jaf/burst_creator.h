@@ -17,8 +17,6 @@ namespace JAF {
 
 	public:
 
-
-
 		BurstCreator()
 				: PathBehaviourCreator(5)
 		{
@@ -34,16 +32,23 @@ namespace JAF {
 			m_colors.push(createPath(4, (Color[]){{0,0,1,1}, {0,0,1,1}, {0,0,1,0}}));
 		}
 
+		virtual void onNotActive(Behaviour* pItem) override
+		{
+			PathBehaviourCreator::onNotActive(pItem);
+		}
+
 		virtual BurstBehaviour* create() override
 		{
+			static int c = 0;
+
 			BurstBehaviour* p = getBehaviour();
+
 			p->init(2.0f);
 			fill(p, JAWE::Random::randi(1,2), &m_positions);
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
 
 			p->normalize();
-
 			return p;
 		}
 

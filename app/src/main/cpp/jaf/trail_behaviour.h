@@ -24,6 +24,12 @@ namespace JAF {
 
 	public:
 
+		virtual void clear() override
+		{
+			m_sizes.clear();
+			m_colors.clear();
+		}
+
 		void add(float weight, float_path_ptr pSize)
 		{
 			m_sizes.push_back(std::make_pair(weight, pSize));
@@ -42,8 +48,6 @@ namespace JAF {
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
-			PathBehaviour::start(pItem, offset);
-
 			TransformData* pData = m_data.pop();
 
 			Math::Vector3 dir {JAWE::Random::randf(-1.0f, 1.0f), 1, JAWE::Random::randf(-1.0f, 1.0f)};
@@ -57,8 +61,6 @@ namespace JAF {
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{
-			PathBehaviour::end(pItem);
-
 			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
 			m_data.push(pData);
 		}

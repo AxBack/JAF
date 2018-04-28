@@ -50,7 +50,7 @@ namespace JAF {
 
 		BehaviourListener* m_pListener { nullptr };
 
-		int m_nrActive { 0 };
+		int m_nrUsers { 0 };
 		float m_timeLimit { 0 };
 
 	public:
@@ -62,17 +62,22 @@ namespace JAF {
 			m_timeLimit = time;
 		}
 
-		bool active() const { return m_nrActive > 0; }
+		virtual void clear() {m_pListener = nullptr; }
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) {++m_nrActive; }
-		virtual void end(BehaviourInfluenced* pItem)
+		void incrementUsers() { ++m_nrUsers; }
+		void decrementUsers()
 		{
-			--m_nrActive;
-			if(m_pListener && m_nrActive <= 0)
+			--m_nrUsers;
+			if(m_pListener && m_nrUsers <= 0)
+			{
 				m_pListener->onNotActive(this);
+				clear();
+			}
 		}
-		virtual bool update(BehaviourInfluenced* pItem, float dt) = 0;
 
+		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) = 0;
+		virtual void end(BehaviourInfluenced* pItem) = 0;
+		virtual bool update(BehaviourInfluenced* pItem, float dt) = 0;
 	};
 
     class PathBehaviour : public Behaviour
@@ -102,5 +107,4 @@ namespace JAF {
 
 		virtual void normalize() = 0;
     };
-
-};
+}

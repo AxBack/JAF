@@ -11,7 +11,6 @@ namespace JAF {
 	{
 	private:
 
-		BalancedCollection<vec3_path_ptr> m_positions;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
@@ -20,10 +19,6 @@ namespace JAF {
 		TrailCreator()
 				: PathBehaviourCreator(10)
 		{
-			float l = 100.0f;
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {-l,0,-l}}));
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {l,0,l}}));
-
 			m_sizes.push(createPath(4, (float[]){1,3,1,0}));
 			m_sizes.push(createPath(4, (float[]){1,2,2,0}));
 
@@ -36,7 +31,7 @@ namespace JAF {
 		virtual TrailBehaviour* create() override
 		{
 			TrailBehaviour* p = getBehaviour();
-			p->init(0.2f);
+			p->init(0.4f);
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
 
