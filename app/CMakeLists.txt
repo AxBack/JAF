@@ -21,6 +21,7 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/jawe/random.cpp
                 src/main/cpp/jaf/engine.cpp
                 src/main/cpp/jaf/particle_shader.cpp
+                src/main/cpp/jaf/bloom_shader.cpp
                 src/main/cpp/jaf/updater.cpp
                 src/main/cpp/jaf/particle.cpp
                 src/main/cpp/jaf/director.cpp

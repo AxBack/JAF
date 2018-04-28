@@ -8,6 +8,7 @@
 #include "../jawe/shader.h"
 #include "particle_shader.h"
 #include "updater.h"
+#include "bloom_shader.h"
 
 namespace JAF {
 
@@ -31,6 +32,13 @@ namespace JAF {
 
         ParticleShader m_particleShader;
         JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
+
+		BloomShader m_bloomShader;
+		JAWE::Mesh<TexturedVertex> m_screenMesh;
+		JAWE::Framebuffer m_bloomTarget;
+
+        bool setupParticles(AAssetManager* pAssetManager);
+        bool setupPostProcess(AAssetManager* pAssetManager);
 
     public:
 

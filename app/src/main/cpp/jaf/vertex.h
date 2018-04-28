@@ -4,6 +4,11 @@
 
 namespace JAF {
 
+    struct TexturedVertex
+    {
+        GLfloat x,y,z, u,v;
+    };
+
     struct PositionVertex {
         GLfloat x,y,z;
     };

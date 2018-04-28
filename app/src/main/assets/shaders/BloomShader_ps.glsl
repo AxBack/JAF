@@ -2,13 +2,14 @@
 precision mediump float;
 
 uniform sampler2D uTexture;
+uniform sampler2D uBloomTexture;
 
 in vec2 uv;
 
 out vec4 finalColor;
 
-const float luminocity = 1.2f;
+const float luminocity = 2.2f;
 
 void main() {
-    finalColor = texture(uTexture, uv) * luminocity;
+    finalColor = texture(uTexture, uv) + texture(uBloomTexture, uv) * luminocity;
 }

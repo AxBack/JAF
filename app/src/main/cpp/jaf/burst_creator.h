@@ -27,9 +27,9 @@ namespace JAF {
 			m_sizes.push(createPath(4, (float[]){1,5,1,0}));
 
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,0,0,1}, {1,0,0,1}, {1,0,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{0,1,0,1}, {0,1,0,1}, {0,1,0,0}}));
-			m_colors.push(createPath(4, (Color[]){{0,0,1,1}, {0,0,1,1}, {0,0,1,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,0,1}, {0,1,0,0}}));
+			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,0,1,1}, {0,0,1,0}}));
 		}
 
 		virtual void onNotActive(Behaviour* pItem) override
