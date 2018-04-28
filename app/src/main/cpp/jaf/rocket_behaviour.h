@@ -52,6 +52,7 @@ namespace JAF {
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override
 		{
 			TransformData* pData = m_data.pop();
+			pData->factors = {1,1,1};
 
 			Math::Vector3 p = m_offset;
 			switch(m_offsetType)
@@ -62,11 +63,13 @@ namespace JAF {
 					break;
 				case CIRCLE:
 					p = Math::Matrix::transform(Math::Matrix::setRotate(0, static_cast<float>(m_nrReleased) * m_tag, 0), p, 0.0f);
+					pData->factors = p;
+					pData->factors.normalize();
+					pData->factors.y(1);
 					break;
 			}
 
 			pData->offset = offset.transform(p);
-			pData->factors = {1,1,1};
 
 			pItem->setData(pData);
 			++m_nrReleased;
