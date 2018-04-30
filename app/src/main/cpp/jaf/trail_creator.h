@@ -19,8 +19,10 @@ namespace JAF {
 		TrailCreator()
 				: PathBehaviourCreator(10)
 		{
-			m_sizes.push(createPath(4, (float[]){1,3,1,0}));
-			m_sizes.push(createPath(4, (float[]){1,2,2,0}));
+			m_sizes.push(createPath(3, (float[]){4,5,0}));
+			m_sizes.push(createPath(3, (float[]){3,2,0}));
+			m_sizes.push(createPath(3, (float[]){5,8,0}));
+			m_sizes.push(createPath(3, (float[]){10,7,0}));
 
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));
@@ -34,7 +36,7 @@ namespace JAF {
 			p->init(JAWE::Random::randf(0.1f, 1.0f));
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
-			p->setDispersion(JAWE::Random::randf(0.5, 3.0f));
+			p->setDispersion(JAWE::Random::randf(2.0, 3.0f));
 			p->setGravity({0, -JAWE::Random::randf(10, 500), 0});
 
 			p->normalize();

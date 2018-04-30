@@ -75,7 +75,7 @@ namespace JAWE {
     };
 
 	template <typename T>
-	class Bilinear : public Traversable<T>
+	class Quadratic : public Traversable<T>
 	{
 	private:
 
@@ -85,7 +85,7 @@ namespace JAWE {
 
 	public:
 
-		Bilinear(float length, T start, T middle, T end)
+		Quadratic(float length, T start, T middle, T end)
 				: Traversable<T>(length)
 				, m_start(start)
 			    , m_middle(middle)
@@ -102,6 +102,42 @@ namespace JAWE {
 
 			float inv = 1.0f - dt;
 			return (((m_start * inv) + (m_middle * dt)) * inv) + (((m_middle * inv) + (m_end * dt)) * dt);
+		}
+	};
+
+	template <typename T>
+	class Cubic : public Traversable<T>
+	{
+	private:
+
+		T m_p1;
+		T m_c1;
+		T m_c2;
+		T m_p2;
+
+	public:
+
+		Cubic(float length, T p1, T c1, T c2, T p2)
+				: Traversable<T>(length)
+				, m_p1(p1)
+				, m_c1(c1)
+				, m_c2(c2)
+				, m_p2(p2)
+		{
+		}
+
+		virtual T traverse(float dt) override
+		{
+			if(dt <= 0.0f)
+				return m_p1;
+			if(dt >= 1.0f)
+				return m_p2;
+
+			float inv = 1.0f - dt;
+			T d1 = (m_p1 * inv) + (m_c1 * dt);
+			T d2 = (m_c1 * inv) + (m_c2 * dt);
+			T d3 = (m_c2 * inv) + (m_p2 * dt);
+			return ((d1 * inv) + (d2 * dt)) * inv + ((d2 * inv) + (d3 * dt)) * dt;
 		}
 	};
 
@@ -181,7 +217,10 @@ namespace JAWE {
                     p = traversable_ptr(new Linear<T>(length, pControlPoints[0], pControlPoints[1]));
                     break;
 				case 3:
-					p = traversable_ptr(new Bilinear<T>(length, pControlPoints[0], pControlPoints[1], pControlPoints[2]));
+					p = traversable_ptr(new Quadratic<T>(length, pControlPoints[0], pControlPoints[1], pControlPoints[2]));
+					break;
+				case 4:
+					p = traversable_ptr(new Cubic<T>(length, pControlPoints[0], pControlPoints[1], pControlPoints[2], pControlPoints[3]));
 					break;
                 default:
                     p = traversable_ptr(new Bezier<T>(length, nrControlPoints, pControlPoints));

@@ -20,11 +20,16 @@ namespace JAF {
 		BurstCreator()
 				: PathBehaviourCreator(5)
 		{
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,500,0}}));
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
+			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}));
+			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
+			m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,300,0}, {0,300,0}}));
+			m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,500,0}, {0,500,0}}));
 
-			m_sizes.push(createPath(4, (float[]){1,4,2,0} ));
-			m_sizes.push(createPath(4, (float[]){1,8,6,0}));
+			m_sizes.push(createPath(4, (float[]){5,4,2,0} ));
+			m_sizes.push(createPath(4, (float[]){6,8,6,0}));
+			m_sizes.push(createPath(4, (float[]){4,1,1,0}));
+			m_sizes.push(createPath(4, (float[]){2,8,8,0}));
+			m_sizes.push(createPath(4, (float[]){15,9,6,0}));
 
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));

@@ -35,5 +35,11 @@ namespace JAWE {
 			return dist(s_generator);
 		}
 
+		static int randb()
+		{
+			static std::uniform_int_distribution<int> dist(0, 1);
+			return dist(s_generator) == 1;
+		}
+
 	};
 };

@@ -19,6 +19,8 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
+		typedef std::vector<Burst> burst_vec;
+
 		struct TransformData : public BehaviourInfluenced::Data
 		{
 			Math::Vector3 offset {0,0,0};
@@ -30,12 +32,14 @@ namespace JAF {
 
 		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 
-		Burst m_burst;
+		burst_vec m_bursts;
 
 		OffsetType m_offsetType { POINT };
 		Math::Vector3 m_offset { 0,0,0 };
 		float m_tag { 0 };
 		UINT m_nrReleased { 0 };
+
+		void burst(UpdateData* pUpdateData, Burst& burst, const Math::Matrix& offset);
 
 	public:
 
@@ -43,8 +47,7 @@ namespace JAF {
 		{
 			m_positions.clear();
 			m_nrReleased = 0;
-			m_burst.nr  = 0;
-			m_burst.pBehaviour = nullptr;
+			m_bursts.clear();
 		}
 
 		void add(float weight, vec3_path_ptr pPosition)
@@ -54,8 +57,7 @@ namespace JAF {
 
 		void add(UINT nr, Behaviour* pBehaviour)
 		{
-			m_burst.nr = nr;
-			m_burst.pBehaviour = pBehaviour;
+			m_bursts.push_back({nr, pBehaviour});
 		}
 
 		void setOffset(OffsetType type, const Math::Vector3& v, float t)

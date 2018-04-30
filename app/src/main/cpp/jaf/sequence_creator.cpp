@@ -43,7 +43,14 @@ namespace JAF {
 
 	void SequenceCreator::createBursts(RocketBehaviour* p)
 	{
-		p->add(m_nrParticlesPerBurst.front(), m_burstCreator.create());
+		UINT nrParticles = m_nrParticles.front();
+		UINT nrBursts = m_nrBursts.front();
+
+		float factor = 1.0f / static_cast<float>(nrBursts);
+		UINT nr = static_cast<UINT>(static_cast<float>(nrParticles) * factor);
+
+		for(UINT i=0; i<nrBursts; ++i)
+			p->add(nr, m_burstCreator.create());
 	}
 
 	void SequenceCreator::createTrails(Sequence& out)

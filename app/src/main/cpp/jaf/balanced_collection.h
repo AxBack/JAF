@@ -36,7 +36,8 @@ namespace JAF {
 			UINT index = 0;
 			for(UINT i=1; i<m_items.size(); ++i)
 			{
-				if(m_items[i].first > m_items[index].first)
+				if(m_items[i].first > m_items[index].first
+				   || (m_items[i].first == m_items[index].first && JAWE::Random::randb()) )
 				{
 					m_items[index].first += m_modifier;
 					index = i;

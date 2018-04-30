@@ -5,8 +5,8 @@ namespace JAF {
 
 	void RocketBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
 	{
-		if(m_burst.pBehaviour)
-			m_burst.pBehaviour->incrementUsers(); // TODO: need something a bit safer for long intervals
+		for(auto& it : m_bursts)
+			it.pBehaviour->incrementUsers(); // TODO: Make safer.
 
 		TransformData* pData = m_data.pop();
 		pData->factors = {1,1,1};
@@ -39,14 +39,8 @@ namespace JAF {
 		if(time >= m_timeLimit)
 		{
 			Math::Matrix offset = pItem->calculateTransform();
-			for(UINT i=0; i<m_burst.nr; ++i)
-			{
-				Particle* p = pUpdateData->pUpdater->fireParticle();
-				p->fire(nullptr, m_burst.pBehaviour, offset);
-			}
-
-			m_burst.pBehaviour->decrementUsers();
-
+			for(auto& it : m_bursts)
+				burst(pUpdateData, it, offset);
 			return false;
 		}
 
@@ -59,5 +53,15 @@ namespace JAF {
 		pItem->setRadius(0);
 
 		return true;
+	}
+
+	void RocketBehaviour::burst(UpdateData* pUpdateData, Burst& burst, const Math::Matrix& offset)
+	{
+		for(UINT i=0; i<burst.nr; ++i)
+		{
+			Particle* p = pUpdateData->pUpdater->fireParticle();
+			p->fire(nullptr, burst.pBehaviour, offset);
+		}
+		burst.pBehaviour->decrementUsers();
 	}
 }
