@@ -6,8 +6,8 @@ namespace JAF {
 	{
 		TransformData* pData = m_data.pop();
 
-		float x = JAWE::Random::randf(-180.0f, 180.0f);
-		float z = JAWE::Random::randf(-180.0f, 180.0f);
+		float x = JAWE::Random::randf(-m_degrees, m_degrees);
+		float z = JAWE::Random::randf(-m_degrees, m_degrees);
 		pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x,0,z));
 
 		pItem->setData(pData);

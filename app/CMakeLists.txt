@@ -30,6 +30,7 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/jaf/rocket_behaviour.cpp
                 src/main/cpp/jaf/trail_behaviour.cpp
                 src/main/cpp/jaf/burst_behaviour.cpp
+                src/main/cpp/jaf/burst_creator.cpp
              )
 
 # Searches for a specified prebuilt library and stores the path as a

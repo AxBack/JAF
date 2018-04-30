@@ -21,6 +21,8 @@ namespace JAF {
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
 
+		float m_degrees = { 180.0f };
+
 	public:
 
 		virtual void clear() override
@@ -28,7 +30,13 @@ namespace JAF {
 			m_positions.clear();
 			m_sizes.clear();
 			m_colors.clear();
+
 		}
+
+		void setRelease(float degrees)
+		{
+			m_degrees = degrees;
+		};
 
 		void add(float weight, vec3_path_ptr pPosition)
 		{

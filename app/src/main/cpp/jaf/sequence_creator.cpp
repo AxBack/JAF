@@ -43,6 +43,8 @@ namespace JAF {
 
 	void SequenceCreator::createBursts(RocketBehaviour* p)
 	{
+		m_burstCreator.step();
+
 		UINT nrParticles = m_nrParticles.front();
 		UINT nrBursts = m_nrBursts.front();
 

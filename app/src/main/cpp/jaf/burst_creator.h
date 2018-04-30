@@ -11,55 +11,37 @@ namespace JAF {
 	{
 	private:
 
+		template <typename T> struct Range { T min, max; };
+
+		struct Release
+		{
+			Range<int> positionRange;
+			Range<int> sizeRange;
+			Range<int> colorRange;
+			Range<float> forcedWeight;
+			std::vector<vec3_path_ptr> forced;
+			BalancedCollection<float> degrees;
+		};
+
+		Release* m_pRelease = { nullptr };
+
 		BalancedCollection<vec3_path_ptr> m_positions;
+		BalancedCollection<Release> m_releases;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
+		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
+
 	public:
 
-		BurstCreator()
-				: PathBehaviourCreator(5)
+		BurstCreator();
+
+		void step()
 		{
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}));
-			m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
-			m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,300,0}, {0,300,0}}));
-			m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,500,0}, {0,500,0}}));
-
-			m_sizes.push(createPath(4, (float[]){5,4,2,0} ));
-			m_sizes.push(createPath(4, (float[]){6,8,6,0}));
-			m_sizes.push(createPath(4, (float[]){4,1,1,0}));
-			m_sizes.push(createPath(4, (float[]){2,8,8,0}));
-			m_sizes.push(createPath(4, (float[]){15,9,6,0}));
-
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,1,1}, {0,0,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,0,1}, {0,1,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,0,1,1}, {0,0,1,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,0,1}, {1,1,0,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
-			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
+			m_pRelease = m_releases.frontPtr();
 		}
 
-		virtual void onNotActive(Behaviour* pItem) override
-		{
-			PathBehaviourCreator::onNotActive(pItem);
-		}
-
-		virtual BurstBehaviour* create() override
-		{
-			static int c = 0;
-
-			BurstBehaviour* p = getBehaviour();
-
-			p->init(2.0f);
-			fill(p, JAWE::Random::randi(1,2), &m_positions);
-			fill(p, JAWE::Random::randi(1,2), &m_sizes);
-			fill(p, JAWE::Random::randi(1,2), &m_colors);
-
-			p->normalize();
-			return p;
-		}
-
+		virtual BurstBehaviour* create() override;
 	};
 
 };
