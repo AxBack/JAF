@@ -30,13 +30,23 @@ namespace JAF {
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,-600}, {0,1500,0}}));
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {600,1000,0}, {0,1500,0}}));
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-600,1000,0}, {0,1500,0}}));
+
+			m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1500,-250}}));
+			m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1500,250}}));
+			m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-250,1500,0}}));
+			m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {250,1500,0}}));
+
+			m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {0,400,500}, {500,800,0}, {0,1200,-200}}));
+			m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {0,400,-500}, {-500,800,0}, {0,1200,200}}));
+			m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {-500,400,0}, {0,800,500}, {200,1200,0}}));
+			m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {500,400,0}, {0,800,-500}, {-200,1200,0}}));
 		}
 
 		virtual RocketBehaviour* create() override
 		{
 			RocketBehaviour* p = getBehaviour();
 			p->init(JAWE::Random::randf(2.0f, 3.0f));
-			fill(p, JAWE::Random::randi(1,3), &m_positions);
+			fill(p, JAWE::Random::randi(1,2), &m_positions);
 			p->normalize();
 
 			return p;
