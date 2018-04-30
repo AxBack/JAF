@@ -17,12 +17,6 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
-		struct Trail
-		{
-			float interval;
-			Behaviour* pBehaviour;
-		};
-
 		Updater* m_pUpdater;
 
 		int m_nrRelevantParticles { 0 };
@@ -31,13 +25,10 @@ namespace JAF {
 
 		std::queue<Rocket> m_rockets;
 
-		Trail m_trail;
-
 		Math::Matrix m_offset;
 
 	protected:
 
-		void fire(Behaviour* pBehaviour, const Math::Matrix& offset);
 		void fireRelevant(Behaviour* pBehaviour, const Math::Matrix& offset, int type = -1);
 
 	public:
@@ -57,15 +48,7 @@ namespace JAF {
 			m_rockets.push({offsetTime, pBehaviour});
 		}
 
-		void addTrail(float interval, Behaviour* pBehaviour)
-		{
-			pBehaviour->incrementUsers();
-			m_trail.interval = interval;
-			m_trail.pBehaviour = pBehaviour;
-		}
-
 		virtual void onDead(const Particle* pParticle) override;
-		virtual void onInterval(const Particle* pParticle) override;
 
 		void start();
 		void update(float dt);

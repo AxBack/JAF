@@ -21,6 +21,7 @@ namespace JAF {
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
 
+		UINT m_nrParticles { 0 };
 		float m_degrees = { 180.0f };
 
 	public:
@@ -36,7 +37,7 @@ namespace JAF {
 		void setRelease(float degrees)
 		{
 			m_degrees = degrees;
-		};
+		}
 
 		void add(float weight, vec3_path_ptr pPosition)
 		{

@@ -26,7 +26,7 @@ namespace JAF {
 
 		void createRockets(Sequence& out);
 		void createBursts(RocketBehaviour* p);
-		void createTrails(Sequence& out);
+		void createTrails(RocketBehaviour* p);
 
 	public:
 

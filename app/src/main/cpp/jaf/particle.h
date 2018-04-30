@@ -14,7 +14,6 @@ namespace JAF {
 	{
 	public:
 		virtual void onDead(const Particle* p) = 0;
-		virtual void onInterval(const Particle* p) = 0;
 	};
 
     class Particle : public BehaviourInfluenced
@@ -31,8 +30,6 @@ namespace JAF {
         ParticleInstance m_instance;
 
         float m_time { 0 };
-		float m_interval { 0 };
-		float m_counter { 0 };
 		Behaviour* m_pBehaviour { nullptr };
 
     public:
@@ -40,20 +37,19 @@ namespace JAF {
 		void clear()
 		{
             m_type = 0;
-			m_interval = 0;
 			m_pListener = nullptr;
 			m_pBehaviour = nullptr;
 			m_position = m_lastPosition = {0,0,0};
 		}
 
-        void fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset);
+		void setListener(ParticleListener* pListener) { m_pListener = pListener; }
+
+        void fire(Behaviour* pBehaviour);
 
         bool update(UpdateData* pData);
 
         virtual Math::Matrix calculateTransform() const override;
 		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
-
-		void setInterval(float interval) { m_interval = m_counter = interval; }
 
         void setType(int type) { m_type = type; }
         int getType() const { return m_type; }

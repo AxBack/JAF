@@ -4,18 +4,12 @@
 
 namespace JAF {
 
-	void Sequence::fire(Behaviour* pBehaviour, const Math::Matrix& offset)
-	{
-		Particle* p = m_pUpdater->fireParticle();
-		p->fire(nullptr, pBehaviour, offset);
-	}
-
 	void Sequence::fireRelevant(Behaviour* pBehaviour, const Math::Matrix& offset, int type)
 	{
 		Particle* p = m_pUpdater->fireParticle();
 		p->setType(type);
-		p->setInterval(m_trail.interval);
-		p->fire(this, pBehaviour, offset);
+		p->setListener(this);
+		pBehaviour->start(p, offset);
 	}
 
 	void Sequence::start()
@@ -30,15 +24,7 @@ namespace JAF {
 		if(m_nrRelevantParticles == pParticle->getType())
 		{
 			m_active = false;
-			m_trail.pBehaviour->decrementUsers();
-			m_trail.pBehaviour = nullptr;
 		}
-	}
-
-	void Sequence::onInterval(const Particle* pParticle)
-	{
-		Math::Matrix t = pParticle->calculateTransform();
-		fire(m_trail.pBehaviour, t);
 	}
 
 	void Sequence::update(float dt)

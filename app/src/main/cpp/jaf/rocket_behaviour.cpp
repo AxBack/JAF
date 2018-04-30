@@ -5,8 +5,9 @@ namespace JAF {
 
 	void RocketBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
 	{
-		for(auto& it : m_bursts)
-			it.pBehaviour->incrementUsers(); // TODO: Make safer.
+		Particle* pParticle = dynamic_cast<Particle*>(pItem);
+		if(pParticle == nullptr)
+			return;
 
 		TransformData* pData = m_data.pop();
 		pData->factors = {1,1,1};
@@ -31,6 +32,8 @@ namespace JAF {
 		pData->offset = offset.transform(p);
 
 		pItem->setData(pData);
+
+		pParticle->fire(this);
 		++m_nrReleased;
 	}
 
@@ -40,7 +43,10 @@ namespace JAF {
 		{
 			Math::Matrix offset = pItem->calculateTransform();
 			for(auto& it : m_bursts)
+			{
 				burst(pUpdateData, it, offset);
+			}
+
 			return false;
 		}
 
@@ -52,6 +58,17 @@ namespace JAF {
 		pItem->setPosition(p);
 		pItem->setRadius(0);
 
+		for(auto& it : m_trails)
+		{
+			if((it.time -= pUpdateData->dt) <= 0)
+			{
+				it.time += it.interval;
+				Math::Matrix t = pItem->calculateTransform();
+				Particle* p = pUpdateData->pUpdater->fireParticle();
+				it.pBehaviour->start(p, t);
+			}
+		}
+
 		return true;
 	}
 
@@ -60,8 +77,7 @@ namespace JAF {
 		for(UINT i=0; i<burst.nr; ++i)
 		{
 			Particle* p = pUpdateData->pUpdater->fireParticle();
-			p->fire(nullptr, burst.pBehaviour, offset);
+			burst.pBehaviour->start(p, offset);
 		}
-		burst.pBehaviour->decrementUsers();
 	}
 }

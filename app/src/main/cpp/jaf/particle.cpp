@@ -4,13 +4,11 @@
 
 namespace JAF {
 
-    void Particle::fire(ParticleListener* pListener, Behaviour* pBehaviour, const Math::Matrix& offset)
+    void Particle::fire(Behaviour* pBehaviour)
     {
         m_time = 0;
-		m_pListener = pListener;
         m_pBehaviour = pBehaviour;
 		m_pBehaviour->incrementUsers();
-		m_pBehaviour->start(this, offset);
     }
 
     bool Particle::update(UpdateData* pData)
@@ -27,12 +25,6 @@ namespace JAF {
 
         if (m_instance.radius > 0 && m_instance.a > 0)
             pData->pInstanceCollector->add(m_instance);
-
-		if(m_pListener != nullptr && m_interval > 0 && (m_counter -= pData->dt) <= 0)
-		{
-			m_counter += m_interval;
-			m_pListener->onInterval(this);
-		}
 
         return true;
     }

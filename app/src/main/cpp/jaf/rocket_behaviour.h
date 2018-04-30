@@ -19,7 +19,15 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
+		struct Trail
+		{
+			float interval;
+			float time;
+			Behaviour* pBehaviour;
+		};
+
 		typedef std::vector<Burst> burst_vec;
+		typedef std::vector<Trail> trail_vec;
 
 		struct TransformData : public BehaviourInfluenced::Data
 		{
@@ -33,6 +41,7 @@ namespace JAF {
 		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
 
 		burst_vec m_bursts;
+		trail_vec m_trails;
 
 		OffsetType m_offsetType { POINT };
 		Math::Vector3 m_offset { 0,0,0 };
@@ -47,7 +56,14 @@ namespace JAF {
 		{
 			m_positions.clear();
 			m_nrReleased = 0;
+
+			for(auto& it : m_bursts)
+				it.pBehaviour->decrementUsers();
 			m_bursts.clear();
+
+			for(auto& it : m_trails)
+				it.pBehaviour->decrementUsers();
+			m_trails.clear();
 		}
 
 		void add(float weight, vec3_path_ptr pPosition)
@@ -57,7 +73,14 @@ namespace JAF {
 
 		void add(UINT nr, Behaviour* pBehaviour)
 		{
+			pBehaviour->incrementUsers();
 			m_bursts.push_back({nr, pBehaviour});
+		}
+
+		void add(float interval, Behaviour* pBehaviour)
+		{
+			pBehaviour->incrementUsers();
+			m_trails.push_back({ interval, interval, pBehaviour });
 		}
 
 		void setOffset(OffsetType type, const Math::Vector3& v, float t)

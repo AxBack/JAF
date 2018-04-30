@@ -1,16 +1,22 @@
 #include "burst_behaviour.h"
+#include "particle.h"
 
 namespace JAF {
 
 	void BurstBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
 	{
+		Particle* pParticle = dynamic_cast<Particle*>(pItem);
+		if(pParticle == nullptr)
+			return;
+
 		TransformData* pData = m_data.pop();
 
 		float x = JAWE::Random::randf(-m_degrees, m_degrees);
 		float z = JAWE::Random::randf(-m_degrees, m_degrees);
-		pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x,0,z));
+		pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x, 0, z));
 
 		pItem->setData(pData);
+		pParticle->fire(this);
 	}
 
 	bool BurstBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
