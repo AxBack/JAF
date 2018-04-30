@@ -242,6 +242,7 @@ namespace Math {
 			float invs = 1 / s;
 
 			Quaternion q ={axis.x() * invs, axis.y() * invs, axis.z() * invs, s * 0.5f};
+			q.normalize();
 			return std::move(q);
 		}
     };

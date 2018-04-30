@@ -1,5 +1,6 @@
 #include "burst_behaviour.h"
 #include "particle.h"
+#include "update_data.h"
 
 namespace JAF {
 
@@ -11,12 +12,23 @@ namespace JAF {
 
 		TransformData* pData = m_data.pop();
 
-		float x = JAWE::Random::randf(-m_degrees, m_degrees);
-		float z = JAWE::Random::randf(-m_degrees, m_degrees);
-		pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x, 0, z));
+		if(m_degrees > 0.0f)
+		{
+			float x = JAWE::Random::randf(-m_degrees, m_degrees);
+			float z = JAWE::Random::randf(-m_degrees, m_degrees);
+			pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x, 0, z));
+		}
+		else
+			pData->offset = offset;
 
-		pItem->setData(pData);
+		for(UINT i=0; i<m_releases.size(); ++i)
+		{
+			pData->releases.push_back({i, m_releases[i].interval, m_releases[i].total});
+		}
+
 		pParticle->fire(this);
+		pItem->setData(pData);
+		pItem->setPosition(offset.transform({0,0,0}, 1));
 	}
 
 	bool BurstBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
@@ -33,6 +45,39 @@ namespace JAF {
 		pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
 		pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
 
+		updateReleases(pUpdateData, pData, pItem);
+
 		return true;
+	}
+
+	void BurstBehaviour::updateReleases(UpdateData* pUpdateData, TransformData* pData, BehaviourInfluenced* pItem)
+	{
+		for(auto it = pData->releases.begin(); it != pData->releases.end();)
+		{
+			if((it->counter -= pUpdateData->dt) <= 0.0f)
+			{
+				const Release& release = m_releases[it->index];
+				it->counter += release.interval;
+
+				Math::Matrix offset = pItem->calculateTransform();
+
+				int nr = std::min(release.nrPerInterval, it->nrParticlesLeft);
+				for(int i=0; i<nr; ++i)
+				{
+					Particle* p = pUpdateData->pUpdater->fireParticle();
+					release.pBehaviour->start(p, offset);
+				}
+
+				it->nrParticlesLeft -= nr;
+
+				if(it->nrParticlesLeft <= 0)
+				{
+					it = pData->releases.erase(it);
+					continue;
+				}
+			}
+
+			++it;
+		}
 	}
 }

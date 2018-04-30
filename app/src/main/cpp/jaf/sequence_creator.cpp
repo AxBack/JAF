@@ -35,30 +35,11 @@ namespace JAF {
 				tag = 360.0f / static_cast<float>(nrRockets);
 			}
 			break;
+			default:
+				break;
 		}
 
 		pBehaviour->setOffset(type, offset, tag);
-		createBursts(pBehaviour);
-		createTrails(pBehaviour);
-	}
-
-	void SequenceCreator::createBursts(RocketBehaviour* p)
-	{
-		m_burstCreator.step();
-
-		UINT nrParticles = m_nrParticles.front();
-		UINT nrBursts = m_nrBursts.front();
-
-		float factor = 1.0f / static_cast<float>(nrBursts);
-		UINT nr = static_cast<UINT>(static_cast<float>(nrParticles) * factor);
-
-		for(UINT i=0; i<nrBursts; ++i)
-			p->add(nr, m_burstCreator.create());
-	}
-
-	void SequenceCreator::createTrails(RocketBehaviour* p)
-	{
-		p->add(0.025f, m_trailCreator.create());
 	}
 
 	void SequenceCreator::create(Sequence& out)

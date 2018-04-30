@@ -44,7 +44,8 @@ namespace JAF {
 			Math::Matrix offset = pItem->calculateTransform();
 			for(auto& it : m_bursts)
 			{
-				burst(pUpdateData, it, offset);
+				Particle* p = pUpdateData->pUpdater->fireParticle();
+				it->start(p, offset);
 			}
 
 			return false;
@@ -70,14 +71,5 @@ namespace JAF {
 		}
 
 		return true;
-	}
-
-	void RocketBehaviour::burst(UpdateData* pUpdateData, Burst& burst, const Math::Matrix& offset)
-	{
-		for(UINT i=0; i<burst.nr; ++i)
-		{
-			Particle* p = pUpdateData->pUpdater->fireParticle();
-			burst.pBehaviour->start(p, offset);
-		}
 	}
 }

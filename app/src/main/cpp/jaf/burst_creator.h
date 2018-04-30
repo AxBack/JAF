@@ -23,23 +23,23 @@ namespace JAF {
 			BalancedCollection<float> degrees;
 		};
 
-		Release* m_pRelease = { nullptr };
+		vec3_path_ptr m_pImmediate;
 
 		BalancedCollection<vec3_path_ptr> m_positions;
 		BalancedCollection<Release> m_releases;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
+		BalancedCollection<UINT> m_nrBursts;
+		BalancedCollection<UINT> m_nrParticles;
+
 		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
+
+		Behaviour* from(Release* pRelease);
 
 	public:
 
 		BurstCreator();
-
-		void step()
-		{
-			m_pRelease = m_releases.frontPtr();
-		}
 
 		virtual BurstBehaviour* create() override;
 	};

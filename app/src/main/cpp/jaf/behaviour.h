@@ -67,7 +67,7 @@ namespace JAF {
 
 		virtual void clear() {m_pListener = nullptr; }
 
-		void incrementUsers() { ++m_nrUsers; }
+		Behaviour* incrementUsers() { ++m_nrUsers;  return this; }
 		void decrementUsers()
 		{
 			--m_nrUsers;

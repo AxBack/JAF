@@ -9,9 +9,25 @@ namespace JAF {
 	{
 	private:
 
+		struct Release
+		{
+			int total;
+			int nrPerInterval;
+			Behaviour* pBehaviour;
+			float interval;
+		};
+
+		struct ReleaseData
+		{
+			UINT index;
+			float counter;
+			int nrParticlesLeft;
+		};
+
 		struct TransformData : public BehaviourInfluenced::Data
 		{
 			Math::Matrix offset;
+			std::vector<ReleaseData> releases;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
@@ -21,8 +37,11 @@ namespace JAF {
 		std::vector<std::pair<float, float_path_ptr>> m_sizes;
 		std::vector<std::pair<float, color_path_ptr>> m_colors;
 
-		UINT m_nrParticles { 0 };
-		float m_degrees = { 180.0f };
+		std::vector<Release> m_releases;
+
+		void updateReleases(UpdateData* pUpdateData, TransformData* pData, BehaviourInfluenced* pItem);
+
+		float m_degrees = { 0 };
 
 	public:
 
@@ -31,12 +50,20 @@ namespace JAF {
 			m_positions.clear();
 			m_sizes.clear();
 			m_colors.clear();
+			m_degrees = 0;
 
+			for(auto& it : m_releases)
+				it.pBehaviour->decrementUsers();
+
+			m_releases.clear();
 		}
 
-		void setRelease(float degrees)
+		void setRelease(float degrees) { m_degrees = degrees; }
+
+		void add(int nrParticles, Behaviour* pBehaviour, float interval = -1, int nrPerInterval = -1)
 		{
-			m_degrees = degrees;
+			m_releases.push_back({nrParticles, nrPerInterval == -1 ? nrParticles : nrPerInterval,
+								  pBehaviour->incrementUsers(), interval});
 		}
 
 		void add(float weight, vec3_path_ptr pPosition)

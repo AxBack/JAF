@@ -13,12 +13,6 @@ namespace JAF {
 
 	private:
 
-		struct Burst
-		{
-			UINT nr;
-			Behaviour* pBehaviour;
-		};
-
 		struct Trail
 		{
 			float interval;
@@ -26,7 +20,7 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
-		typedef std::vector<Burst> burst_vec;
+		typedef std::vector<Behaviour*> burst_vec;
 		typedef std::vector<Trail> trail_vec;
 
 		struct TransformData : public BehaviourInfluenced::Data
@@ -48,8 +42,6 @@ namespace JAF {
 		float m_tag { 0 };
 		UINT m_nrReleased { 0 };
 
-		void burst(UpdateData* pUpdateData, Burst& burst, const Math::Matrix& offset);
-
 	public:
 
 		virtual void clear() override
@@ -58,7 +50,7 @@ namespace JAF {
 			m_nrReleased = 0;
 
 			for(auto& it : m_bursts)
-				it.pBehaviour->decrementUsers();
+				it->decrementUsers();
 			m_bursts.clear();
 
 			for(auto& it : m_trails)
@@ -71,10 +63,10 @@ namespace JAF {
 			m_positions.push_back(std::make_pair(weight, pPosition));
 		}
 
-		void add(UINT nr, Behaviour* pBehaviour)
+		void add(Behaviour* pBehaviour)
 		{
 			pBehaviour->incrementUsers();
-			m_bursts.push_back({nr, pBehaviour});
+			m_bursts.push_back(pBehaviour);
 		}
 
 		void add(float interval, Behaviour* pBehaviour)

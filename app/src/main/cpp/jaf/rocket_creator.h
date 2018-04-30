@@ -5,6 +5,7 @@
 #include "creator.h"
 #include "burst_creator.h"
 #include "rocket_behaviour.h"
+#include "trail_creator.h"
 
 namespace JAF {
 
@@ -17,6 +18,9 @@ namespace JAF {
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
 
 		BalancedCollection<vec3_path_ptr> m_positions;
+
+		BurstCreator m_burstCreator;
+		TrailCreator m_trailCreator;
 
 	public:
 		RocketCreator()
@@ -48,6 +52,9 @@ namespace JAF {
 			p->init(JAWE::Random::randf(2.0f, 3.0f));
 			fill(p, JAWE::Random::randi(1,2), &m_positions);
 			p->normalize();
+
+			p->add(m_burstCreator.create());
+			p->add(0.025f, m_trailCreator.create());
 
 			return p;
 		}

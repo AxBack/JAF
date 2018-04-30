@@ -5,6 +5,8 @@ namespace JAF {
 	BurstCreator::BurstCreator()
 		: PathBehaviourCreator(5)
 	{
+		m_pImmediate = createPath(2, (Vector3[]){{0,0,0}, {0,10,0}});
+
 		{
 			Release r = { {1, 2}, {1,2}, {1,2} };
 			r.degrees.push(180.0f);
@@ -37,25 +39,50 @@ namespace JAF {
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,1,0,1}, {1,1,0,0}}));
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
+
+		m_nrBursts.push(1);
+		m_nrBursts.push(2);
+		m_nrBursts.push(3);
+
+		m_nrParticles.push(50);
+		m_nrParticles.push(100);
+		m_nrParticles.push(150);
+		m_nrParticles.push(200);
+	}
+
+	Behaviour* BurstCreator::from(Release* pRelease)
+	{
+		BurstBehaviour* p = getBehaviour();
+		p->init(2.0f);
+		fill(p, rand(pRelease->positionRange), &m_positions);
+		fill(p, rand(pRelease->sizeRange), &m_sizes);
+		fill(p, rand(pRelease->colorRange), &m_colors);
+
+		for(auto& it : pRelease->forced)
+			p->add(JAWE::Random::randf(pRelease->forcedWeight.min, pRelease->forcedWeight.max), it);
+
+		p->setRelease(pRelease->degrees.front());
+		p->normalize();
+		return p;
 	}
 
 	BurstBehaviour* BurstCreator::create()
 	{
-		if(m_pRelease == nullptr)
-			step();
-
 		BurstBehaviour* p = getBehaviour();
+		p->init(0.5f);
+		p->setRelease(0.0f);
+		p->add(1.0f, m_pImmediate);
 
-		p->init(2.0f);
-		fill(p, rand(m_pRelease->positionRange), &m_positions);
-		fill(p, rand(m_pRelease->sizeRange), &m_sizes);
-		fill(p, rand(m_pRelease->colorRange), &m_colors);
+		UINT nrParticles = m_nrParticles.front();
+		UINT nrBursts = m_nrBursts.front();
 
-		for(auto& it : m_pRelease->forced)
-			p->add(JAWE::Random::randf(m_pRelease->forcedWeight.min, m_pRelease->forcedWeight.max), it);
+		float factor = 1.0f / static_cast<float>(nrBursts);
+		UINT nr = static_cast<UINT>(static_cast<float>(nrParticles) * factor);
 
-		p->setRelease(m_pRelease->degrees.front());
-		p->normalize();
+		Release* pRelease = m_releases.frontPtr();
+		for(UINT i=0; i<nrBursts; ++i)
+			p->add(nr, from(pRelease));
+
 		return p;
 	}
 }

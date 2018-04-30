@@ -9,7 +9,8 @@ namespace JAF {
         m_time = 0;
         m_pBehaviour = pBehaviour;
 		m_pBehaviour->incrementUsers();
-    }
+		m_lastPosition = m_position = {0,0,0};
+    };
 
     bool Particle::update(UpdateData* pData)
     {
