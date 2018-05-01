@@ -10,6 +10,8 @@ namespace JAF {
 	{
 	private:
 
+		typedef std::vector<float> float_vec;
+
 		struct Release
 		{
 			int total;
@@ -29,6 +31,10 @@ namespace JAF {
 		{
 			Math::Matrix offset;
 			std::vector<ReleaseData> releases;
+			float deviation;
+			float_vec positionWeights;
+			float_vec sizeWeights;
+			float_vec colorWeights;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
@@ -43,6 +49,9 @@ namespace JAF {
 		void updateReleases(UpdateData* pUpdateData, TransformData* pData, BehaviourInfluenced* pItem);
 
 		float m_degrees = { 0 };
+		float m_positionDeviation { 0.0f };
+		float m_sizeDeviation = { 0.0f };
+		float m_colorDeviation = { 0.0f };
 
 	public:
 
@@ -52,6 +61,9 @@ namespace JAF {
 			m_size.clear();
 			m_color.clear();
 			m_degrees = 0;
+			m_positionDeviation = 0.0f;
+			m_sizeDeviation = 0.0f;
+			m_colorDeviation = 0.0f;
 
 			for(auto& it : m_releases)
 				it.pBehaviour->decrementUsers();
@@ -60,6 +72,12 @@ namespace JAF {
 		}
 
 		void setRelease(float degrees) { m_degrees = degrees; }
+		void setDeviation(float position, float size, float color)
+		{
+			m_positionDeviation = position;
+			m_sizeDeviation = size;
+			m_colorDeviation = color;
+		}
 
 		void add(int nrParticles, Behaviour* pBehaviour, float interval = -1, int nrPerInterval = -1)
 		{

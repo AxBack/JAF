@@ -4,6 +4,7 @@
 #include "../jawe/vector3.h"
 #include "creator.h"
 #include "trail_behaviour.h"
+#include "settings.h"
 
 namespace JAF {
 
@@ -14,6 +15,9 @@ namespace JAF {
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
+		BalancedCollection<float> m_timeDeviation;
+		BalancedCollection<float> m_sizeDeviation;
+		BalancedCollection<float> m_colorDeviation;
 	public:
 
 		TrailCreator()
@@ -28,12 +32,26 @@ namespace JAF {
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,0,1}, {1,0,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,0,1}, {0,1,0,0}}));
 			m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,0,1,1}, {0,0,1,0}}));
+
+			for(float v=0.0f; v < 0.6f; v+=0.1f)
+			{
+				m_timeDeviation.push(v);
+				m_sizeDeviation.push(v);
+				m_colorDeviation.push(v);
+			}
 		}
 
 		virtual TrailBehaviour* create() override
 		{
 			TrailBehaviour* p = getBehaviour();
-			p->init(JAWE::Random::randf(0.3f, 0.6f));
+			if(Settings::allowTrailDeviation())
+			{
+				p->init(JAWE::Random::randf(0.3f, 0.6f), m_timeDeviation.front());
+				p->setDeviation(m_sizeDeviation.front(), m_colorDeviation.front());
+			}
+			else
+				p->init(JAWE::Random::randf(0.3f, 0.6f));
+
 			fill(p, JAWE::Random::randi(1,2), &m_sizes);
 			fill(p, JAWE::Random::randi(1,2), &m_colors);
 			p->setDispersion(JAWE::Random::randf(2.0, 3.0f));

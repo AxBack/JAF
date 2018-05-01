@@ -33,6 +33,11 @@ namespace JAF {
 		BalancedCollection<UINT> m_nrBursts;
 		BalancedCollection<UINT> m_nrParticles;
 
+		BalancedCollection<float> m_timeDeviation;
+		BalancedCollection<float> m_positionDeviation;
+		BalancedCollection<float> m_sizeDeviation;
+		BalancedCollection<float> m_colorDeviation;
+
 		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
 
 		Behaviour* from(Release* pRelease);

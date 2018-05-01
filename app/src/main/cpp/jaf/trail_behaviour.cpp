@@ -1,5 +1,6 @@
 #include "trail_behaviour.h"
 #include "particle.h"
+#include "update_data.h"
 
 namespace JAF {
 
@@ -16,7 +17,14 @@ namespace JAF {
 		dir *= 50.0f;
 		pData->force = offset.transform(dir, 0.0f);
 		pData->position = offset.transform({0,0,0});
-		pData->time = 0.0f;
+		pData->sizeWeights = m_size.deviate(m_sizeDeviation);
+		pData->colorWeights = m_color.deviate(m_colorDeviation);
+
+		if(m_allowedDeviation != 0.0f)
+			pData->deviation = JAWE::Random::randf(-m_allowedDeviation, m_allowedDeviation);
+		else
+			pData->deviation = 0.0f;
+
 		pItem->setData(pData);
 
 		pParticle->fire(this);
@@ -24,21 +32,20 @@ namespace JAF {
 
 	bool TrailBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
 	{
-		if(time >= m_timeLimit)
+		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+		float limit = m_timeLimit + pData->deviation;
+		if(time >= limit)
 			return false;
 
-		float delta = time / m_timeLimit;
+		float delta = time / limit;
 
-		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-		float dt  = time - pData->time;
-		pData->time = time;
-
+		float dt = pUpdateData->dt;
 		pData->force += (pData->force * -dt) + m_gravity * dt;
 		pData->position += pData->force * dt;
 
 		pItem->setPosition(pData->position);
-		pItem->setRadius(m_size.update(0.0f, delta));
-		pItem->setColor(m_color.update({0,0,0,0}, delta));
+		pItem->setRadius(m_size.update(0.0f, pData->sizeWeights, delta));
+		pItem->setColor(m_color.update({0,0,0,0}, pData->colorWeights, delta));
 
 		return true;
 	}

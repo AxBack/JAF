@@ -26,6 +26,15 @@ namespace JAF {
 			pData->releases.push_back({i, m_releases[i].interval, m_releases[i].total});
 		}
 
+		if(m_allowedDeviation != 0.0f)
+			pData->deviation = JAWE::Random::randf(-m_allowedDeviation, m_allowedDeviation);
+		else
+			pData->deviation = 0.0f;
+
+		pData->positionWeights = m_position.deviate(m_positionDeviation);
+		pData->sizeWeights = m_size.deviate(m_sizeDeviation);
+		pData->colorWeights = m_color.deviate(m_colorDeviation);
+
 		pParticle->fire(this);
 		pItem->setData(pData);
 		pItem->setPosition(offset.transform({0,0,0}, 1));
@@ -33,17 +42,18 @@ namespace JAF {
 
 	bool BurstBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
 	{
-		if(time >= m_timeLimit)
+		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+		float limit = m_timeLimit + pData->deviation;
+		if(time >= limit)
 			return false;
 
-		float delta = time / m_timeLimit;
+		float delta = time / limit;
 
-		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-		Math::Vector3 p = pData->offset.transform(m_position.update({0,0,0}, delta), 1);
+		Math::Vector3 p = pData->offset.transform(m_position.update({0,0,0}, pData->positionWeights, delta), 1);
 
 		pItem->setPosition(p);
-		pItem->setRadius(m_size.update(0.0f, delta));
-		pItem->setColor(m_color.update({0,0,0,0}, delta));
+		pItem->setRadius(m_size.update(0.0f, pData->sizeWeights, delta));
+		pItem->setColor(m_color.update({0,0,0,0}, pData->colorWeights, delta));
 
 		updateReleases(pUpdateData, pData, pItem);
 

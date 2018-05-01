@@ -10,11 +10,15 @@ namespace JAF {
 	{
 	private:
 
+		typedef std::vector<float> float_vec;
+
 		struct TransformData : public BehaviourInfluenced::Data
 		{
 			Math::Vector3 position;
 			Math::Vector3 force;
-			float time;
+			float deviation;
+			float_vec sizeWeights;
+			float_vec colorWeights;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
@@ -24,6 +28,8 @@ namespace JAF {
 		WeightedValue<Math::Color> m_color;
 
 		float m_dispersion { 2.0f };
+		float m_sizeDeviation = { 0.0f };
+		float m_colorDeviation = { 0.0f };
 
 		Math::Vector3 m_gravity { 0, -980, 0};
 
@@ -33,9 +39,17 @@ namespace JAF {
 		{
 			m_size.clear();
 			m_color.clear();
+			m_dispersion = 0.0f;
+			m_sizeDeviation = 0.0f;
+			m_colorDeviation = 0.0f;
 		}
 
 		void setDispersion(float dispersion) { m_dispersion = dispersion; }
+		void setDeviation(float size, float color)
+		{
+			m_sizeDeviation = size;
+			m_colorDeviation = color;
+		}
 		void setGravity(const Math::Vector3& gravity) { m_gravity = gravity; }
 
 		void add(float weight, JAWE::Path<float>* pSize)

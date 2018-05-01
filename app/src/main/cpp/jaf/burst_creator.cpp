@@ -1,4 +1,5 @@
 #include "burst_creator.h"
+#include "settings.h"
 
 namespace JAF {
 
@@ -48,6 +49,14 @@ namespace JAF {
 		m_nrParticles.push(100);
 		m_nrParticles.push(150);
 		m_nrParticles.push(200);
+
+		for(float v=0.0f; v < 0.6f; v+=0.1f)
+		{
+			m_timeDeviation.push(v);
+			m_positionDeviation.push(v);
+			m_sizeDeviation.push(v);
+			m_colorDeviation.push(v);
+		}
 	}
 
 	Behaviour* BurstCreator::from(Release* pRelease)
@@ -69,9 +78,18 @@ namespace JAF {
 	BurstBehaviour* BurstCreator::create()
 	{
 		BurstBehaviour* p = getBehaviour();
-		p->init(0.5f);
+		if(Settings::allowBurstDeviation())
+		{
+			p->init(JAWE::Random::randf(0.4, 0.7), m_timeDeviation.front());
+			p->setDeviation(m_positionDeviation.front(), m_sizeDeviation.front(),
+							m_colorDeviation.front());
+		}
+		else
+			p->init(JAWE::Random::randf(0.4, 0.7));
+
 		p->setRelease(0.0f);
 		p->add(1.0f, m_pImmediate.get());
+
 
 		UINT nrParticles = m_nrParticles.front();
 		UINT nrBursts = m_nrBursts.front();
