@@ -11,6 +11,12 @@ namespace JAF {
 
 		TransformData* pData = m_data.pop();
 		pData->factors = {1,1,1};
+		if(m_allowedDeviation != 0.0f)
+			pData->deviation = JAWE::Random::randf(-m_allowedDeviation, m_allowedDeviation);
+		else
+			pData->deviation = 0.0f;
+
+		pData->weights = m_position.deviate(m_positionDeviation);
 
 		Math::Vector3 p = m_offset;
 		switch(m_offsetType)
@@ -41,7 +47,9 @@ namespace JAF {
 
 	bool RocketBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
 	{
-		if(time >= m_timeLimit)
+		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+		float limit = m_timeLimit + pData->deviation;
+		if(time >= limit)
 		{
 			Math::Matrix offset = pItem->calculateTransform();
 			for(auto& it : m_bursts)
@@ -53,10 +61,9 @@ namespace JAF {
 			return false;
 		}
 
-		float delta = time / m_timeLimit;
+		float delta = time / limit;
 
-		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-		Math::Vector3 p = pData->offset + (PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta) * pData->factors);
+		Math::Vector3 p = pData->offset + (m_position.update({0,0,0}, pData->weights, delta) * pData->factors);
 
 		pItem->setPosition(p);
 		pItem->setRadius(0);

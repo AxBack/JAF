@@ -37,8 +37,8 @@ namespace JAF {
 		pData->position += pData->force * dt;
 
 		pItem->setPosition(pData->position);
-		pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
-		pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
+		pItem->setRadius(m_size.update(0.0f, delta));
+		pItem->setColor(m_color.update({0,0,0,0}, delta));
 
 		return true;
 	}

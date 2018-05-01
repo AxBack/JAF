@@ -5,7 +5,7 @@ namespace JAF {
 	BurstCreator::BurstCreator()
 		: PathBehaviourCreator(5)
 	{
-		m_pImmediate = createPath(2, (Vector3[]){{0,0,0}, {0,10,0}});
+		m_pImmediate = createPath(2, (Vector3[]){{0,0,0}, {0,1,0}});
 
 		{
 			Release r = { {1, 2}, {1,2}, {1,2} };
@@ -14,7 +14,7 @@ namespace JAF {
 		}
 
 		{
-			Release r = { {1, 2}, {1,2}, {1,2}, {0.1, 0.5} };
+			Release r = { {1, 2}, {1,2}, {1,2}, {0.1, 0.2} };
 			r.forced.push_back(createPath(1, (Vector3[]){{0,0,0}}));
 			r.degrees.push(45.0f);
 			r.degrees.push(90.0f);
@@ -22,7 +22,7 @@ namespace JAF {
 		}
 
 		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}));
-		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
+		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,300,0}, {0,300,0}}));
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,500,0}, {0,500,0}}));
 
@@ -59,7 +59,7 @@ namespace JAF {
 		fill(p, rand(pRelease->colorRange), &m_colors);
 
 		for(auto& it : pRelease->forced)
-			p->add(JAWE::Random::randf(pRelease->forcedWeight.min, pRelease->forcedWeight.max), it);
+			p->add(JAWE::Random::randf(pRelease->forcedWeight.min, pRelease->forcedWeight.max), it.get());
 
 		p->setRelease(pRelease->degrees.front());
 		p->normalize();
@@ -71,7 +71,7 @@ namespace JAF {
 		BurstBehaviour* p = getBehaviour();
 		p->init(0.5f);
 		p->setRelease(0.0f);
-		p->add(1.0f, m_pImmediate);
+		p->add(1.0f, m_pImmediate.get());
 
 		UINT nrParticles = m_nrParticles.front();
 		UINT nrBursts = m_nrBursts.front();

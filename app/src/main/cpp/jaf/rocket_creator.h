@@ -6,6 +6,7 @@
 #include "burst_creator.h"
 #include "rocket_behaviour.h"
 #include "trail_creator.h"
+#include "settings.h"
 
 namespace JAF {
 
@@ -17,6 +18,9 @@ namespace JAF {
 		typedef JAWE::Path<Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
 
+		BalancedCollection<float> m_timeDeviation;
+		BalancedCollection<float> m_positionDeviation;
+
 		BalancedCollection<vec3_path_ptr> m_positions;
 
 		BurstCreator m_burstCreator;
@@ -26,6 +30,15 @@ namespace JAF {
 		RocketCreator()
 		: PathBehaviourCreator(2)
 		{
+			m_timeDeviation.push(0.0f);
+			m_timeDeviation.push(0.1f);
+			m_timeDeviation.push(0.2f);
+
+			m_positionDeviation.push(0.0f);
+			m_positionDeviation.push(0.1f);
+			m_positionDeviation.push(0.2f);
+			m_positionDeviation.push(0.3f);
+
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,-300}, {0,1250,300}}));
@@ -49,8 +62,10 @@ namespace JAF {
 		virtual RocketBehaviour* create() override
 		{
 			RocketBehaviour* p = getBehaviour();
-			p->init(JAWE::Random::randf(2.0f, 3.0f));
+			p->init(JAWE::Random::randf(2.0f, 3.0f), Settings::allowTimeDeviation() ?  m_timeDeviation.front() : 0);
 			fill(p, JAWE::Random::randi(1,2), &m_positions);
+			if(Settings::allowPositionDeviation())
+				p->setPositionDeviation(m_positionDeviation.front());
 			p->normalize();
 
 			p->add(m_burstCreator.create());

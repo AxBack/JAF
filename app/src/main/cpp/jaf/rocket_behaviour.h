@@ -2,10 +2,11 @@
 
 #include "behaviour.h"
 #include "../jawe/bank.h"
+#include "weighted_value.h"
 
 namespace JAF {
 
-	class RocketBehaviour : public PathBehaviour
+	class RocketBehaviour : public Behaviour
 	{
 	public:
 
@@ -21,18 +22,22 @@ namespace JAF {
 
 		typedef std::vector<Behaviour*> burst_vec;
 		typedef std::vector<Trail> trail_vec;
+		typedef std::vector<float> float_vec;
 
 		struct TransformData : public BehaviourInfluenced::Data
 		{
 			Math::Vector3 offset {0,0,0};
 			Math::Vector3 factors {1,1,1};
-			std::vector<float> counters;
+			float deviation = 0.0f;
+			float_vec weights;
+			float_vec counters;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
-		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
+		WeightedValue<Math::Vector3> m_position;
+		float m_positionDeviation = {0.0f};
 
 		burst_vec m_bursts;
 		trail_vec m_trails;
@@ -42,11 +47,13 @@ namespace JAF {
 		float m_tag { 0 };
 		UINT m_nrReleased { 0 };
 
+
 	public:
 
 		virtual void clear() override
 		{
-			m_positions.clear();
+			m_position.clear();
+			m_positionDeviation = 0.0f;
 			m_nrReleased = 0;
 
 			for(auto& it : m_bursts)
@@ -58,10 +65,12 @@ namespace JAF {
 			m_trails.clear();
 		}
 
-		void add(float weight, vec3_path_ptr pPosition)
+		void add(float weight, JAWE::Path<Math::Vector3>* pPosition)
 		{
-			m_positions.push_back(std::make_pair(weight, pPosition));
+			m_position.add(weight, pPosition);
 		}
+
+		void setPositionDeviation(float deviation) { m_positionDeviation = deviation; }
 
 		void add(Behaviour* pBehaviour)
 		{
@@ -88,13 +97,14 @@ namespace JAF {
 		{
 			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
 			pData->counters.clear();
+			pData->weights.clear();
 			if(pData != nullptr)
 				m_data.push(pData);
 		}
 
-		virtual void normalize() override
+		virtual void normalize()
 		{
-			PathBehaviour::normalize(m_positions);
+			m_position.normalize();
 		}
 
 		virtual bool update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time) override;

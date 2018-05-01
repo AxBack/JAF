@@ -1,17 +1,11 @@
 #pragma once
 
 #include <random>
-#include "../jawe/vector3.h"
 #include "../jawe/color.h"
-#include "../jawe/path.h"
 #include "../jawe/random.h"
 #include "../jawe/matrix.h"
 
 namespace JAF {
-
-    typedef std::shared_ptr<JAWE::Path<Math::Vector3>> vec3_path_ptr;
-    typedef std::shared_ptr<JAWE::Path<float>> float_path_ptr;
-    typedef std::shared_ptr<JAWE::Path<Math::Color>> color_path_ptr;
 
     class BehaviourInfluenced
     {
@@ -55,14 +49,16 @@ namespace JAF {
 
 		int m_nrUsers { 0 };
 		float m_timeLimit { 0 };
+		float m_allowedDeviation { 0 };
 
 	public:
 
 		void setListener(BehaviourListener* pListener) { m_pListener = pListener; }
 
-		virtual void init(float time)
+		virtual void init(float time, float allowedDeviation = 0.0f)
 		{
 			m_timeLimit = time;
+			m_allowedDeviation = allowedDeviation;
 		}
 
 		virtual void clear() {m_pListener = nullptr; }
@@ -82,32 +78,4 @@ namespace JAF {
 		virtual void end(BehaviourInfluenced* pItem) = 0;
 		virtual bool update(UpdateData* pData, BehaviourInfluenced* pItem, float dt) = 0;
 	};
-
-    class PathBehaviour : public Behaviour
-    {
-	protected:
-
-        template <typename T>
-        T update(T v, const std::vector<std::pair<float, std::shared_ptr<JAWE::Path<T>>>>& paths, float time)
-        {
-            for(auto& it : paths)
-                v += it.second->traverse(time) * it.first;
-            return v;
-        }
-
-		template <typename T>
-		void normalize(std::vector<std::pair<float, T>>& vec)
-		{
-			float total = 0;
-			for(auto& it : vec)
-				total += it.first;
-
-			for(auto& it : vec)
-				it.first = it.first / total;
-		}
-
-    public:
-
-		virtual void normalize() = 0;
-    };
 }

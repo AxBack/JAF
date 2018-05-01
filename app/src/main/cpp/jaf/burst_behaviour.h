@@ -2,10 +2,11 @@
 
 #include "behaviour.h"
 #include "../jawe/bank.h"
+#include "weighted_value.h"
 
 namespace JAF {
 
-	class BurstBehaviour : public PathBehaviour
+	class BurstBehaviour : public Behaviour
 	{
 	private:
 
@@ -33,9 +34,9 @@ namespace JAF {
 		typedef JAWE::Bank<TransformData*> data_bank;
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
-		std::vector<std::pair<float, vec3_path_ptr>> m_positions;
-		std::vector<std::pair<float, float_path_ptr>> m_sizes;
-		std::vector<std::pair<float, color_path_ptr>> m_colors;
+		WeightedValue<Math::Vector3> m_position;
+		WeightedValue<float> m_size;
+		WeightedValue<Math::Color> m_color;
 
 		std::vector<Release> m_releases;
 
@@ -47,9 +48,9 @@ namespace JAF {
 
 		virtual void clear() override
 		{
-			m_positions.clear();
-			m_sizes.clear();
-			m_colors.clear();
+			m_position.clear();
+			m_size.clear();
+			m_color.clear();
 			m_degrees = 0;
 
 			for(auto& it : m_releases)
@@ -66,26 +67,26 @@ namespace JAF {
 								  pBehaviour->incrementUsers(), interval});
 		}
 
-		void add(float weight, vec3_path_ptr pPosition)
+		void add(float weight, JAWE::Path<Math::Vector3>* pPosition)
 		{
-			m_positions.push_back(std::make_pair(weight, pPosition));
+			m_position.add(weight, pPosition);
 		}
 
-		void add(float weight, float_path_ptr pSize)
+		void add(float weight, JAWE::Path<float>* pSize)
 		{
-			m_sizes.push_back(std::make_pair(weight, pSize));
+			m_size.add(weight, pSize);
 		}
 
-		void add(float weight, color_path_ptr pColor)
+		void add(float weight, JAWE::Path<Math::Color>* pColor)
 		{
-			m_colors.push_back(std::make_pair(weight, pColor));
+			m_color.add(weight, pColor);
 		}
 
-		virtual void normalize() override
+		virtual void normalize()
 		{
-			PathBehaviour::normalize(m_positions);
-			PathBehaviour::normalize(m_sizes);
-			PathBehaviour::normalize(m_colors);
+			m_position.normalize();
+			m_size.normalize();
+			m_color.normalize();
 		}
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;

@@ -77,7 +77,7 @@ namespace JAF {
 			int i = 0;
 			while(i < nr)
 			{
-				pBehaviour->add(JAWE::Random::randf(1.0f, 2.0f), pPaths->front());
+				pBehaviour->add(JAWE::Random::randf(1.0f, 2.0f), pPaths->front().get());
 				++i;
 			}
 		}

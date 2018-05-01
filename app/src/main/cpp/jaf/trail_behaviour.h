@@ -2,10 +2,11 @@
 
 #include "behaviour.h"
 #include "../jawe/bank.h"
+#include "weighted_value.h"
 
 namespace JAF {
 
-	class TrailBehaviour : public PathBehaviour
+	class TrailBehaviour : public Behaviour
 	{
 	private:
 
@@ -19,8 +20,8 @@ namespace JAF {
 		typedef JAWE::Bank<TransformData*> data_bank;
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
-		std::vector<std::pair<float, float_path_ptr>> m_sizes;
-		std::vector<std::pair<float, color_path_ptr>> m_colors;
+		WeightedValue<float> m_size;
+		WeightedValue<Math::Color> m_color;
 
 		float m_dispersion { 2.0f };
 
@@ -30,27 +31,27 @@ namespace JAF {
 
 		virtual void clear() override
 		{
-			m_sizes.clear();
-			m_colors.clear();
+			m_size.clear();
+			m_color.clear();
 		}
 
 		void setDispersion(float dispersion) { m_dispersion = dispersion; }
 		void setGravity(const Math::Vector3& gravity) { m_gravity = gravity; }
 
-		void add(float weight, float_path_ptr pSize)
+		void add(float weight, JAWE::Path<float>* pSize)
 		{
-			m_sizes.push_back(std::make_pair(weight, pSize));
+			m_size.add(weight, pSize);
 		}
 
-		void add(float weight, color_path_ptr pColor)
+		void add(float weight, JAWE::Path<Math::Color>* pColor)
 		{
-			m_colors.push_back(std::make_pair(weight, pColor));
+			m_color.add(weight, pColor);
 		}
 
-		virtual void normalize() override
+		virtual void normalize()
 		{
-			PathBehaviour::normalize(m_sizes);
-			PathBehaviour::normalize(m_colors);
+			m_size.normalize();
+			m_color.normalize();
 		}
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;

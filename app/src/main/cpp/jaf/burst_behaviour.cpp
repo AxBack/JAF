@@ -39,11 +39,11 @@ namespace JAF {
 		float delta = time / m_timeLimit;
 
 		TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
-		Math::Vector3 p = pData->offset.transform(PathBehaviour::update<Math::Vector3>({0,0,0}, m_positions, delta), 1);
+		Math::Vector3 p = pData->offset.transform(m_position.update({0,0,0}, delta), 1);
 
 		pItem->setPosition(p);
-		pItem->setRadius(PathBehaviour::update<float>(0.0f, m_sizes, delta));
-		pItem->setColor(PathBehaviour::update<Math::Color>({0,0,0,0}, m_colors, delta));
+		pItem->setRadius(m_size.update(0.0f, delta));
+		pItem->setColor(m_color.update({0,0,0,0}, delta));
 
 		updateReleases(pUpdateData, pData, pItem);
 
