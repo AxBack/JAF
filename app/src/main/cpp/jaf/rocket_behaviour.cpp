@@ -30,6 +30,8 @@ namespace JAF {
 		}
 
 		pData->offset = offset.transform(p);
+		for(auto& it : m_trails)
+			pData->counters.push_back(it.interval);
 
 		pItem->setData(pData);
 
@@ -59,14 +61,15 @@ namespace JAF {
 		pItem->setPosition(p);
 		pItem->setRadius(0);
 
-		for(auto& it : m_trails)
+		for(UINT i=0; i<pData->counters.size(); ++i)
 		{
-			if((it.time -= pUpdateData->dt) <= 0)
+			float& counter = pData->counters[i];
+			if((counter -= pUpdateData->dt) <= 0)
 			{
-				it.time += it.interval;
+				counter += m_trails[i].interval;
 				Math::Matrix t = pItem->calculateTransform();
 				Particle* p = pUpdateData->pUpdater->fireParticle();
-				it.pBehaviour->start(p, t);
+				m_trails[i].pBehaviour->start(p, t);
 			}
 		}
 

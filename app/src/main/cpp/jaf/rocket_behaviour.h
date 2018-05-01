@@ -16,7 +16,6 @@ namespace JAF {
 		struct Trail
 		{
 			float interval;
-			float time;
 			Behaviour* pBehaviour;
 		};
 
@@ -27,6 +26,7 @@ namespace JAF {
 		{
 			Math::Vector3 offset {0,0,0};
 			Math::Vector3 factors {1,1,1};
+			std::vector<float> counters;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;
@@ -72,7 +72,7 @@ namespace JAF {
 		void add(float interval, Behaviour* pBehaviour)
 		{
 			pBehaviour->incrementUsers();
-			m_trails.push_back({ interval, interval, pBehaviour });
+			m_trails.push_back({ interval, pBehaviour });
 		}
 
 		void setOffset(OffsetType type, const Math::Vector3& v, float t)
@@ -87,6 +87,7 @@ namespace JAF {
 		virtual void end(BehaviourInfluenced* pItem) override
 		{
 			TransformData* pData = reinterpret_cast<TransformData*>(pItem->getData());
+			pData->counters.clear();
 			if(pData != nullptr)
 				m_data.push(pData);
 		}
