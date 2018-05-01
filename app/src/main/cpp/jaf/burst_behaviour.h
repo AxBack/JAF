@@ -81,7 +81,7 @@ namespace JAF {
 
 		void add(int nrParticles, Behaviour* pBehaviour, float interval = -1, int nrPerInterval = -1)
 		{
-			m_releases.push_back({nrParticles, nrPerInterval == -1 ? nrParticles : nrPerInterval,
+			m_releases.push_back({nrParticles, nrPerInterval <= 0 ? nrParticles : nrPerInterval,
 								  pBehaviour->incrementUsers(), interval});
 		}
 

@@ -15,6 +15,7 @@ namespace JAF {
 	void Sequence::start()
 	{
 		m_active = true;
+		m_rocketCounter = 0;
 		m_nrRelevantParticles = static_cast<int>(m_rockets.size());
 		m_rocketCounter = 0;
 	}

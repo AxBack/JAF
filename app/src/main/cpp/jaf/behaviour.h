@@ -57,6 +57,7 @@ namespace JAF {
 
 		virtual void init(float time, float allowedDeviation = 0.0f)
 		{
+			clear();
 			m_timeLimit = time;
 			m_allowedDeviation = allowedDeviation;
 		}

@@ -15,8 +15,9 @@ namespace JAF {
 		if(m_degrees > 0.0f)
 		{
 			float x = JAWE::Random::randf(-m_degrees, m_degrees);
+			float y = JAWE::Random::randf(-180, 180);
 			float z = JAWE::Random::randf(-m_degrees, m_degrees);
-			pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x, 0, z));
+			pData->offset = Math::Matrix::multiply(offset, Math::Matrix::setRotate(x, y, z));
 		}
 		else
 			pData->offset = offset;

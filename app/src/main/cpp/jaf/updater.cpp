@@ -5,7 +5,7 @@ namespace JAF {
 
     bool Updater::init()
     {
-		m_director.init(m_generator);
+		m_director.init(m_generator, this);
 
         return JAWE::Updater::init();
     }
@@ -43,7 +43,7 @@ namespace JAF {
             m_particles.push_back(it);
         m_particlesToAdd.clear();
 
-        m_director.update(this, dt);
+        m_director.update(dt);
     }
 
     void Updater::updateInstances(particle_mesh& mesh)

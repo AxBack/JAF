@@ -21,15 +21,17 @@ namespace JAF {
 			Range<float> forcedWeight;
 			std::vector<vec3_path_ptr> forced;
 			BalancedCollection<float> degrees;
-		};
 
-		vec3_path_ptr m_pImmediate;
+			BalancedCollection<float> interval;
+			BalancedCollection<int> nrPerSubBurst;
+		};
 
 		BalancedCollection<vec3_path_ptr> m_positions;
 		BalancedCollection<Release> m_releases;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
+		BalancedCollection<vec3_path_ptr> m_releasePaths;
 		BalancedCollection<UINT> m_nrBursts;
 		BalancedCollection<UINT> m_nrParticles;
 

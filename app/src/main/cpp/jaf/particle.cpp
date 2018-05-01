@@ -20,7 +20,10 @@ namespace JAF {
 			m_pBehaviour->end(this);
 			m_pBehaviour->decrementUsers();
             if(m_pListener)
+			{
 				m_pListener->onDead(this);
+				m_pListener = nullptr;
+			}
             return false;
         }
 
