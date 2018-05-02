@@ -23,9 +23,7 @@ namespace JAF {
 			pData->offset = offset;
 
 		for(UINT i=0; i<m_releases.size(); ++i)
-		{
 			pData->releases.push_back({i, m_releases[i].interval, m_releases[i].total});
-		}
 
 		if(m_allowedDeviation != 0.0f)
 			pData->deviation = JAWE::Random::randf(-m_allowedDeviation, m_allowedDeviation);

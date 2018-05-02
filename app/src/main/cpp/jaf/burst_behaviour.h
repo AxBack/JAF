@@ -27,14 +27,18 @@ namespace JAF {
 			int nrParticlesLeft;
 		};
 
-		struct TransformData : public BehaviourInfluenced::Data
+		struct Data : public BehaviourInfluenced::Data
 		{
-			Math::Matrix offset;
 			std::vector<ReleaseData> releases;
 			float deviation;
-			float_vec positionWeights;
 			float_vec sizeWeights;
 			float_vec colorWeights;
+		};
+
+		struct TransformData : public Data
+		{
+			Math::Matrix offset;
+			float_vec positionWeights;
 		};
 
 		typedef JAWE::Bank<TransformData*> data_bank;

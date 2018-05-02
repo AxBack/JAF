@@ -12,13 +12,21 @@ namespace JAF {
 			r.interval.push(0.0f);
 			r.nrPerSubBurst.push(INT_MAX);
 
+			r.nrParticles.push(20, 0.75f);
+			r.nrParticles.push(50, 0.75f);
+			r.nrParticles.push(100);
+			r.nrParticles.push(150);
+			r.nrParticles.push(200);
+
+			r.releasePath.push(createPath(1, (Vector3[]){{0,0,0}, {0,1,0}}));
+
 			m_releases.push(std::move(r));
 		}
 
 		{
 			Release r = { {1, 2}, {1,2}, {1,2}, {0.1, 0.2} };
 			r.forced.push_back(createPath(1, (Vector3[]){{0,0,0}}));
-			r.degrees.push(45.0f);
+			r.degrees.push(45.0f, 0.5f);
 			r.degrees.push(90.0f);
 
 			r.interval.push(0.0f);
@@ -28,23 +36,32 @@ namespace JAF {
 			r.interval.push(0.04f);
 			r.interval.push(0.05f);
 
-			r.nrPerSubBurst.push(10);
-			r.nrPerSubBurst.push(20);
+			r.nrParticles.push(50);
+			r.nrParticles.push(80);
+			r.nrParticles.push(100);
+
+			r.nrPerSubBurst.push(5);
+			r.nrPerSubBurst.push(10, 0.5f);
+			r.nrPerSubBurst.push(20, 0.5f);
 			r.nrPerSubBurst.push(30);
+
+			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
+			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,200,0}}));
+			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
 
 			m_releases.push(std::move(r));
 		}
 
-		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}));
-		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
+		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}), 1.25f);
+		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}), 1.25f);
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,500,0}, {0,500,0}}));
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,250,0}, {0,300,0}}));
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,450,0}, {0,500,0}}));
 		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,500,0}, {0,500,0}}));
-		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,400,100}, {0,500,200}}));
-		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,400,-100}, {0,500,-200}}));
-		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {100,400,0}, {200,500,0}}));
-		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {-100,400,0}, {-200,500,0}}));
+		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,400,100}, {0,500,200}}), 2);
+		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {0,400,-100}, {0,500,-200}}), 2);
+		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {100,400,0}, {200,500,0}}), 2);
+		m_positions.push(createPath(3, (Vector3[]){{0,0,0}, {-100,400,0}, {-200,500,0}}), 2);
 
 		m_sizes.push(createPath(4, (float[]){5,4,2,0} ));
 		m_sizes.push(createPath(4, (float[]){6,8,6,0}));
@@ -60,18 +77,8 @@ namespace JAF {
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
 
-		m_releasePaths.push(createPath(2, (Vector3[]){{0,0,0}, {0,1,0}}));
-		m_releasePaths.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
-		m_releasePaths.push(createPath(2, (Vector3[]){{0,0,0}, {0,200,0}}));
-
-		m_nrBursts.push(1);
-		m_nrBursts.push(2);
-		m_nrBursts.push(3);
-
-		m_nrParticles.push(50);
-		m_nrParticles.push(100);
-		m_nrParticles.push(150);
-		m_nrParticles.push(200);
+		for(UINT i=1; i<=Settings::nrBursts(); ++i)
+			m_nrBursts.push(i);
 
 		for(float v=0.0f; v < 0.6f; v+=0.1f)
 		{
@@ -110,16 +117,17 @@ namespace JAF {
 		else
 			p->init(1.0f);
 
-		p->setRelease(0.0f);
-		p->add(1.0f, m_releasePaths.front().get());
+		Release* pRelease = m_releases.frontPtr();
 
-		UINT nrParticles = m_nrParticles.front();
+		p->setRelease(0.0f);
+		p->add(1.0f, pRelease->releasePath.front().get());
+
+		UINT nrParticles = pRelease->nrParticles.front();
 		UINT nrBursts = m_nrBursts.front();
 
 		float factor = 1.0f / static_cast<float>(nrBursts);
 		UINT nr = static_cast<UINT>(static_cast<float>(nrParticles) * factor);
 
-		Release* pRelease = m_releases.frontPtr();
 		for(UINT i=0; i<nrBursts; ++i)
 		{
 			float interval = pRelease->interval.front();

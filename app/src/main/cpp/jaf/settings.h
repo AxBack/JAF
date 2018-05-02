@@ -10,6 +10,7 @@ namespace JAF {
 		static bool allowTimeDeviation() { return true; }
 		static bool allowPositionDeviation() { return true; }
 		static bool allowBurstDeviation() { return true; }
-		static bool allowTrailDeviation() { return false; }
+		static bool allowTrailDeviation()  { return false; }
+		static UINT nrBursts() { return 2; }
 	};
 };

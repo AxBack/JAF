@@ -7,7 +7,6 @@ namespace JAF {
 	void Director::init(std::mt19937& generator, Updater* pUpdater)
 	{
 		m_generator = generator;
-
 		m_pSequence.reset(new Sequence(pUpdater));
 	}
 
