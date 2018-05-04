@@ -17,8 +17,6 @@ namespace JAF {
 
 		typedef std::shared_ptr<Sequence> sequence_ptr;
 
-		std::mt19937 m_generator;
-
 		SequenceCreator m_creator;
 
 		sequence_ptr m_pSequence;

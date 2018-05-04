@@ -18,6 +18,13 @@ namespace JAF {
 			r.nrParticles.push(150);
 			r.nrParticles.push(200);
 
+			r.gravity.push({0,0,0});
+			r.gravity.push({0,0,0});
+
+			r.gravity.push({0,0,0}, 0.2f);
+			r.gravity.push({0,-50,0});
+			r.gravity.push({0,-100,0});
+
 			r.releasePath.push(createPath(1, (Vector3[]){{0,0,0}, {0,1,0}}));
 
 			m_releases.push(std::move(r));
@@ -43,11 +50,17 @@ namespace JAF {
 			r.nrPerSubBurst.push(5);
 			r.nrPerSubBurst.push(10, 0.5f);
 			r.nrPerSubBurst.push(20, 0.5f);
-			r.nrPerSubBurst.push(30);
+			r.nrPerSubBurst.push(30, 0.25f);
 
 			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
 			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,200,0}}));
 			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
+
+			r.gravity.push({0,0,0}, 0.25f);
+			r.gravity.push({0,-50,0});
+			r.gravity.push({0,-100,0});
+			r.gravity.push({0,-150,0});
+			r.gravity.push({0,-200,0});
 
 			m_releases.push(std::move(r));
 		}
@@ -96,6 +109,8 @@ namespace JAF {
 		fill(p, rand(pRelease->positionRange), &m_positions);
 		fill(p, rand(pRelease->sizeRange), &m_sizes);
 		fill(p, rand(pRelease->colorRange), &m_colors);
+
+		p->setGravity(pRelease->gravity.front());
 
 		for(auto& it : pRelease->forced)
 			p->add(JAWE::Random::randf(pRelease->forcedWeight.min, pRelease->forcedWeight.max), it.get());

@@ -25,12 +25,8 @@ namespace JAF {
 
 		SequenceCreator()
 		{
-			m_nrRockets.push(1);
-			m_nrRockets.push(2);
-			m_nrRockets.push(3);
-			m_nrRockets.push(4);
-			m_nrRockets.push(5);
-			m_nrRockets.push(6);
+			for(int i=0; i<Settings::maxRocketsPerSequence(); ++i)
+				m_nrRockets.push(i+1);
 
 			m_intervals.push(0.0f);
 			m_intervals.push(0.25f);

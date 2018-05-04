@@ -11,6 +11,8 @@ namespace JAF {
 		static bool allowPositionDeviation() { return true; }
 		static bool allowBurstDeviation() { return true; }
 		static bool allowTrailDeviation()  { return false; }
-		static UINT nrBursts() { return 2; }
+		static UINT nrBursts() { return 3; }
+		static int minNrRockets() { return 1; }
+		static int maxRocketsPerSequence() { return 8; }
 	};
 };

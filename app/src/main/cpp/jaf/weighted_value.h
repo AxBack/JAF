@@ -31,6 +31,8 @@ namespace JAF {
 			m_total = 0.0f;
 		}
 
+		UINT size() const { return m_values.size(); }
+
 		std::vector<float> deviate(float d) const
 		{
 			if(d <= 0.0f)

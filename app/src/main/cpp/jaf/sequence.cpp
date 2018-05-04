@@ -14,18 +14,14 @@ namespace JAF {
 
 	void Sequence::start()
 	{
-		m_active = true;
-		m_rocketCounter = 0;
-		m_nrRelevantParticles = static_cast<int>(m_rockets.size());
-		m_rocketCounter = 0;
+
 	}
 
 	void Sequence::onDead(const Particle* pParticle)
 	{
-		if(m_nrRelevantParticles == pParticle->getType())
-		{
-			m_active = false;
-		}
+		--m_nrActiveRockets;
+		if(m_nrActiveRockets < 0)
+			throw std::invalid_argument("Too many callbacks");
 	}
 
 	void Sequence::update(float dt)
@@ -35,8 +31,9 @@ namespace JAF {
 			m_rockets.front().offsetTime -= dt;
 			if(m_rockets.front().offsetTime <= 0)
 			{
+				++m_nrActiveRockets;
 				Rocket& r = m_rockets.front();
-				fireRelevant(r.pBehaviour, m_offset, ++m_rocketCounter);
+				fireRelevant(r.pBehaviour, m_offset);
 				r.pBehaviour->decrementUsers();
 				m_rockets.pop();
 			}

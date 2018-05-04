@@ -19,9 +19,7 @@ namespace JAF {
 
 		Updater* m_pUpdater;
 
-		int m_nrRelevantParticles { 0 };
-		int m_rocketCounter {0 };
-		bool m_active { false };
+		int m_nrActiveRockets { 0 };
 
 		std::queue<Rocket> m_rockets;
 
@@ -40,7 +38,7 @@ namespace JAF {
 			m_offset.translate(0,-1000,0);
 		}
 
-		bool active() const { return m_active; }
+		int nrActiveRockets() const { return m_nrActiveRockets; }
 
 		void addRocket(float offsetTime, Behaviour* pBehaviour)
 		{

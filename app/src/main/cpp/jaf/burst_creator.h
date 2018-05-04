@@ -25,6 +25,7 @@ namespace JAF {
 			BalancedCollection<float> interval;
 			BalancedCollection<UINT> nrParticles;
 			BalancedCollection<int> nrPerSubBurst;
+			BalancedCollection<Vector3> gravity;
 		};
 
 		BalancedCollection<vec3_path_ptr> m_positions;

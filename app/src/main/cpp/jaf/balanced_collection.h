@@ -35,26 +35,7 @@ namespace JAF {
 
 		T front()
 		{
-			if(m_items.size() == 0)
-				throw std::length_error("No items");
-			else if(m_items.size() == 1)
-				return m_items[0].item;
-
-			UINT index = 0;
-			for(UINT i=1; i<m_items.size(); ++i)
-			{
-				if(m_items[i].value > m_items[index].value
-				   || (m_items[i].value == m_items[index].value && JAWE::Random::randb()) )
-				{
-					m_items[index].value += m_modifier;
-					index = i;
-				}
-				else
-					m_items[i].value += m_modifier;
-			}
-
-			m_items[index].value -= m_modifier * m_items[index].factor;
-			return m_items[index].item;
+			return *frontPtr();
 		}
 
 		T* frontPtr()
