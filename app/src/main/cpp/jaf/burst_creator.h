@@ -1,9 +1,11 @@
 #pragma once
 
+#include <atomic>
 #include "balanced_collection.h"
 #include "../jawe/vector3.h"
 #include "creator.h"
 #include "burst_behaviour.h"
+#include "settings.h"
 
 namespace JAF {
 

@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import com.wallpaper.axb.engine.R;
 import com.wallpaper.axb.engine.WallpaperService;
@@ -16,9 +20,6 @@ import com.wallpaper.axb.engine.WallpaperService;
  */
 public class MainActivity extends Activity {
 
-    // TODO: this should probably be bounded by a ServiceConnection.
-    public static WallpaperService sWallpaperService;
-
     /**
      * {@inheritDoc}
      */
@@ -27,8 +28,22 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        final LinearLayout main = findViewById(R.id.main);
+
         Button btn = findViewById(R.id.setBtn);
         btn.setOnClickListener((View v) -> setAsWallpaper());
+
+        View v = LayoutInflater.from(this).inflate(R.layout.check_box_item, main);
+        final CheckBoxItem deviation = v.findViewById(R.id.check_box_item);
+        deviation.setData(R.string.allow_deviation_text, R.string.deviation_desc, true, (CompoundButton b, boolean checked) -> {
+            updatePrefs("AllowDeviation", checked);
+        });
+    }
+
+    private void updatePrefs(String key, boolean value) {
+        SharedPreferences.Editor editor = this.getSharedPreferences("JAF", MODE_PRIVATE).edit();
+        editor.putBoolean(key, value);
+        editor.apply();
     }
 
     /**
@@ -36,8 +51,8 @@ public class MainActivity extends Activity {
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (sWallpaperService != null && requestCode == 123 && resultCode == RESULT_OK) {
-            sWallpaperService.restart();
+        if ( requestCode == 123 && resultCode == RESULT_OK) {
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

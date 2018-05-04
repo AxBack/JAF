@@ -3,6 +3,8 @@
 #include "pch.h"
 #include "jaf/engine.h"
 
+#include "jaf/settings.h"
+
 #include <map>
 
 int id = 0;
@@ -116,6 +118,12 @@ Java_com_wallpaper_axb_engine_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, job
         it->second->setOffset(x,y);
     else
         LOGE("No engine to touch");
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_allowDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+{
+	JAF::Settings::allowDeviation(static_cast<bool>(allow));
 }
 
 }

@@ -122,6 +122,13 @@ namespace JAF {
 
 	BurstBehaviour* BurstCreator::create()
 	{
+		if(Settings::nrBursts() != m_nrBursts.size())
+		{
+			m_nrBursts.clear();
+			for(UINT i=1; i<=Settings::nrBursts(); ++i)
+				m_nrBursts.push(i);
+		}
+
 		BurstBehaviour* p = getBehaviour();
 		if(Settings::allowBurstDeviation())
 		{

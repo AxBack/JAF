@@ -2,14 +2,24 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:divider="#000000"
+    android:dividerPadding="4dp"
     tools:context="com.wallpaper.axb.view.MainActivity">
 
     <Button
         android:id="@+id/setBtn"
-        android:text="Set"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/generic_margin"
+        android:paddingBottom="@dimen/generic_margin"
+        android:paddingEnd="@dimen/generic_margin"
+        android:paddingStart="@dimen/generic_margin"
+        android:paddingTop="@dimen/generic_margin"
+        android:text="@string/set_text"/>
+
 </LinearLayout>

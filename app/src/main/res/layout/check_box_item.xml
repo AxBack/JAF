@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.wallpaper.axb.view.CheckBoxItem xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/check_box_item"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="201dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="@dimen/generic_margin"
+            android:text="@string/allow_deviation_text"
+            android:textAppearance="@android:style/TextAppearance.Material.Title"/>
+
+        <Switch
+            android:id="@+id/switchbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:paddingBottom="@dimen/generic_margin"
+            android:paddingEnd="@dimen/generic_margin"
+            android:paddingStart="@dimen/generic_margin"
+            android:paddingTop="@dimen/generic_margin"
+            android:switchPadding="20dp"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/desc_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingBottom="@dimen/item_padding_ends"
+        android:paddingEnd="@dimen/generic_margin"
+        android:paddingStart="@dimen/generic_margin"
+        android:text="@string/deviation_desc"/>
+
+</com.wallpaper.axb.view.CheckBoxItem>

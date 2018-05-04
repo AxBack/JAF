@@ -30,6 +30,7 @@ namespace JAF {
 		{}
 
 		UINT size() { return (UINT)m_items.size(); }
+		void clear() { m_items.clear(); }
 
 		void push(T v, float factor = 1.0f) { m_items.push_back({ 0, factor, v}); }
 

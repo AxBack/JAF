@@ -44,6 +44,13 @@ namespace JAF {
 
 	void SequenceCreator::create(Sequence& out)
 	{
+		if(Settings::maxRocketsPerSequence() != m_nrRockets.size())
+		{
+			m_nrRockets.clear();
+			for(int i=0; i<Settings::maxRocketsPerSequence(); ++i)
+				m_nrRockets.push(i+1);
+		}
+
 		createRockets(out);
 	}
 

@@ -5,6 +5,7 @@
     <dimen name="generic_margin">8dp</dimen>
     <dimen name="generic_elevation">4dp</dimen>
     <dimen name="generic_card_corner_radius">2dp</dimen>
+    <dimen name="item_padding_ends">20dp</dimen>
 
     <!-- Settings screen -->
     <item name="settings_screen_alpha" format="float" type="dimen">0.9</item>

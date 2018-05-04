@@ -1,6 +1,7 @@
 package com.wallpaper.axb.engine;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.opengl.GLSurfaceView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
@@ -15,7 +16,6 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
     private static final boolean DEBUG = true;
 
     private Engine mEngine;
-    private static Engine mLiveEngine;
 
     @Override
     public void onCreate() {
@@ -24,25 +24,13 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
 
     @Override
     public void onDestroy() {
-        if(MainActivity.sWallpaperService == this)
-            MainActivity.sWallpaperService = null;
         super.onDestroy();
-    }
-
-    private void onLive(Engine engine) {
-        MainActivity.sWallpaperService = this;
-        mLiveEngine = engine;
     }
 
     @Override
     public android.service.wallpaper.WallpaperService.Engine onCreateEngine() {
         mEngine = new Engine();
         return mEngine;
-    }
-
-    public void restart() {
-        if(mLiveEngine != null)
-            mLiveEngine.restart();
     }
 
     private class Engine extends android.service.wallpaper.WallpaperService.Engine {
@@ -57,10 +45,6 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
             super.onCreate(surfaceHolder);
 
             mSurfaceView = new WallpaperView(WallpaperService.this);
-
-            if(!isPreview()) {
-                onLive(this);
-            }
         }
 
         public void restart() {
