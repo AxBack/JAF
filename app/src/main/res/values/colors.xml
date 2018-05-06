@@ -6,4 +6,6 @@
 
     <color name="settings_background">#ececec</color>
     <color name="settings_card_background">#ffffff</color>
+
+    <color name="ic_background">#ff000000</color>
 </resources>
