@@ -1,7 +1,17 @@
 <resources>
     <string name="app_name">JAF</string>
     <string name="description">JAF Desc</string>
-    <string name="set_text">set</string>
-    <string name="allow_deviation_text">Allow deviation</string>
-    <string name="deviation_desc">Check to enable some deviation between rockets of the same type.</string>
+    <string name="set_text">Set wallpaper</string>
+    <string name="allow_rocket_deviation_label">Allow rocket deviation</string>
+    <string name="rocket_deviation_desc">Enables deviation between rockets of same type. Makes the presentation more sporadic.</string>
+    <string name="allow_burst_deviation_label">Allow burst deviation</string>
+    <string name="burst_deviation_desc">Enables deviation between the burst of each rockets. Makes the presentation more varied.</string>
+    <string name="allow_trail_deviation_label">Allow trail deviation</string>
+    <string name="trail_deviation_desc">Enables deviation in the trail of each rocket.</string>
+    <string name="nr_bursts_label">Number of sub-bursts</string>
+    <string name="nr_burst_desc">Each explosion consist of a number of burst. The more burst the more varied each explosion is.</string>
+    <string name="min_number_rockets_label">Minimum number of rockets.</string>
+    <string name="min_number_rockets_desc">The minimum number of rocket until a new sequence of rockets is fired. The bigger this number is the more intense the presentation. (Warning: A big number will increase battery consumption)</string>
+    <string name="max_number_rockets_label">Maximum number of rockets per sequence.</string>
+    <string name="max_number_rockets_desc">Determines the maximum number of rockets that can be fired as part of a sequence.</string>
 </resources>

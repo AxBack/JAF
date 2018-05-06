@@ -62,9 +62,9 @@ namespace JAF {
 		virtual RocketBehaviour* create() override
 		{
 			RocketBehaviour* p = getBehaviour();
-			p->init(JAWE::Random::randf(2.0f, 3.0f), Settings::allowTimeDeviation() ?  m_timeDeviation.front() : 0);
+			p->init(JAWE::Random::randf(2.0f, 3.0f), Settings::allowRocketDeviation() ?  m_timeDeviation.front() : 0);
 			fill(p, JAWE::Random::randi(1,2), &m_positions);
-			if(Settings::allowPositionDeviation())
+			if(Settings::allowRocketDeviation())
 				p->setPositionDeviation(m_positionDeviation.front());
 			p->normalize();
 

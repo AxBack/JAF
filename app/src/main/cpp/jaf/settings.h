@@ -10,22 +10,28 @@ namespace JAF {
 	{
 	private:
 
-		static std::atomic_bool m_allowDeviation;
-		static std::atomic_bool m_allowTimeDeviation;
-		static std::atomic_bool m_allowPositionDeviation;
-		static std::atomic_bool m_allowBurstDeviation;
-		static std::atomic_bool m_allowTrailDeviation;
+		static std::atomic_bool s_allowRocketDeviation;
+		static std::atomic_bool s_allowBurstDeviation;
+		static std::atomic_bool s_allowTrailDeviation;
+		static std::atomic_int s_nrBursts;
+		static std::atomic_int s_minNrRockets;
+		static std::atomic_int s_maxNrRocketsPerSequence;
 
 	public:
 
-		static bool allowTimeDeviation() { return m_allowDeviation && m_allowTimeDeviation; }
-		static bool allowPositionDeviation() { return m_allowDeviation && m_allowPositionDeviation; }
-		static bool allowBurstDeviation() { return m_allowDeviation && m_allowBurstDeviation; }
-		static bool allowTrailDeviation()  { return m_allowDeviation && m_allowTrailDeviation; }
-		static UINT nrBursts() { return 3; }
-		static int minNrRockets() { return 1; }
-		static int maxRocketsPerSequence() { return 8; }
+		static bool allowRocketDeviation() { return s_allowRocketDeviation; }
+		static bool allowBurstDeviation() { return s_allowBurstDeviation; }
+		static bool allowTrailDeviation()  { return s_allowTrailDeviation; }
+		static UINT nrBursts() { return s_nrBursts; }
+		static int minNrRockets() { return s_minNrRockets; }
+		static int maxRocketsPerSequence() { return s_maxNrRocketsPerSequence; }
 
-		static void allowDeviation(bool allow) { m_allowDeviation = allow; }
+		static void allowRocketDeviation(bool allow) { s_allowRocketDeviation = allow; }
+		static void allowBurstDeviation(bool allow) { s_allowBurstDeviation = allow; }
+		static void allowTrailDeviation(bool allow) { s_allowTrailDeviation = allow; }
+
+		static void nrBursts(int nr) { s_nrBursts = nr; }
+		static void minNrRockets(int nr) { s_minNrRockets = nr; }
+		static void maxNrRocketsPerSequence(int nr) { s_maxNrRocketsPerSequence = nr; }
 	};
 };

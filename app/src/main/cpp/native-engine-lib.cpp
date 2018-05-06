@@ -121,9 +121,39 @@ Java_com_wallpaper_axb_engine_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, job
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_allowDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+Java_com_wallpaper_axb_engine_NativeEngine_allowRocketDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
 {
-	JAF::Settings::allowDeviation(static_cast<bool>(allow));
+	JAF::Settings::allowRocketDeviation(static_cast<bool>(allow));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_allowBurstDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+{
+	JAF::Settings::allowBurstDeviation(static_cast<bool>(allow));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_allowTrailDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+{
+	JAF::Settings::allowTrailDeviation(static_cast<bool>(allow));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_setNrBursts(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+{
+	JAF::Settings::nrBursts(static_cast<int>(nr));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_setMinNrRockets(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+{
+	JAF::Settings::minNrRockets(static_cast<int>(nr));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_setMaxNrRocketsPerSequence(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+{
+	JAF::Settings::maxNrRocketsPerSequence(static_cast<int>(nr));
 }
 
 }

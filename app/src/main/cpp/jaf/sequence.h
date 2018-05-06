@@ -38,7 +38,7 @@ namespace JAF {
 			m_offset.translate(0,-1000,0);
 		}
 
-		int nrActiveRockets() const { return m_nrActiveRockets; }
+		int nrActiveRockets() const { return static_cast<int>(m_nrActiveRockets + m_rockets.size()); }
 
 		void addRocket(float offsetTime, Behaviour* pBehaviour)
 		{
