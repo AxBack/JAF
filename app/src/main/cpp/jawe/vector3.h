@@ -58,6 +58,13 @@ namespace Math {
 					m_data[Z] == rhs.m_data[Z];
 		}
 
+		bool operator!=(const Vector3& rhs) const
+		{
+			return m_data[X] != rhs.m_data[X] ||
+				   m_data[Y] != rhs.m_data[Y] ||
+				   m_data[Z] != rhs.m_data[Z];
+		}
+
 		Vector3 operator*(const float scale) const {
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
 		}
