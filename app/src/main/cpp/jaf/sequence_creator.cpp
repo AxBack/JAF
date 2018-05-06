@@ -14,8 +14,8 @@ namespace JAF {
 		Math::Vector3 offset = {0,0,0};
 		float tag = 0;
 
-		auto type = nrRockets == 1 ? RocketBehaviour::POINT : m_offsets.front();
-		switch(type)
+		auto release = m_offsets.front();
+		switch(release.type)
 		{
 			case RocketBehaviour::LINE:
 				{
@@ -32,14 +32,14 @@ namespace JAF {
 			{
 				offset.x(JAWE::Random::randf(-200, 200));
 				offset.z(JAWE::Random::randf(-200, 200));
-				tag = 360.0f / static_cast<float>(nrRockets);
+				tag = release.tag / static_cast<float>(nrRockets);
 			}
 			break;
 			default:
 				break;
 		}
 
-		pBehaviour->setOffset(type, offset, tag);
+		pBehaviour->setOffset(release.type, offset, tag);
 	}
 
 	void SequenceCreator::create(Sequence& out)

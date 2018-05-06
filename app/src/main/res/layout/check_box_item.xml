@@ -18,8 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="@dimen/generic_margin"
-            android:text="@string/allow_deviation_text"
-            android:textAppearance="@android:style/TextAppearance.Material.Title"/>
+            android:text="test"
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
 
         <Switch
             android:id="@+id/switchbox"
@@ -44,6 +44,6 @@
         android:paddingBottom="@dimen/item_padding_ends"
         android:paddingEnd="@dimen/generic_margin"
         android:paddingStart="@dimen/generic_margin"
-        android:text="@string/deviation_desc"/>
+        android:text="text"/>
 
 </com.wallpaper.axb.view.CheckBoxItem>

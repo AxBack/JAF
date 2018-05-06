@@ -13,9 +13,15 @@ namespace JAF {
 	{
 	private:
 
+		struct Release
+		{
+			RocketBehaviour::OffsetType type;
+			float tag;
+		};
+
 		BalancedCollection<int> m_nrRockets;
 		BalancedCollection<float> m_intervals;
-		BalancedCollection<RocketBehaviour::OffsetType> m_offsets;
+		BalancedCollection<Release> m_offsets;
 
 		RocketCreator m_rocketCreator;
 
@@ -34,9 +40,11 @@ namespace JAF {
 			m_intervals.push(0.75f);
 			m_intervals.push(1.0f);
 
-			m_offsets.push(RocketBehaviour::POINT);
-			m_offsets.push(RocketBehaviour::LINE);
-			m_offsets.push(RocketBehaviour::CIRCLE);
+			m_offsets.push({RocketBehaviour::POINT, 0});
+			m_offsets.push({RocketBehaviour::LINE, 0});
+			m_offsets.push({RocketBehaviour::CIRCLE, 360 });
+			m_offsets.push({RocketBehaviour::CIRCLE, 180 });
+			m_offsets.push({RocketBehaviour::CIRCLE, 90 });
 		}
 
 		void create(Sequence& out);
