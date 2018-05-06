@@ -36,6 +36,9 @@ namespace JAF {
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
 
+		m_deviation.push(true, 0.25f);
+		m_deviation.push(false);
+
 		for(float v=0.0f; v < 0.6f; v+=0.1f)
 		{
 			m_timeDeviation.push(v);
@@ -48,7 +51,7 @@ namespace JAF {
 	BurstBehaviour* BurstCreator::create()
 	{
 		BurstBehaviour* p = getBehaviour();
-		if(Settings::allowBurstDeviation())
+		if(Settings::allowBurstDeviation() && m_deviation.front())
 		{
 			p->init(JAWE::Random::randf(1.5, 2.5), m_timeDeviation.front());
 			p->setDeviation(m_positionDeviation.front(), m_sizeDeviation.front(),

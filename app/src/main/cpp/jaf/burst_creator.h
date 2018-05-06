@@ -25,6 +25,7 @@ namespace JAF {
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
 
+		BalancedCollection<bool> m_deviation;
 		BalancedCollection<float> m_timeDeviation;
 		BalancedCollection<float> m_positionDeviation;
 		BalancedCollection<float> m_sizeDeviation;
