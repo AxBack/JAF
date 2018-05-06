@@ -33,9 +33,6 @@ namespace JAF {
 		pData->sizeWeights = m_size.deviate(m_sizeDeviation);
 		pData->colorWeights = m_color.deviate(m_colorDeviation);
 
-		for(UINT i=0; i<m_releases.size(); ++i)
-			pData->releases.push_back({i, m_releases[i].interval, m_releases[i].total});
-
 		pParticle->fire(this);
 		pItem->setData(pData);
 		pItem->setPosition(offset.transform({0,0,0}, 1));
@@ -63,43 +60,10 @@ namespace JAF {
 			pItem->setPosition(pData->position);
 		}
 
-
 		pItem->setRadius(m_size.update(0.0f, pData->sizeWeights, delta));
 		pItem->setColor(m_color.update({0,0,0,0}, pData->colorWeights, delta));
 
-		updateReleases(pUpdateData, pData, pItem);
 
 		return true;
-	}
-
-	void BurstBehaviour::updateReleases(UpdateData* pUpdateData, Data* pData, BehaviourInfluenced* pItem)
-	{
-		for(auto it = pData->releases.begin(); it != pData->releases.end();)
-		{
-			if((it->counter -= pUpdateData->dt) <= 0.0f)
-			{
-				const Release& release = m_releases[it->index];
-				it->counter += release.interval;
-
-				Math::Matrix offset = pItem->calculateTransform();
-
-				int nr = std::min(release.nrPerInterval, it->nrParticlesLeft);
-				for(int i=0; i<nr; ++i)
-				{
-					Particle* p = pUpdateData->pUpdater->fireParticle();
-					release.pBehaviour->start(p, offset);
-				}
-
-				it->nrParticlesLeft -= nr;
-
-				if(it->nrParticlesLeft <= 0)
-				{
-					it = pData->releases.erase(it);
-					continue;
-				}
-			}
-
-			++it;
-		}
 	}
 }

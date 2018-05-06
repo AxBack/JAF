@@ -54,8 +54,11 @@ namespace JAF {
 			Math::Matrix offset = pItem->calculateTransform();
 			for(auto& it : m_bursts)
 			{
-				Particle* p = pUpdateData->pUpdater->fireParticle();
-				it->start(p, offset);
+				for(UINT i=0; i<it.nr; ++i)
+				{
+					Particle* p = pUpdateData->pUpdater->fireParticle();
+					it.pBehaviour->start(p, offset);
+				}
 			}
 
 			return false;

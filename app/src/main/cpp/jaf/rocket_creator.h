@@ -22,6 +22,8 @@ namespace JAF {
 		BalancedCollection<float> m_positionDeviation;
 
 		BalancedCollection<vec3_path_ptr> m_positions;
+		BalancedCollection<UINT> m_nrBursts;
+		BalancedCollection<UINT> m_nrParticles;
 
 		BurstCreator m_burstCreator;
 		TrailCreator m_trailCreator;
@@ -38,6 +40,12 @@ namespace JAF {
 			m_positionDeviation.push(0.1f);
 			m_positionDeviation.push(0.2f);
 			m_positionDeviation.push(0.3f);
+
+			m_nrParticles.push(20, 0.75f);
+			m_nrParticles.push(50, 0.75f);
+			m_nrParticles.push(100);
+			m_nrParticles.push(150);
+			m_nrParticles.push(200);
 
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
 			m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));
@@ -61,6 +69,13 @@ namespace JAF {
 
 		virtual RocketBehaviour* create() override
 		{
+			if(Settings::nrBursts() != m_nrBursts.size())
+			{
+				m_nrBursts.clear();
+				for(UINT i=1; i<=Settings::nrBursts(); ++i)
+					m_nrBursts.push(i);
+			}
+
 			RocketBehaviour* p = getBehaviour();
 			p->init(JAWE::Random::randf(2.0f, 3.0f), Settings::allowRocketDeviation() ?  m_timeDeviation.front() : 0);
 			fill(p, JAWE::Random::randi(1,2), &m_positions);
@@ -68,7 +83,10 @@ namespace JAF {
 				p->setPositionDeviation(m_positionDeviation.front());
 			p->normalize();
 
-			p->add(m_burstCreator.create());
+			UINT nr = m_nrBursts.front();
+			for(UINT i=0; i<nr; ++i)
+				p->add(m_nrParticles.front(), m_burstCreator.create());
+
 			p->add(0.025f, m_trailCreator.create());
 
 			return p;

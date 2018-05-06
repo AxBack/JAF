@@ -14,13 +14,19 @@ namespace JAF {
 
 	private:
 
+		struct Burst
+		{
+			UINT nr;
+			Behaviour* pBehaviour;
+		};
+
 		struct Trail
 		{
 			float interval;
 			Behaviour* pBehaviour;
 		};
 
-		typedef std::vector<Behaviour*> burst_vec;
+		typedef std::vector<Burst> burst_vec;
 		typedef std::vector<Trail> trail_vec;
 		typedef std::vector<float> float_vec;
 
@@ -57,7 +63,7 @@ namespace JAF {
 			m_nrReleased = 0;
 
 			for(auto& it : m_bursts)
-				it->decrementUsers();
+				it.pBehaviour->decrementUsers();
 			m_bursts.clear();
 
 			for(auto& it : m_trails)
@@ -72,10 +78,9 @@ namespace JAF {
 
 		void setPositionDeviation(float deviation) { m_positionDeviation = deviation; }
 
-		void add(Behaviour* pBehaviour)
+		void add(UINT nr, Behaviour* pBehaviour)
 		{
-			pBehaviour->incrementUsers();
-			m_bursts.push_back(pBehaviour);
+			m_bursts.push_back({nr, pBehaviour->incrementUsers()});
 		}
 
 		void add(float interval, Behaviour* pBehaviour)

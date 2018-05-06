@@ -15,27 +15,15 @@ namespace JAF {
 
 		template <typename T> struct Range { T min, max; };
 
-		struct Release
-		{
-			Range<int> positionRange;
-			Range<int> sizeRange;
-			Range<int> colorRange;
-			Range<float> forcedWeight;
-			std::vector<vec3_path_ptr> forced;
-			BalancedCollection<float> degrees;
-			BalancedCollection<vec3_path_ptr> releasePath;
-			BalancedCollection<float> interval;
-			BalancedCollection<UINT> nrParticles;
-			BalancedCollection<int> nrPerSubBurst;
-			BalancedCollection<Vector3> gravity;
-		};
+		Range<int> m_positionRange {1, 2};
+		Range<int> m_sizeRange {1, 2};
+		Range<int> m_colorRange {1, 2};
+
+		BalancedCollection<Vector3> m_gravity;
 
 		BalancedCollection<vec3_path_ptr> m_positions;
-		BalancedCollection<Release> m_releases;
 		BalancedCollection<float_path_ptr> m_sizes;
 		BalancedCollection<color_path_ptr> m_colors;
-
-		BalancedCollection<UINT> m_nrBursts;
 
 		BalancedCollection<float> m_timeDeviation;
 		BalancedCollection<float> m_positionDeviation;
@@ -43,8 +31,6 @@ namespace JAF {
 		BalancedCollection<float> m_colorDeviation;
 
 		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
-
-		Behaviour* from(Release* pRelease);
 
 	public:
 

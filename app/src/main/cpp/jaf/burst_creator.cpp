@@ -6,64 +6,10 @@ namespace JAF {
 	BurstCreator::BurstCreator()
 		: PathBehaviourCreator(5)
 	{
-		{
-			Release r = { {1, 2}, {1,2}, {1,2} };
-			r.degrees.push(180.0f);
-			r.interval.push(0.0f);
-			r.nrPerSubBurst.push(INT_MAX);
 
-			r.nrParticles.push(20, 0.75f);
-			r.nrParticles.push(50, 0.75f);
-			r.nrParticles.push(100);
-			r.nrParticles.push(150);
-			r.nrParticles.push(200);
-
-			r.gravity.push({0,0,0});
-			r.gravity.push({0,0,0});
-
-			r.gravity.push({0,0,0}, 0.2f);
-			r.gravity.push({0,-50,0});
-			r.gravity.push({0,-100,0});
-
-			r.releasePath.push(createPath(1, (Vector3[]){{0,0,0}, {0,1,0}}));
-
-			m_releases.push(std::move(r));
-		}
-
-		{
-			Release r = { {1, 2}, {1,2}, {1,2}, {0.1, 0.2} };
-			r.forced.push_back(createPath(1, (Vector3[]){{0,0,0}}));
-			r.degrees.push(45.0f, 0.5f);
-			r.degrees.push(90.0f);
-
-			r.interval.push(0.0f);
-			r.interval.push(0.01f);
-			r.interval.push(0.02f);
-			r.interval.push(0.03f);
-			r.interval.push(0.04f);
-			r.interval.push(0.05f);
-
-			r.nrParticles.push(50);
-			r.nrParticles.push(80);
-			r.nrParticles.push(100);
-
-			r.nrPerSubBurst.push(5);
-			r.nrPerSubBurst.push(10, 0.5f);
-			r.nrPerSubBurst.push(20, 0.5f);
-			r.nrPerSubBurst.push(30, 0.25f);
-
-			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,100,0}}));
-			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,200,0}}));
-			r.releasePath.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}));
-
-			r.gravity.push({0,0,0}, 0.25f);
-			r.gravity.push({0,-50,0});
-			r.gravity.push({0,-100,0});
-			r.gravity.push({0,-150,0});
-			r.gravity.push({0,-200,0});
-
-			m_releases.push(std::move(r));
-		}
+		m_gravity.push({0,0,0}, 0.2f);
+		m_gravity.push({0,-50,0});
+		m_gravity.push({0,-100,0});
 
 		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,1000,0}}), 1.25f);
 		m_positions.push(createPath(2, (Vector3[]){{0,0,0}, {0,300,0}}), 1.25f);
@@ -90,9 +36,6 @@ namespace JAF {
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {0,1,1,1}, {0,1,1,0}}));
 		m_colors.push(createPath(3, (Color[]){{1,1,1,1}, {1,0,1,1}, {1,0,1,0}}));
 
-		for(UINT i=1; i<=Settings::nrBursts(); ++i)
-			m_nrBursts.push(i);
-
 		for(float v=0.0f; v < 0.6f; v+=0.1f)
 		{
 			m_timeDeviation.push(v);
@@ -102,64 +45,25 @@ namespace JAF {
 		}
 	}
 
-	Behaviour* BurstCreator::from(Release* pRelease)
-	{
-		BurstBehaviour* p = getBehaviour();
-		p->init(JAWE::Random::randf(1.5, 2.5));
-		fill(p, rand(pRelease->positionRange), &m_positions);
-		fill(p, rand(pRelease->sizeRange), &m_sizes);
-		fill(p, rand(pRelease->colorRange), &m_colors);
-
-		p->setGravity(pRelease->gravity.front());
-
-		for(auto& it : pRelease->forced)
-			p->add(JAWE::Random::randf(pRelease->forcedWeight.min, pRelease->forcedWeight.max), it.get());
-
-		p->setRelease(pRelease->degrees.front());
-		p->normalize();
-		return p;
-	}
-
 	BurstBehaviour* BurstCreator::create()
 	{
-		if(Settings::nrBursts() != m_nrBursts.size())
-		{
-			m_nrBursts.clear();
-			for(UINT i=1; i<=Settings::nrBursts(); ++i)
-				m_nrBursts.push(i);
-		}
-
 		BurstBehaviour* p = getBehaviour();
 		if(Settings::allowBurstDeviation())
 		{
-			p->init(1.0f, m_timeDeviation.front());
+			p->init(JAWE::Random::randf(1.5, 2.5), m_timeDeviation.front());
 			p->setDeviation(m_positionDeviation.front(), m_sizeDeviation.front(),
 							m_colorDeviation.front());
 		}
 		else
-			p->init(1.0f);
+			p->init(JAWE::Random::randf(1.5, 2.5));
 
-		Release* pRelease = m_releases.frontPtr();
+		fill(p, rand(m_positionRange), &m_positions);
+		fill(p, rand(m_sizeRange), &m_sizes);
+		fill(p, rand(m_colorRange), &m_colors);
 
-		p->setRelease(0.0f);
-		p->add(1.0f, pRelease->releasePath.front().get());
+		p->setGravity(m_gravity.front());
 
-		UINT nrParticles = pRelease->nrParticles.front();
-		UINT nrBursts = m_nrBursts.front();
-
-		float factor = 1.0f / static_cast<float>(nrBursts);
-		UINT nr = static_cast<UINT>(static_cast<float>(nrParticles) * factor);
-
-		for(UINT i=0; i<nrBursts; ++i)
-		{
-			float interval = pRelease->interval.front();
-			int nrPerSubBurst = 0;
-			if(interval > 0)
-			{
-				nrPerSubBurst = pRelease->nrPerSubBurst.front();
-			}
-			p->add(nr, from(pRelease), interval, nrPerSubBurst);
-		}
+		p->normalize();
 
 		return p;
 	}
