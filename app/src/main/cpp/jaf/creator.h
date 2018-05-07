@@ -4,6 +4,7 @@
 #include "../jawe/path.h"
 #include "behaviour.h"
 #include "../jawe/bank.h"
+#include "balanced_collection.h"
 
 namespace JAF {
 
@@ -11,6 +12,11 @@ namespace JAF {
 	class Creator : public BehaviourListener
 	{
 	protected:
+
+		template <typename K> struct Range { K min, max; };
+
+		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
+		float rand(const Range<float>& range) { return JAWE::Random::randf(range.min, range.max); }
 
 		T* getBehaviour()
 		{

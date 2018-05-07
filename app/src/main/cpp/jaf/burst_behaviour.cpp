@@ -10,11 +10,6 @@ namespace JAF {
 		if(pParticle == nullptr)
 			return;
 
-		start(pParticle, offset);
-	}
-
-	void BurstBehaviour::start(Particle* pParticle, const Math::Matrix& offset)
-	{
 		Data* pData = getData();
 		if(m_gravity.lengthSq() <= 0)
 		{

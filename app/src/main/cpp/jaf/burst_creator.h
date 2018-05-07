@@ -11,9 +11,7 @@ namespace JAF {
 
 	class BurstCreator : public PathBehaviourCreator<BurstBehaviour>
 	{
-	private:
-
-		template <typename T> struct Range { T min, max; };
+	protected:
 
 		struct Release
 		{
@@ -43,9 +41,6 @@ namespace JAF {
 		Release* m_pCurrentRelease;
 		bool m_deviate { false };
 
-		int rand(const Range<int>& range) { return JAWE::Random::randi(range.min, range.max); }
-		float rand(const Range<float>& range) { return JAWE::Random::randf(range.min, range.max); }
-
 		Release createRelease(const Math::Vector3& rot, const Range<float>& range, UINT nrPoints, Vector3* pPoints)
 		{
 			Release r { rot, range };
@@ -53,11 +48,13 @@ namespace JAF {
 				r.pForced = createPath(nrPoints, pPoints);
 
 			return std::move(r);
-		};
+		}
 
 	public:
 
 		BurstCreator();
+
+		virtual void init();
 
 		virtual BurstBehaviour* create() override;
 
@@ -67,5 +64,4 @@ namespace JAF {
 			m_deviate = Settings::allowRocketDeviation() && m_deviation.front();
 		}
 	};
-
-};
+}

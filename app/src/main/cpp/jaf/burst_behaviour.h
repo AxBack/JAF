@@ -25,12 +25,10 @@ namespace JAF {
 			float_vec colorWeights;
 		};
 
-		virtual Data* createData() {return new Data(); }
-
 	private:
 
 		typedef JAWE::Bank<Data*> data_bank;
-		data_bank m_data {[this](){return createData(); }, [](Data* p) { delete p; }};
+		data_bank m_data {[this](){ return new Data(); }, [](Data* p) { delete p; }};
 
 		WeightedValue<Math::Vector3> m_position;
 		WeightedValue<float> m_size;
@@ -64,10 +62,6 @@ namespace JAF {
 			return pData;
 		}
 
-	protected:
-
-		virtual void start(Particle* pParticle, const Math::Matrix& offset);
-
 	public:
 
 		virtual void clear() override
@@ -90,7 +84,6 @@ namespace JAF {
 			m_sizeDeviation = size;
 			m_colorDeviation = color;
 		}
-
 
 		void add(float weight, JAWE::Path<Math::Vector3>* pPosition)
 		{

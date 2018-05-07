@@ -6,7 +6,10 @@ namespace JAF {
 	BurstCreator::BurstCreator()
 		: PathBehaviourCreator(5)
 	{
+	}
 
+	void BurstCreator::init()
+	{
 		m_gravity.push({0,0,0}, 0.2f);
 		m_gravity.push({0,-50,0});
 		m_gravity.push({0,-100,0});
@@ -40,9 +43,9 @@ namespace JAF {
 		m_deviation.push(false);
 
 		m_releaseRotation.push( createRelease({180,180,180}, {0,1}, 0, nullptr));
-		m_releaseRotation.push( createRelease({90,360,90}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
-		m_releaseRotation.push( createRelease({45,360,45}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
-		m_releaseRotation.push( createRelease({10,360,10}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({90,360,90}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({45,360,45}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({10,360,10}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
 
 		for(float v=0.0f; v < 0.3f; v+=0.05f)
 		{
