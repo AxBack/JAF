@@ -10,8 +10,12 @@ namespace JAF {
 		if(pParticle == nullptr)
 			return;
 
-		Data* pData = getData();
+		start(pParticle, offset);
+	}
 
+	void BurstBehaviour::start(Particle* pParticle, const Math::Matrix& offset)
+	{
+		Data* pData = getData();
 		if(m_gravity.lengthSq() <= 0)
 		{
 			pData->offset = calculateOffset(offset);
@@ -34,8 +38,8 @@ namespace JAF {
 		pData->colorWeights = m_color.deviate(m_colorDeviation);
 
 		pParticle->fire(this);
-		pItem->setData(pData);
-		pItem->setPosition(offset.transform({0,0,0}, 1));
+		pParticle->setData(pData);
+		pParticle->setPosition(offset.transform({0,0,0}, 1));
 	}
 
 	bool BurstBehaviour::update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
@@ -63,7 +67,7 @@ namespace JAF {
 		pItem->setRadius(m_size.update(0.0f, pData->sizeWeights, delta));
 		pItem->setColor(m_color.update({0,0,0,0}, pData->colorWeights, delta));
 
-
 		return true;
 	}
+
 }

@@ -46,6 +46,8 @@ namespace JAF {
 
 		virtual T* create() = 0;
 
+		virtual void step() { }
+
 	};
 
 	template <class T>

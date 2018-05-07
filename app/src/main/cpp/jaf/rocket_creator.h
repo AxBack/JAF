@@ -76,6 +76,9 @@ namespace JAF {
 					m_nrBursts.push(i);
 			}
 
+			m_burstCreator.step();
+			m_trailCreator.step();
+
 			RocketBehaviour* p = getBehaviour();
 			p->init(JAWE::Random::randf(2.0f, 3.0f), Settings::allowRocketDeviation() ?  m_timeDeviation.front() : 0);
 			fill(p, JAWE::Random::randi(1,2), &m_positions);

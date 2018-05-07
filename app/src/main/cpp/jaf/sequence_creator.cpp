@@ -4,6 +4,7 @@ namespace JAF {
 
 	void SequenceCreator::createRockets(Sequence& out)
 	{
+		m_rocketCreator.step();
 		RocketBehaviour* pBehaviour = m_rocketCreator.create();
 
 		int nrRockets = m_nrRockets.front();

@@ -3,12 +3,13 @@
 #include "behaviour.h"
 #include "../jawe/bank.h"
 #include "weighted_value.h"
+#include "particle.h"
 
 namespace JAF {
 
 	class BurstBehaviour : public Behaviour
 	{
-	private:
+	protected:
 
 		typedef std::vector<float> float_vec;
 		struct Data : public BehaviourInfluenced::Data
@@ -24,8 +25,12 @@ namespace JAF {
 			float_vec colorWeights;
 		};
 
+		virtual Data* createData() {return new Data(); }
+
+	private:
+
 		typedef JAWE::Bank<Data*> data_bank;
-		data_bank m_data {[](){return new Data(); }, [](Data* p) { delete p; }};
+		data_bank m_data {[this](){return createData(); }, [](Data* p) { delete p; }};
 
 		WeightedValue<Math::Vector3> m_position;
 		WeightedValue<float> m_size;
@@ -33,15 +38,21 @@ namespace JAF {
 
 		Math::Vector3 m_gravity { 0,0,0 };
 
+		Math::Vector3 m_releaseRotation { 180,180,180 };
+
 		float m_positionDeviation { 0.0f };
 		float m_sizeDeviation = { 0.0f };
 		float m_colorDeviation = { 0.0f };
 
-		Math::Matrix calculateOffset(const Math::Matrix& transform)
+		virtual Math::Matrix calculateOffset(const Math::Matrix& transform)
 		{
-			float x = JAWE::Random::randf(0, 360);
-			float y = JAWE::Random::randf(-90, 90);
-			float z = JAWE::Random::randf(0, 360);
+			float x = m_releaseRotation.x();
+			float y = m_releaseRotation.y();
+			float z = m_releaseRotation.z();
+
+			x = JAWE::Random::randf(-x, x);
+			y = JAWE::Random::randf(-y, y);
+			z = JAWE::Random::randf(-z, z);
 
 			return Math::Matrix::multiply(transform, Math::Matrix::setRotate(x,y,z) );
 		}
@@ -52,6 +63,10 @@ namespace JAF {
 			pData->positionWeights.clear();
 			return pData;
 		}
+
+	protected:
+
+		virtual void start(Particle* pParticle, const Math::Matrix& offset);
 
 	public:
 
@@ -66,6 +81,8 @@ namespace JAF {
 		}
 
 		void setGravity(const Math::Vector3& gravity){ m_gravity = gravity;  }
+
+		void setReleaseRotation(const Math::Vector3& rot) { m_releaseRotation = rot; }
 
 		void setDeviation(float position, float size, float color)
 		{

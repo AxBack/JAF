@@ -39,7 +39,12 @@ namespace JAF {
 		m_deviation.push(true, 0.25f);
 		m_deviation.push(false);
 
-		for(float v=0.0f; v < 0.6f; v+=0.1f)
+		m_releaseRotation.push( createRelease({180,180,180}, {0,1}, 0, nullptr));
+		m_releaseRotation.push( createRelease({90,360,90}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({45,360,45}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({10,360,10}, {0.1f, 0.5f}, 1, (Math::Vector3[]){{0,0,0}}));
+
+		for(float v=0.0f; v < 0.3f; v+=0.05f)
 		{
 			m_timeDeviation.push(v);
 			m_positionDeviation.push(v);
@@ -51,7 +56,7 @@ namespace JAF {
 	BurstBehaviour* BurstCreator::create()
 	{
 		BurstBehaviour* p = getBehaviour();
-		if(Settings::allowBurstDeviation() && m_deviation.front())
+		if(m_deviate)
 		{
 			p->init(JAWE::Random::randf(1.5, 2.5), m_timeDeviation.front());
 			p->setDeviation(m_positionDeviation.front(), m_sizeDeviation.front(),
@@ -65,6 +70,9 @@ namespace JAF {
 		fill(p, rand(m_colorRange), &m_colors);
 
 		p->setGravity(m_gravity.front());
+		p->setReleaseRotation(m_pCurrentRelease->rot);
+		if(m_pCurrentRelease->pForced)
+			p->add(rand(m_pCurrentRelease->weight), m_pCurrentRelease->pForced.get());
 
 		p->normalize();
 

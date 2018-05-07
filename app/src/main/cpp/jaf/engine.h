@@ -51,7 +51,7 @@ namespace JAF {
             , m_camera(1.0f, 2000.0f)
         {
             {
-                float points[] = { -90, 90 };
+                float points[] = { 90, -90 };
                 m_rotation.add(1.0f, 2, points);
             }
         }
