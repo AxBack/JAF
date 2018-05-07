@@ -4,6 +4,7 @@
 #include "../jawe/path.h"
 #include "behaviour.h"
 #include "../jawe/bank.h"
+#include "balanced_collection.h"
 
 namespace JAF {
 

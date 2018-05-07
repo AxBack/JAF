@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../jawe/bank.h"
 #include "burst_behaviour.h"
 
 namespace JAF {
@@ -16,32 +15,48 @@ namespace JAF {
 			Behaviour* pBehaviour;
 		};
 
-		struct ReleaseData : public BurstBehaviour::Data
+		struct IntervalData
 		{
 			UINT releaseIndex;
 			float counter;
 		};
 
-		virtual Data* createData() { return new ReleaseData(); }
-
-		void update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, ReleaseData* pData, float time)
+		struct ReleaseData : public BurstBehaviour::Data
 		{
-			// update and release necessary particles.
-		}
+			std::vector<IntervalData> intervalData;
+		};
+
+		std::vector<Release> m_releases;
+
+		virtual Data* createData() override { return new ReleaseData(); }
+
+		void update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, ReleaseData* pData, float time);
 
 	public:
 
-		virtual bool update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time)
+		virtual void clear() override
 		{
-			if(!BurstBehaviour::update(pUpdateData, pItem, time))
-				return false;
+			BurstBehaviour::clear();
 
-			ReleaseData* pData = reinterpret_cast<ReleaseData*>(pItem->getData());
-			if(pData == nullptr)
-				return false;
-
-			update(pUpdateData, pItem, pData, time);
-			return true;
+			for(auto& it : m_releases)
+				it.pBehaviour->decrementUsers();
+			m_releases.clear();
 		}
+
+		void add(UINT nr, float interval, Behaviour* pBehaviour)
+		{
+			m_releases.push_back({nr, interval, pBehaviour->incrementUsers()});
+		}
+
+		virtual void start(Particle* pParticle, Data* pData, const Math::Matrix& offset) override
+		{
+			ReleaseData* p = reinterpret_cast<ReleaseData*>(pData);
+			for(UINT i=0; 0<m_releases.size(); ++i)
+				p->intervalData.push_back({i, m_releases[i].interval});
+
+			BurstBehaviour::start(pParticle, pData, offset);
+		}
+
+		virtual bool update(UpdateData* pUpdateData, BehaviourInfluenced* pItem, float time) override;
 	};
 }

@@ -66,7 +66,7 @@ namespace JAF {
 
 	protected:
 
-		virtual void start(Particle* pParticle, const Math::Matrix& offset);
+		virtual void start(Particle* pParticle, Data* pData, const Math::Matrix& offset);
 
 	public:
 

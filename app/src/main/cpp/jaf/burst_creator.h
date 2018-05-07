@@ -53,7 +53,7 @@ namespace JAF {
 				r.pForced = createPath(nrPoints, pPoints);
 
 			return std::move(r);
-		};
+		}
 
 	public:
 
@@ -67,5 +67,4 @@ namespace JAF {
 			m_deviate = Settings::allowRocketDeviation() && m_deviation.front();
 		}
 	};
-
-};
+}
