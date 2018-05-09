@@ -18,6 +18,8 @@ namespace JAF {
         if(!m_updater.init())
             return false;
 
+		m_sensor.init(m_id);
+
         LOGI("JAF::Engine( Init end: %d )", m_id);
         return true;
     }
@@ -82,12 +84,24 @@ namespace JAF {
 		m_updater.updateInstances(m_particleMesh);
 
         {
-			m_extra += m_counter.step() * 3.0f;
-            Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_extra + m_rotation.traverse(m_offset));
+			m_sensor.update();
+			Math::Vector3 at = {0,0,1};
+
+			{
+				Math::Vector3 r = m_sensor.getRotation();
+				Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x() * 0.1f);
+				Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y()* 0.1f);
+				Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
+
+				at = Matrix::transform(Matrix::setRotate(pitch * yaw * roll), at, 0.0);
+			}
+
+
+            Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
             Matrix rot;
-            Matrix::setRotate(rot, yaw);
+            Matrix::setRotate(rot,  yaw);
             Vector3 pos = Matrix::transform(rot, {0,0,-1000});
-            Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0f);
+			at = Matrix::transform(rot, at, 0.0f);
             Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
 
             m_camera.updateView(pos, pos + at, up);

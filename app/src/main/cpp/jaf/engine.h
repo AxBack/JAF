@@ -10,6 +10,8 @@
 #include "updater.h"
 #include "bloom_shader.h"
 #include "../jawe/counter.h"
+#include "animator.h"
+#include "../jawe/sensor.h"
 
 namespace JAF {
 
@@ -22,17 +24,16 @@ namespace JAF {
         typedef Math::Quaternion Quaternion;
         typedef JAWE::Path<float> float_path;
 
+		JAWE::Sensor m_sensor;
         Updater m_updater;
 
         std::atomic_bool m_sizeChanged { false };
 
         std::atomic<float> m_offset { 0.5f };
-        float m_extra { 0 };
 
         JAWE::Camera m_camera;
         float_path m_rotation;
-
-		JAWE::Counter m_counter;
+		Animator m_animator;
 
         ParticleShader m_particleShader;
         JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
@@ -54,6 +55,9 @@ namespace JAF {
                 float points[] = { 90, -90 };
                 m_rotation.add(1.0f, 2, points);
             }
+
+			{
+			}
         }
 
         virtual ~Engine()
@@ -65,9 +69,19 @@ namespace JAF {
 
         virtual bool render() override;
 
-        virtual void resume() override { m_counter.step(); m_updater.resume(); }
+        virtual void resume() override
+		{
+			m_sensor.resume();
+			m_animator.resume();
+			m_updater.resume();
+		}
 
-        virtual void pause() override { m_updater.pause(); }
+        virtual void pause() override
+		{
+			m_sensor.pause();
+			m_animator.pause();
+			m_updater.pause();
+		}
 
         virtual void setOffset(float x, float y) override
         {
