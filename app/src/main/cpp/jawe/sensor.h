@@ -14,7 +14,7 @@ namespace JAWE {
 		int m_id { -1 };
 
 		time_point m_lastRenderTime{ std::chrono::steady_clock::now() };
-		bool m_changed { false };
+		bool m_active { false };
 
 		Math::Vector3 m_rotation { 0,0,0 };
 
@@ -41,8 +41,11 @@ namespace JAWE {
 			return true;
 		}
 
+		bool active() const { return m_active; }
+
 		void resume()
 		{
+			m_active = true;
 			ASensorEventQueue_enableSensor(m_pEventQueue, m_pGyroscope);
 			ASensorEventQueue_setEventRate(m_pEventQueue, m_pGyroscope, 10000);
 			m_rotation = {0,0,0};
@@ -51,12 +54,16 @@ namespace JAWE {
 
 		void pause()
 		{
+			m_active = false;
 			ASensorEventQueue_disableSensor(m_pEventQueue, m_pGyroscope);
 			m_rotation = {0,0,0};
 		}
 
 		void update()
 		{
+			if(!m_active)
+				return;
+
 			time_point now = std::chrono::steady_clock::now();
 			std::chrono::duration<float> secs = now - m_lastRenderTime;
 			m_lastRenderTime = now;

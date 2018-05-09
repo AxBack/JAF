@@ -121,6 +121,12 @@ Java_com_wallpaper_axb_engine_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, job
 }
 
 JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_enableTilt(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
+{
+	JAF::Settings::enableTilt(static_cast<bool>(enable));
+}
+
+JNIEXPORT void JNICALL
 Java_com_wallpaper_axb_engine_NativeEngine_allowRocketDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
 {
 	JAF::Settings::allowRocketDeviation(static_cast<bool>(allow));
