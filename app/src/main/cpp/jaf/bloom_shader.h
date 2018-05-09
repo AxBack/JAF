@@ -4,6 +4,7 @@
 #include "../jawe/mesh.h"
 #include "vertex.h"
 #include "../jawe/framebuffer.h"
+#include "../jawe/swap_chain.h"
 
 namespace JAF {
 
@@ -12,7 +13,7 @@ namespace JAF {
 	private:
 
 		typedef JAWE::Mesh<TexturedVertex> Mesh;
-		typedef JAWE::Framebuffer Framebuffer;
+		typedef JAWE::SwapChain SwapChain;
 
 		struct Pass
 		{
@@ -30,11 +31,10 @@ namespace JAF {
 
 		Pass m_finalPass;
 
-		Framebuffer m_framebuffer1;
-		Framebuffer m_framebuffer2;
+		SwapChain m_swapChain;
 
 		static Pass setupPass(GLuint vs, GLuint ps, const char* texture0, const char* texture1, const Mesh& mesh);
-		static void preparePass(const Pass& pass, const Framebuffer* pFramebuffer0, UINT index0, const Framebuffer* pFramebuffer1 = nullptr, UINT index1 = 0);
+		static void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr);
 
 	public:
 
@@ -56,18 +56,16 @@ namespace JAF {
 								m_finalPass.vao};
 			glDeleteVertexArrays(4, handles);
 
-			m_framebuffer2.release();
-			m_framebuffer1.release();
+			m_swapChain.release();
 		}
 
-		void render(const Mesh& mesh, const Framebuffer& framebuffer, UINT index);
+		void render(const Mesh& mesh, const JAWE::SwapChain& framebuffer);
 
 		void updateSize(GLsizei width, GLsizei height)
 		{
 			GLsizei w = static_cast<GLsizei>( static_cast<float>(width) * 0.15f);
 			GLsizei h = static_cast<GLsizei>( static_cast<float>(height) * 0.15f);
-			m_framebuffer1.init(w, h, true, Framebuffer::NONE);
-			m_framebuffer2.init(w, h, true, Framebuffer::NONE);
+			m_swapChain.init(2, w,h, true, JAWE::Framebuffer::NONE);
 		}
 	};
 };

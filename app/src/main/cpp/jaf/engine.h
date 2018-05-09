@@ -12,6 +12,7 @@
 #include "../jawe/counter.h"
 #include "animator.h"
 #include "../jawe/sensor.h"
+#include "../jawe/swap_chain.h"
 
 namespace JAF {
 
@@ -33,14 +34,14 @@ namespace JAF {
 
         JAWE::Camera m_camera;
         float_path m_rotation;
-		Animator m_animator;
 
         ParticleShader m_particleShader;
         JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
 
+		JAWE::SwapChain m_swapChain;
+
 		BloomShader m_bloomShader;
 		JAWE::Mesh<TexturedVertex> m_screenMesh;
-		JAWE::Framebuffer m_bloomTarget;
 
         bool setupParticles(AAssetManager* pAssetManager);
         bool setupPostProcess(AAssetManager* pAssetManager);
@@ -55,9 +56,6 @@ namespace JAF {
                 float points[] = { 90, -90 };
                 m_rotation.add(1.0f, 2, points);
             }
-
-			{
-			}
         }
 
         virtual ~Engine()
@@ -71,15 +69,15 @@ namespace JAF {
 
         virtual void resume() override
 		{
-			m_sensor.resume();
-			m_animator.resume();
+			if(Settings::immersive())
+				m_sensor.resume();
 			m_updater.resume();
 		}
 
         virtual void pause() override
 		{
-			m_sensor.pause();
-			m_animator.pause();
+			if(m_sensor.active())
+				m_sensor.pause();
 			m_updater.pause();
 		}
 

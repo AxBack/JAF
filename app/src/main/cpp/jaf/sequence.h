@@ -35,7 +35,6 @@ namespace JAF {
 				: m_pUpdater(pUpdater)
 		{
 			m_offset.setIdentity();
-			m_offset.translate(0,-1000,0);
 		}
 
 		int nrActiveRockets() const { return static_cast<int>(m_nrActiveRockets + m_rockets.size()); }

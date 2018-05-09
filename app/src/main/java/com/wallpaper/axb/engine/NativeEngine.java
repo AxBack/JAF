@@ -14,6 +14,7 @@ class NativeEngine {
     public native void setSize(int id, int w, int h);
     public native void onTouch(int id, float x, float y);
     public native void onOffsetChanged(int id, float x, float y);
+    public native void immersiveMode(int id, boolean enable);
     public native void allowRocketDeviation(int id, boolean allow);
     public native void allowBurstDeviation(int id, boolean allow);
     public native void allowTrailDeviation(int id, boolean allow);

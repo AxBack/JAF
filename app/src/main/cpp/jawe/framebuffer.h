@@ -66,7 +66,7 @@ namespace JAWE {
 			}
 		}
 
-		void clear()
+		void clear() const
 		{
 			if(m_depthType != NONE)
 				glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

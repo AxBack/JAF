@@ -62,43 +62,46 @@ namespace JAF {
 		return pass;
 	}
 
-	void BloomShader::render(const Mesh& mesh, const Framebuffer& framebuffer, UINT index)
+	void BloomShader::render(const Mesh& mesh, const SwapChain& swapChain)
 	{
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
 		glDisable(GL_BLEND);
 
-		m_framebuffer2.set();
-		m_framebuffer2.clear();
+		m_swapChain.set();
+		m_swapChain.clear();
 
-		preparePass(m_thresholdPass, &framebuffer, index);
+		preparePass(m_thresholdPass, &swapChain);
 		mesh.render();
 
-		m_framebuffer1.set();
-		m_framebuffer1.clear();
+		m_swapChain.step();
+		m_swapChain.set();
+		m_swapChain.clear();
 
-		preparePass(m_horizontalBlurPass, &m_framebuffer2, 0);
+		preparePass(m_horizontalBlurPass, &m_swapChain, 0);
 		mesh.render();
 
-		m_framebuffer2.set();
-		m_framebuffer2.clear();
+		m_swapChain.step();
+		m_swapChain.set();
+		m_swapChain.clear();
 
-		preparePass(m_verticalBlurPass,&m_framebuffer1, 0);
+		preparePass(m_verticalBlurPass, &m_swapChain, 0);
 		mesh.render();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0,0,framebuffer.getWidth(), framebuffer.getHeight());
+		glViewport(0,0,swapChain.getWidth(), swapChain.getHeight());
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
 		glBlendEquation(GL_FUNC_ADD);
 
-		preparePass(m_finalPass, &framebuffer, 0, &m_framebuffer2, 0);
+		m_swapChain.step();
+
+		preparePass(m_finalPass, &swapChain, &m_swapChain);
 		mesh.render();
 	}
 
-	void BloomShader::preparePass(const Pass& pass, const Framebuffer* pFramebuffer0, UINT index0,
-								  const Framebuffer* pFramebuffer1, UINT index1)
+	void BloomShader::preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1)
 	{
 		glUseProgram(pass.program);
 		glBindVertexArray(pass.vao);
@@ -106,14 +109,14 @@ namespace JAF {
 		if (pass.textureLocation0 >= 0)
 		{
 			glActiveTexture(GL_TEXTURE0);
-			pFramebuffer0->bind(index0);
+			pTexture0->bind();
 			glUniform1i(pass.textureLocation0, 0);
 		}
 
 		if (pass.textureLocation1 >= 0)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			pFramebuffer1->bind(index1);
+			pTexture1->bind();
 			glUniform1i(pass.textureLocation1, 1);
 		}
 	}

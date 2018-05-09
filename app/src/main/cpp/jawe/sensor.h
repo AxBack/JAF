@@ -9,12 +9,10 @@ namespace JAWE {
 	{
 	private:
 
-		typedef std::chrono::steady_clock::time_point time_point;
-
 		int m_id { -1 };
 
-		time_point m_lastRenderTime{ std::chrono::steady_clock::now() };
-		bool m_changed { false };
+		Counter m_counter;
+		bool m_active { false };
 
 		Math::Vector3 m_rotation { 0,0,0 };
 
@@ -37,30 +35,41 @@ namespace JAWE {
 			m_pGyroscope = ASensorManager_getDefaultSensor(m_pSensorManager, ASENSOR_TYPE_GYROSCOPE);
 			m_pLooper = ALooper_prepare(ALOOPER_PREPARE_ALLOW_NON_CALLBACKS);
 			m_pEventQueue = ASensorManager_createEventQueue(m_pSensorManager, m_pLooper, id, NULL, NULL);
-			resume();
 			return true;
 		}
 
+		bool active() const { return m_active; }
+
 		void resume()
 		{
+			if(m_active)
+				return;
+
+			m_active = true;
 			ASensorEventQueue_enableSensor(m_pEventQueue, m_pGyroscope);
 			ASensorEventQueue_setEventRate(m_pEventQueue, m_pGyroscope, 10000);
 			m_rotation = {0,0,0};
-			m_lastRenderTime = std::chrono::steady_clock::now();
+			m_counter.step();
+			LOGD("Sensor::Resumed");
 		}
 
 		void pause()
 		{
+			if(!m_active)
+				return;
+
+			m_active = false;
 			ASensorEventQueue_disableSensor(m_pEventQueue, m_pGyroscope);
 			m_rotation = {0,0,0};
+			LOGD("Sensor::Paused");
 		}
 
 		void update()
 		{
-			time_point now = std::chrono::steady_clock::now();
-			std::chrono::duration<float> secs = now - m_lastRenderTime;
-			m_lastRenderTime = now;
-			float dt = secs.count();
+			if(!m_active)
+				return;
+
+			float dt = m_counter.step();
 
 			if(ALooper_pollAll(0, NULL, NULL, NULL) != m_id)
 				return;

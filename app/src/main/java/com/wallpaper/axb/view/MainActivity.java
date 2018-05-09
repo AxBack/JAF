@@ -5,7 +5,6 @@ import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.wallpaper.axb.engine.R;
@@ -38,9 +36,10 @@ public class MainActivity extends Activity {
         Button btn = findViewById(R.id.setBtn);
         btn.setOnClickListener((View v) -> setAsWallpaper());
 
-        setupCheckBox(main, R.string.allow_rocket_deviation_label, R.string.rocket_deviation_desc, Renderer.ROCKET_DEVIATION);
-        setupCheckBox(main, R.string.allow_burst_deviation_label, R.string.burst_deviation_desc, Renderer.BURST_DEVIATION);
-        setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION);
+        setupCheckBox(main, R.string.immersive_label, R.string.immersive_desc, Renderer.IMMERSIVE_MODE, false);
+        setupCheckBox(main, R.string.allow_rocket_deviation_label, R.string.rocket_deviation_desc, Renderer.ROCKET_DEVIATION, true);
+        setupCheckBox(main, R.string.allow_burst_deviation_label, R.string.burst_deviation_desc, Renderer.BURST_DEVIATION, true);
+        setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION, true);
 
         setupSlider(main, R.string.nr_bursts_label, R.string.nr_burst_desc, 1, 5, 3, Renderer.NR_BURSTS);
         setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 1, Renderer.MIN_NR_ROCKETS);
@@ -48,9 +47,9 @@ public class MainActivity extends Activity {
 
     }
 
-    private void setupCheckBox(LinearLayout main, @StringRes int label, @StringRes int desc, String key) {
+    private void setupCheckBox(LinearLayout main, @StringRes int label, @StringRes int desc, String key, boolean def) {
         SharedPreferences prefs = getPrefs();
-        boolean state = prefs.getBoolean(key, true);
+        boolean state = prefs.getBoolean(key, def);
 
         View v = LayoutInflater.from(this).inflate(R.layout.check_box_item, main, false);
         final CheckBoxItem item = v.findViewById(R.id.check_box_item);

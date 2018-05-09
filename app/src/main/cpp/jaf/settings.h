@@ -10,6 +10,7 @@ namespace JAF {
 	{
 	private:
 
+		static std::atomic_bool s_immersive;
 		static std::atomic_bool s_allowRocketDeviation;
 		static std::atomic_bool s_allowBurstDeviation;
 		static std::atomic_bool s_allowTrailDeviation;
@@ -19,6 +20,7 @@ namespace JAF {
 
 	public:
 
+		static bool immersive() { return s_immersive; }
 		static bool allowRocketDeviation() { return s_allowRocketDeviation; }
 		static bool allowBurstDeviation() { return s_allowBurstDeviation; }
 		static bool allowTrailDeviation()  { return s_allowTrailDeviation; }
@@ -26,6 +28,7 @@ namespace JAF {
 		static int minNrRockets() { return s_minNrRockets; }
 		static int maxRocketsPerSequence() { return s_maxNrRocketsPerSequence; }
 
+		static void immersive(bool enable) { s_immersive = enable; }
 		static void allowRocketDeviation(bool allow) { s_allowRocketDeviation = allow; }
 		static void allowBurstDeviation(bool allow) { s_allowBurstDeviation = allow; }
 		static void allowTrailDeviation(bool allow) { s_allowTrailDeviation = allow; }

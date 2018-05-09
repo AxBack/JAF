@@ -2,6 +2,8 @@
     <string name="app_name">JAF</string>
     <string name="description">JAF Desc</string>
     <string name="set_text">Set wallpaper</string>
+    <string name="immersive_label">Immersive mode</string>
+    <string name="immersive_desc">Enables device sensors to allow you to look around.</string>
     <string name="allow_rocket_deviation_label">Allow rocket deviation</string>
     <string name="rocket_deviation_desc">Enables deviation between rockets of same type. Makes the presentation more sporadic.</string>
     <string name="allow_burst_deviation_label">Allow burst deviation</string>

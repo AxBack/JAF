@@ -11,6 +11,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSharedPreferenceChangeListener {
 
+    public static final String IMMERSIVE_MODE = "Immersive";
     public static final String ROCKET_DEVIATION = "AllowRocketDeviation";
     public static final String BURST_DEVIATION = "AllowBurstDeviation";
     public static final String TRAIL_DEVIATION = "AllowTrailDeviation";
@@ -30,7 +31,10 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(ROCKET_DEVIATION)) {
+        if(key.equals(IMMERSIVE_MODE)) {
+            boolean b = sharedPreferences.getBoolean(IMMERSIVE_MODE, true);
+            immersiveMode(b);
+        } else if(key.equals(ROCKET_DEVIATION)) {
             boolean b = sharedPreferences.getBoolean(ROCKET_DEVIATION, true);
             allowRocketDeviation(b);
         } else if(key.equals(BURST_DEVIATION)) {
@@ -104,6 +108,11 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         }
     }
 
+    public void immersiveMode(boolean enable) {
+        if(mNativeId >= 0)
+            mRenderEngine.immersiveMode(mNativeId, enable);
+    }
+
     public void allowRocketDeviation(boolean allow) {
         if(mNativeId >= 0)
             mRenderEngine.allowRocketDeviation(mNativeId, allow);
@@ -153,7 +162,10 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.resume(mNativeId);
 
         SharedPreferences prefs = mContext.getSharedPreferences("JAF", MODE_PRIVATE);
-        boolean b = prefs.getBoolean(ROCKET_DEVIATION, true);
+        boolean b = prefs.getBoolean(IMMERSIVE_MODE, false);
+        immersiveMode(b);
+
+        b = prefs.getBoolean(ROCKET_DEVIATION, true);
         allowRocketDeviation(b);
 
         b = prefs.getBoolean(BURST_DEVIATION, true);

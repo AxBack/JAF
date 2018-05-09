@@ -76,36 +76,45 @@ namespace JAF {
         {
             m_sizeChanged = false;
             m_camera.updateProjection(m_viewport[2], m_viewport[3]);
-			GLint formats[] { GL_RGBA };
 			m_bloomShader.updateSize(m_viewport[2], m_viewport[3]);
-			m_bloomTarget.init(m_viewport[2], m_viewport[3], 1, formats, JAWE::Framebuffer::READ_WRITE);
+			m_swapChain.init(2, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
         }
 
 		m_updater.updateInstances(m_particleMesh);
+		m_sensor.update();
 
-        {
-			m_sensor.update();
-			Math::Vector3 at = {0,0,1};
+		if(Settings::immersive())
+		{
+			 if(!m_sensor.active())
+				 m_sensor.resume();
 
-			{
-				Math::Vector3 r = m_sensor.getRotation();
-				Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x() * 0.1f);
-				Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y()* 0.1f);
-				Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
+			Math::Vector3 r = m_sensor.getRotation();
+			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x());
+			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y());
+			//Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0, 1}, -r.z());
 
-				at = Matrix::transform(Matrix::setRotate(pitch * yaw * roll), at, 0.0);
-			}
+			Matrix rot = Matrix::setRotate(pitch * yaw );
+			Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0);
+			Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
 
+			Math::Vector3 pos = {0,0,-1000};
+			m_camera.updateView(pos, pos + at, up);
+		}
+		else
+		{
+			if(m_sensor.active())
+				m_sensor.pause();
 
-            Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
-            Matrix rot;
-            Matrix::setRotate(rot,  yaw);
-            Vector3 pos = Matrix::transform(rot, {0,0,-1000});
-			at = Matrix::transform(rot, at, 0.0f);
-            Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
+			Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
+			Matrix rot;
+			Matrix::setRotate(rot,  yaw);
 
-            m_camera.updateView(pos, pos + at, up);
-        }
+			Vector3 pos = Matrix::transform(rot, {0,0,-1000}) + Vector3(0,1000,0);
+			Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0f);
+			Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
+
+			m_camera.updateView(pos, pos + at, up);
+		}
 
         m_camera.update();
 
@@ -121,8 +130,9 @@ namespace JAF {
         glClearDepthf(1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_bloomTarget.set();
-		m_bloomTarget.clear();
+		m_swapChain.step();
+		m_swapChain.set();
+		m_swapChain.clear();
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -136,7 +146,7 @@ namespace JAF {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glViewport(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
 
-			m_bloomShader.render(m_screenMesh, m_bloomTarget, 0);
+			m_bloomShader.render(m_screenMesh, m_swapChain);
 		}
 
         return true;

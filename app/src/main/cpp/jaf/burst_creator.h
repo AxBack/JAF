@@ -61,7 +61,7 @@ namespace JAF {
 		virtual void step() override
 		{
 			m_pCurrentRelease = m_releaseRotation.frontPtr();
-			m_deviate = Settings::allowRocketDeviation() && m_deviation.front();
+			m_deviate = Settings::allowBurstDeviation() && m_deviation.front();
 		}
 	};
 }
