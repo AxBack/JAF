@@ -82,40 +82,31 @@ namespace JAF {
 
 		m_updater.updateInstances(m_particleMesh);
 		m_sensor.update();
+		Math::Vector3 at = {0,0,1};
 
 		if(Settings::immersive())
 		{
-			 if(!m_sensor.active())
-				 m_sensor.resume();
+			if(!m_sensor.active())
+				m_sensor.resume();
 
 			Math::Vector3 r = m_sensor.getRotation();
-			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x());
-			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y());
-			//Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0, 1}, -r.z());
+			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x() * 0.2f);
+			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y()* 0.2f);
+			//Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
 
-			Matrix rot = Matrix::setRotate(pitch * yaw );
-			Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0);
-			Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
-
-			Math::Vector3 pos = {0,0,-1000};
-			m_camera.updateView(pos, pos + at, up);
+			at = Matrix::transform(Matrix::setRotate(pitch * yaw), at, 0.0);
 		}
-		else
-		{
-			if(m_sensor.active())
-				m_sensor.pause();
+		else if(m_sensor.active())
+			m_sensor.pause();
 
-			Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
-			Matrix rot;
-			Matrix::setRotate(rot,  yaw);
+		Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
+		Matrix rot;
+		Matrix::setRotate(rot,  yaw);
+		Vector3 pos = Matrix::transform(rot, {0,1000,-1000});
+		at = Matrix::transform(rot, at, 0.0f);
+		Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
 
-			Vector3 pos = Matrix::transform(rot, {0,0,-1000}) + Vector3(0,1000,0);
-			Vector3 at = Matrix::transform(rot, {0,0,1}, 0.0f);
-			Vector3 up = Matrix::transform(rot, {0,1,0}, 0.0f);
-
-			m_camera.updateView(pos, pos + at, up);
-		}
-
+		m_camera.updateView(pos, pos + at, up);
         m_camera.update();
 
         glDisable(GL_DEPTH_TEST);
