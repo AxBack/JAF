@@ -29,7 +29,7 @@ namespace Math {
 			m_data[W] = w;
 		}
 
-		bool isIdentity() { return m_data[X] == 0 && m_data[Y] == 0 && m_data[Z] == 0 && m_data[W] == 0; }
+		bool isIdentity() { return m_data[X] == 0 && m_data[Y] == 0 && m_data[Z] == 0 && m_data[W] == 1; }
 
 		bool operator==(const Quaternion& rhs) const
 		{
@@ -147,7 +147,7 @@ namespace Math {
 
         const float* data() const { return m_data; }
 
-		static Quaternion identity() { return Quaternion(0,1,0,0); }
+		static Quaternion identity() { return Quaternion(0,0,0,1); }
 
         static Quaternion fromEulerAngles(float x, float y, float z)
         {
@@ -169,6 +169,14 @@ namespace Math {
             q.m_data[W] = cx*cy*cz + sx*sy*sz;
             return std::move(q);
         }
+
+		static Quaternion fromRotationVector(float x, float y, float z)
+		{
+			Quaternion q = {x,y,z,0};
+			q.m_data[W] = 1 - x*x - y*y - z*z;
+			q.m_data[W] = (q.m_data[W] > 0) ? sqrtf(q.m_data[W]) : 0;
+			return q;
+		}
 
         static Quaternion fromAxisAngle(float x, float y, float z, float w)
         {

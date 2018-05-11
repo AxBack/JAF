@@ -48,7 +48,7 @@ namespace JAF {
         Math::Vector3 up = {0,1,0};
 
 		Math::Matrix t;
-		Math::Matrix::identity(t);
+		Math::Matrix::setIdentity(t);
 		Math::Matrix::translate(t, m_position);
 
         Math::Quaternion rot = calculateRotation(up);

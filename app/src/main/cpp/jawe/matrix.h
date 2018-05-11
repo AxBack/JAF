@@ -85,12 +85,12 @@ namespace Math {
 			memcpy(m_data, r.m_data, sizeof(m_data));
 		}
 
-		void setIdentity() { return Matrix::identity(*this); }
+		void setIdentity() { return Matrix::setIdentity(*this); }
 
 		void translate(float x, float y, float z) { Matrix::translate(*this, x, y ,z); }
 		void translate(const Vector3& v) { Matrix::translate(v.x(), v.y(), v.z()); }
 
-		static void identity(Matrix &matrix) {
+		static void setIdentity(Matrix &matrix) {
 			memset(matrix.m_data, 0, sizeof(matrix));
 			matrix[M00] = matrix[M11] = matrix[M22] = matrix[M33] = 1.0f;
 		}
@@ -183,6 +183,12 @@ namespace Math {
 			m[M33] = 1.0f;
 
 			return m;
+		}
+
+		static Matrix lookAt(const Vector3 &eye, const Vector3 &at, const Vector3 &up)
+		{
+			Matrix m;
+			return lookAt(m, eye, at, up);
 		}
 
 		static Matrix lookAt(Matrix &m, const Vector3 &eye, const Vector3 &at, const Vector3 &up) {
@@ -300,6 +306,15 @@ namespace Math {
 				m[12 + i] += m[i] * x + m[i + 4] * y + m[i + 8] * z;
 			}
 			return m;
+		}
+
+		static Vector3 getOrientation(Matrix& m)
+		{
+			float x = TO_DEGREES(atan2f(m.m_data[M10], m.m_data[M11]));
+			float y = TO_DEGREES(asinf(-m.m_data[M12]));
+			float z = TO_DEGREES(atan2f(-m.m_data[M02], m.m_data[M22]));
+
+			return {x,y,z};
 		}
 
 		static inline float matrix4_det(float *m) {
