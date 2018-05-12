@@ -20,6 +20,12 @@ namespace JAF {
     {
     private:
 
+		template <typename K> struct Range
+		{
+			K min, max;
+			K clamp(K v) { return std::min(max, std::max(v, min)); }
+		};
+
         typedef Math::Vector3 Vector3;
         typedef Math::Matrix Matrix;
         typedef Math::Quaternion Quaternion;
@@ -34,6 +40,11 @@ namespace JAF {
 
         JAWE::Camera m_camera;
         float_path m_rotation;
+
+		Range<float> m_tiltRange = {-90, 90};
+		float_path m_tiltPath;
+		float m_yaw {0};
+		float m_pitch {0};
 
         ParticleShader m_particleShader;
         JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
@@ -56,6 +67,10 @@ namespace JAF {
                 float points[] = { 90, -90 };
                 m_rotation.add(1.0f, 2, points);
             }
+			{
+				float points[] = {-25,-23, -20, 0, 20, 23, 25};
+				m_tiltPath.add(180, 7, points);
+			}
         }
 
         virtual ~Engine()
@@ -69,6 +84,7 @@ namespace JAF {
 
         virtual void resume() override
 		{
+			m_yaw = m_pitch = 0.0f;
 			if(Settings::immersive())
 				m_sensor.resume();
 			m_updater.resume();
@@ -76,6 +92,7 @@ namespace JAF {
 
         virtual void pause() override
 		{
+			m_yaw = m_pitch = 0.0f;
 			if(m_sensor.active())
 				m_sensor.pause();
 			m_updater.pause();
@@ -104,5 +121,4 @@ namespace JAF {
         }
 
     };
-
 }

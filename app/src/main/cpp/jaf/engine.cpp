@@ -92,9 +92,11 @@ namespace JAF {
 			if(!m_sensor.active())
 				m_sensor.resume();
 
-			Math::Vector3 r = m_sensor.getRotation();
-			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, r.x() * 0.2f);
-			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -r.y()* 0.2f);
+			Math::Vector3 r = m_sensor.getDelta();
+			m_yaw = m_tiltRange.clamp(m_yaw + r.x());
+			m_pitch = m_tiltRange.clamp(m_pitch + r.y());
+			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, m_tiltPath.traverse( m_yaw + 90));
+			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -m_tiltPath.traverse(m_pitch + 90));
 			//Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
 
 			at = Matrix::transform(Matrix::setRotate(pitch * yaw), at, 0.0);

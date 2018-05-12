@@ -15,6 +15,7 @@ namespace JAWE {
 		bool m_active { false };
 
 		Math::Vector3 m_rotation { 0,0,0 };
+		Math::Vector3 m_delta { 0,0,0 };
 
 		ASensorManager* m_pSensorManager { nullptr };
 		const ASensor* m_pGyroscope { nullptr };
@@ -74,18 +75,23 @@ namespace JAWE {
 			if(ALooper_pollAll(0, NULL, NULL, NULL) != m_id)
 				return;
 
+			m_delta = {0,0,0};
+
 			ASensorEvent event;
 			while(ASensorEventQueue_getEvents(m_pEventQueue, &event, 1) > 0)
 			{
-				m_rotation += Math::Vector3{
+				m_delta += Math::Vector3{
 						TO_DEGREES(event.vector.x),
 						TO_DEGREES(event.vector.y),
 						TO_DEGREES(event.vector.z)
 				} * dt;
-			};
+			}
+
+			m_rotation += m_delta;
 		}
 
 		Math::Vector3 getRotation() const { return m_rotation; }
+		Math::Vector3 getDelta() const { return m_delta; }
 
 	};
 };
