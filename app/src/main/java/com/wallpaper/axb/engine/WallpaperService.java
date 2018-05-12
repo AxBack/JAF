@@ -87,15 +87,14 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
             mSurfaceView.onOffsetsChanged(xOffset, yOffset);
         }
 
-        private class WallpaperView extends GLSurfaceView implements
-                ScaleGestureDetector.OnScaleGestureListener,
-                GestureDetector.OnGestureListener
+        private class WallpaperView extends GLSurfaceView
         {
 
             private com.wallpaper.axb.engine.Renderer mRenderer;
 
             private final ScaleGestureDetector mScaleGestureDetector;
             private final GestureDetectorCompat mGestureDetector;
+            private GestureHandler mGestureHandler;
 
             public WallpaperView(Context context) {
                 super(context);
@@ -111,8 +110,9 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
                 setRenderer(mRenderer);
                 setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
-                mScaleGestureDetector = new ScaleGestureDetector(WallpaperService.this, this);
-                mGestureDetector = new GestureDetectorCompat(WallpaperService.this, this);
+                mGestureHandler = new GestureHandler();
+                mScaleGestureDetector = new ScaleGestureDetector(WallpaperService.this, mGestureHandler);
+                mGestureDetector = new GestureDetectorCompat(WallpaperService.this, mGestureHandler);
             }
 
             public void reset() {
@@ -148,52 +148,6 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
                 mRenderer = null;
             }
 
-            @Override
-            public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
-                return true;
-            }
-
-            @Override
-            public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
-            }
-
-            @Override
-            public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
-                float diff = 1.0f - scaleGestureDetector.getScaleFactor();
-                if(diff != 0.0f)
-                    mRenderer.onPinch(diff);
-                return true;
-            }
-
-            @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return false;
-            }
-
-            @Override
-            public boolean onSingleTapUp(MotionEvent motionEvent) {
-                return false;
-            }
-
-            @Override
-            public void onLongPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return true;
-            }
-
-            @Override
-            public void onShowPress(MotionEvent motionEvent) {
-
-            }
-
-            @Override
-            public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                return true;
-            }
 
             @Override
             public boolean onTouchEvent(MotionEvent event) {
@@ -219,6 +173,32 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
 
             public void onOffsetsChanged(float xOffset, float yOffset) {
                 mRenderer.onOffsetChanged(xOffset, yOffset);
+            }
+
+            class GestureHandler extends GestureDetector.SimpleOnGestureListener implements ScaleGestureDetector.OnScaleGestureListener{
+
+                @Override
+                public boolean onScaleBegin(ScaleGestureDetector scaleGestureDetector) {
+                    return true;
+                }
+
+                @Override
+                public void onScaleEnd(ScaleGestureDetector scaleGestureDetector) {
+                }
+
+                @Override
+                public boolean onScale(ScaleGestureDetector scaleGestureDetector) {
+                    float diff = 1.0f - scaleGestureDetector.getScaleFactor();
+                    if(diff != 0.0f)
+                        mRenderer.onPinch(diff);
+                    return true;
+                }
+
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    mRenderer.onDoubleTap(e.getX(), e.getY());
+                    return super.onDoubleTap(e);
+                }
             }
         }
     }

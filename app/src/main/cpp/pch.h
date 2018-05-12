@@ -21,5 +21,3 @@
 
 #define TO_RADIANS(degrees) ((degrees) * static_cast<float>(M_PI) / 180.0f)
 #define TO_DEGREES(radians) ((radians) * 180.0f / static_cast<float>(M_PI))
-
-#define FLT_EPSILON 1.19209290E-07F // decimal constant

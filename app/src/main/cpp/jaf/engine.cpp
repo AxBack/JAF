@@ -70,7 +70,10 @@ namespace JAF {
 		return true;
 	}
 
-    bool Engine::render() {
+    bool Engine::render()
+	{
+		if(!Settings::interactive() && !m_updater.isRunning())
+			m_updater.resume();
 
         if (m_sizeChanged)
         {

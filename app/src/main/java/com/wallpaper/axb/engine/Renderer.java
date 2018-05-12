@@ -12,6 +12,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String IMMERSIVE_MODE = "Immersive";
+    public static final String INTERACTIVE_MODE = "Interactive";
     public static final String ROCKET_DEVIATION = "AllowRocketDeviation";
     public static final String BURST_DEVIATION = "AllowBurstDeviation";
     public static final String TRAIL_DEVIATION = "AllowTrailDeviation";
@@ -34,6 +35,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         if(key.equals(IMMERSIVE_MODE)) {
             boolean b = sharedPreferences.getBoolean(IMMERSIVE_MODE, true);
             immersiveMode(b);
+        } else if(key.equals(INTERACTIVE_MODE)) {
+            boolean b = sharedPreferences.getBoolean(INTERACTIVE_MODE, true);
+            interactive(b);
         } else if(key.equals(ROCKET_DEVIATION)) {
             boolean b = sharedPreferences.getBoolean(ROCKET_DEVIATION, true);
             allowRocketDeviation(b);
@@ -113,6 +117,11 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.immersiveMode(mNativeId, enable);
     }
 
+    public void interactive(boolean enable) {
+        if(mNativeId >= 0)
+            mRenderEngine.interactive(mNativeId, enable);
+    }
+
     public void allowRocketDeviation(boolean allow) {
         if(mNativeId >= 0)
             mRenderEngine.allowRocketDeviation(mNativeId, allow);
@@ -144,9 +153,13 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
     }
 
     public void onTouch(float x, float y) {
-        if(mNativeId >= 0) {
+        if(mNativeId >= 0)
             mRenderEngine.onTouch(mNativeId,x,y);
-        }
+    }
+
+    public void onDoubleTap(float x, float y) {
+        if(mNativeId >= 0)
+            mRenderEngine.onDoubleTap(mNativeId, x, y);
     }
 
     public void onPinch(float diff) {
@@ -164,6 +177,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         SharedPreferences prefs = mContext.getSharedPreferences("JAF", MODE_PRIVATE);
         boolean b = prefs.getBoolean(IMMERSIVE_MODE, false);
         immersiveMode(b);
+
+        b = prefs.getBoolean(INTERACTIVE_MODE, true);
+        interactive(b);
 
         b = prefs.getBoolean(ROCKET_DEVIATION, true);
         allowRocketDeviation(b);

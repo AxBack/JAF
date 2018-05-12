@@ -36,7 +36,8 @@ public class MainActivity extends Activity {
         Button btn = findViewById(R.id.setBtn);
         btn.setOnClickListener((View v) -> setAsWallpaper());
 
-        setupCheckBox(main, R.string.immersive_label, R.string.immersive_desc, Renderer.IMMERSIVE_MODE, false);
+        setupCheckBox(main, R.string.immersive_label, R.string.immersive_desc, Renderer.IMMERSIVE_MODE, true);
+        setupCheckBox(main, R.string.interactive_label, R.string.interactive_desc, Renderer.INTERACTIVE_MODE, true);
         setupCheckBox(main, R.string.allow_rocket_deviation_label, R.string.rocket_deviation_desc, Renderer.ROCKET_DEVIATION, true);
         setupCheckBox(main, R.string.allow_burst_deviation_label, R.string.burst_deviation_desc, Renderer.BURST_DEVIATION, true);
         setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION, true);

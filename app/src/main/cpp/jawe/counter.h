@@ -23,5 +23,12 @@ namespace JAWE {
 			std::chrono::duration<float> dt = m_now - m_last;
 			return dt.count();
 		}
+
+		float time() const
+		{
+			auto now = clock::now();
+			std::chrono::duration<float> dt = now - m_last;
+			return dt.count();
+		}
 	};
 };

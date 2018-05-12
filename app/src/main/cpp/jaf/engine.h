@@ -81,6 +81,17 @@ namespace JAF {
 			m_updater.pause();
 		}
 
+		virtual void doubleTap(float x, float y) override
+		{
+			if(Settings::interactive())
+			{
+				if(m_updater.isRunning())
+					m_updater.pause();
+				else
+					m_updater.resume();
+			}
+		}
+
         virtual void setOffset(float x, float y) override
         {
             m_offset = x;

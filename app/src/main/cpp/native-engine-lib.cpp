@@ -101,6 +101,16 @@ Java_com_wallpaper_axb_engine_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*t
 }
 
 JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
+{
+	auto it = engines.find(id);
+	if(it != engines.end())
+		it->second->doubleTap(x,y);
+	else
+		LOGE("No engine to touch");
+}
+
+JNIEXPORT void JNICALL
 Java_com_wallpaper_axb_engine_NativeEngine_onPinch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float diff)
 {
 	auto it = engines.find(id);
@@ -124,6 +134,12 @@ JNIEXPORT void JNICALL
 Java_com_wallpaper_axb_engine_NativeEngine_immersiveMode(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
 {
 	JAF::Settings::immersive(static_cast<bool>(enable));
+}
+
+JNIEXPORT void JNICALL
+Java_com_wallpaper_axb_engine_NativeEngine_interactive(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
+{
+	JAF::Settings::interactive(static_cast<bool>(enable));
 }
 
 JNIEXPORT void JNICALL
