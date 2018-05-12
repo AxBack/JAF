@@ -29,6 +29,13 @@ namespace JAF {
 				: m_modifier(modifier)
 		{}
 
+		BalancedCollection(UINT nr, T* pItems, float modifier = 1.0f)
+				: m_modifier(modifier)
+		{
+			for(UINT i=0; i<nr; ++i)
+				push(pItems[0]);
+		}
+
 		UINT size() { return (UINT)m_items.size(); }
 		void clear() { m_items.clear(); }
 

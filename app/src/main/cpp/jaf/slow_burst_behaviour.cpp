@@ -12,9 +12,10 @@ namespace JAF {
 
 		Data* p = m_data.pop();
 		p->offset = offset;
-		p->intervalData.clear();
-		for(UINT i=0; i<m_releases.size(); ++i)
-			p->intervalData.push_back({i, m_releases[i].interval});
+		p->counters.clear();
+		for(auto& it : m_releases)
+			p->counters.push_back(it.interval);
+		p->offset = offset;
 
 		pParticle->fire(this);
 		pParticle->setData(p);
@@ -30,20 +31,24 @@ namespace JAF {
 		if(pData == nullptr)
 			return false;
 
-		for(auto& it : pData->intervalData)
+		for(UINT i = 0; i<pData->counters.size(); ++i)
 		{
-			it.counter -= pUpdateData->dt;
-			if(it.counter <= 0)
+			Release* pRelease = &m_releases[i];
+			pData->counters[i] -= pUpdateData->dt;
+			if(pData->counters[i] <= 0)
 			{
-				Math::Matrix offset = pItem->calculateTransform();
-
-				const Release* pRelease = &m_releases[it.releaseIndex];
-				it.counter += pRelease->interval;
-
-				for(UINT i = 0; i < pRelease->nrPerRelease; ++i)
+				Math::Vector3 rot = pRelease->pRotation->traverse(time);
+				Math::Matrix direction = Math::Matrix::setRotate(rot.x(), rot.y(), rot.z());
+				Math::Matrix transform = pItem->calculateTransform() * direction;
+				for(UINT o=0; o<pRelease->nrOffsets; ++o)
 				{
-					Particle* p = pUpdateData->pUpdater->fireParticle();
-					pRelease->pBehaviour->start(p, offset);
+					Math::Matrix offset = transform * pRelease->pOffsets[o];
+					pData->counters[i] += pRelease->interval;
+					for(UINT particle = 0; particle < pRelease->nrPerInterval; ++particle)
+					{
+						Particle* p = pUpdateData->pUpdater->fireParticle();
+						pRelease->pBehaviour->start(p, offset);
+					}
 				}
 			}
 		}

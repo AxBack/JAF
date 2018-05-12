@@ -8,8 +8,14 @@ namespace JAF {
 
 		m_burstCreator.init();
 
-		m_creators.push([=](){return m_burstCreator.create(); });
-		//m_creators.push([=](){return m_slowBurstCreator.create(); });
+		m_creators.push([=](RocketBehaviour* p){
+			UINT nrBursts = m_nrBursts.front();
+			for(UINT i=0; i<nrBursts; ++i)
+				p->add(m_nrParticles.front(), m_burstCreator.create());
+		});
+		m_creators.push([=](RocketBehaviour* p){
+			p->add(1U, m_slowBurstCreator.create());
+		});
 
 		m_timeDeviation.push(0.0f);
 		m_timeDeviation.push(0.1f);
@@ -65,17 +71,10 @@ namespace JAF {
 			p->setPositionDeviation(m_positionDeviation.front());
 		p->normalize();
 
-		UINT nr = m_nrBursts.front();
-		for(UINT i=0; i<nr; ++i)
-			p->add(m_nrParticles.front(), createBurst());
+		m_creators.front()(p);
 
 		p->add(0.025f, m_trailCreator.create());
 
 		return p;
-	}
-
-	Behaviour* RocketCreator::createBurst()
-	{
-		return m_creators.front()();
 	}
 }

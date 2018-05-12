@@ -8,23 +8,24 @@ namespace JAF {
 	{
 	private:
 
+		typedef std::vector<float> float_vec;
+		typedef JAWE::Path<Math::Vector3> vec3_path;
+		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
+
 		struct Release
 		{
-			UINT nrPerRelease;
+			UINT nrPerInterval;
 			float interval;
+			vec3_path* pRotation;
 			Behaviour* pBehaviour;
-		};
-
-		struct IntervalData
-		{
-			UINT releaseIndex;
-			float counter;
+			UINT nrOffsets;
+			const Math::Matrix* pOffsets;
 		};
 
 		struct Data : public BehaviourInfluenced::Data
 		{
 			Math::Matrix offset;
-			std::vector<IntervalData> intervalData;
+			float_vec counters;
 		};
 
 		std::vector<Release> m_releases;
@@ -41,9 +42,9 @@ namespace JAF {
 			m_releases.clear();
 		}
 
-		void add(UINT nr, float interval, Behaviour* pBehaviour)
+		void add(UINT nrPerIRelease, float interval, vec3_path* pRotation, Behaviour* pBehaviour, UINT nrOffsets, Math::Matrix* pOffsets)
 		{
-			m_releases.push_back({nr, interval, pBehaviour->incrementUsers()});
+			m_releases.push_back({nrPerIRelease, interval, pRotation, pBehaviour->incrementUsers(), nrOffsets, pOffsets});
 		}
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;

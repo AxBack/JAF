@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "../pch.h"
+#include "quaternion.h"
 
 namespace JAWE {
 
@@ -140,6 +141,7 @@ namespace JAWE {
 			return ((d1 * inv) + (d2 * dt)) * inv + ((d2 * inv) + (d3 * dt)) * dt;
 		}
 	};
+
 
     template <typename T>
     class Bezier : public Traversable<T>

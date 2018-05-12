@@ -14,8 +14,8 @@ namespace JAWE {
 		UINT m_currentBuffer = { 0 };
 		std::unique_ptr<Framebuffer[]> m_buffers;
 
-		Framebuffer* m_pTarget;
-		Framebuffer* m_pTexture;
+		Framebuffer* m_pTarget { nullptr };
+		Framebuffer* m_pTexture { nullptr };
 
 	public:
 

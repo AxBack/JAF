@@ -17,7 +17,7 @@ namespace JAF {
 		typedef Math::Vector3 Vector3;
 		typedef JAWE::Path<Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
-		typedef std::function<Behaviour*()> behaviour_func;
+		typedef std::function<void(RocketBehaviour*)> behaviour_func;
 
 		BalancedCollection<float> m_timeDeviation;
 		BalancedCollection<float> m_positionDeviation;
@@ -31,8 +31,6 @@ namespace JAF {
 		BurstCreator m_burstCreator;
 		SlowBurstCreator m_slowBurstCreator;
 		TrailCreator m_trailCreator;
-
-		Behaviour* createBurst();
 
 	public:
 
