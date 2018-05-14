@@ -27,6 +27,8 @@ namespace JAF {
 		if(time >= m_timeLimit)
 			return false;
 
+		float delta = time / m_timeLimit;
+
 		Data* pData = reinterpret_cast<Data*>(pItem->getData());
 		if(pData == nullptr)
 			return false;
@@ -37,12 +39,14 @@ namespace JAF {
 			pData->counters[i] -= pUpdateData->dt;
 			if(pData->counters[i] <= 0)
 			{
-				Math::Vector3 rot = pRelease->pRotation->traverse(time);
+				Math::Vector3 rot = pRelease->pRotation->traverse(delta);
 				Math::Matrix direction = Math::Matrix::setRotate(rot.x(), rot.y(), rot.z());
 				Math::Matrix transform = pItem->calculateTransform() * direction;
-				for(UINT o=0; o<pRelease->nrOffsets; ++o)
+				float degrees = 360.0f / static_cast<float>(pRelease->nrPerCircle);
+				for(UINT o=0; o<pRelease->nrPerCircle; ++o)
 				{
-					Math::Matrix offset = transform * pRelease->pOffsets[o];
+					float d = degrees * static_cast<float>(o);
+					Math::Matrix offset = transform * Math::Matrix::setRotate(0,d,0);
 					pData->counters[i] += pRelease->interval;
 					for(UINT particle = 0; particle < pRelease->nrPerInterval; ++particle)
 					{

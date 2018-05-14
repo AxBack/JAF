@@ -18,8 +18,7 @@ namespace JAF {
 			float interval;
 			vec3_path* pRotation;
 			Behaviour* pBehaviour;
-			UINT nrOffsets;
-			const Math::Matrix* pOffsets;
+			UINT nrPerCircle;
 		};
 
 		struct Data : public BehaviourInfluenced::Data
@@ -42,9 +41,9 @@ namespace JAF {
 			m_releases.clear();
 		}
 
-		void add(UINT nrPerIRelease, float interval, vec3_path* pRotation, Behaviour* pBehaviour, UINT nrOffsets, Math::Matrix* pOffsets)
+		void add(UINT nrPerIRelease, float interval, vec3_path* pRotation, Behaviour* pBehaviour, UINT nrPerCircle)
 		{
-			m_releases.push_back({nrPerIRelease, interval, pRotation, pBehaviour->incrementUsers(), nrOffsets, pOffsets});
+			m_releases.push_back({nrPerIRelease, interval, pRotation, pBehaviour->incrementUsers(), nrPerCircle});
 		}
 
 		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
