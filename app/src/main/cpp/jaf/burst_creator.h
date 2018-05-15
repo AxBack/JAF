@@ -16,13 +16,14 @@ namespace JAF {
 		struct Release
 		{
 			Math::Vector3 rot;
-			Range<float> weight;
+			JAWE::Range<float> weight;
 			vec3_path_ptr pForced;
 		};
 
-		Range<int> m_positionRange {1, 2};
-		Range<int> m_sizeRange {1, 2};
-		Range<int> m_colorRange {1, 2};
+		JAWE::Range<float> m_lifeRange {1.5, 2.5f };
+		JAWE::Range<int> m_positionRange {1, 2};
+		JAWE::Range<int> m_sizeRange {1, 2};
+		JAWE::Range<int> m_colorRange {1, 2};
 
 		BalancedCollection<Vector3> m_gravity;
 
@@ -41,7 +42,7 @@ namespace JAF {
 		Release* m_pCurrentRelease;
 		bool m_deviate { false };
 
-		Release createRelease(const Math::Vector3& rot, const Range<float>& range, UINT nrPoints, Vector3* pPoints)
+		Release createRelease(const Math::Vector3& rot, const JAWE::Range<float>& range, UINT nrPoints, Vector3* pPoints)
 		{
 			Release r { rot, range };
 			if(nrPoints > 0)

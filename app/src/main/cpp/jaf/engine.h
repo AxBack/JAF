@@ -68,7 +68,7 @@ namespace JAF {
                 m_rotation.add(1.0f, 2, points);
             }
 			{
-				float points[] = {-25, -5, 0, 5, 25};
+				float points[] = {-10, -2, 0, 2, 10};
 				m_tiltPath.add(180, 5, points);
 			}
         }

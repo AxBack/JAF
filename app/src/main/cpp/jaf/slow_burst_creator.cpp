@@ -31,6 +31,8 @@ namespace JAF {
 
 		m_releaseRotation.push( createRelease({0,0,0}, {0,1}, 0, nullptr));
 
+		m_lifeRange = {0.8, 1.2};
+
 		m_timeDeviation.push(0.0f);
 		m_timeDeviation.push(0.25f);
 		m_positionDeviation.push(0.0f);
@@ -52,17 +54,17 @@ namespace JAF {
 
 		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,0}}));
 		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,0,1080}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,0,-1080}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {1080,0,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-1080,0,0}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,1080}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,-1080}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {1080,1080,0}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-1080,-1080,0}}));
 
 		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,2160,0}}));
 		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-2160,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,0,2160}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,0,-2160}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {2160,0,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-2160,0,0}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,2160}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,-2160}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {2160,1080,0}}));
+		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-2160,-1080,0}}));
 
 
 		m_nrPerCircleStep.push(5);

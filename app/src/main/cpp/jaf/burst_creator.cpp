@@ -61,12 +61,12 @@ namespace JAF {
 		BurstBehaviour* p = getBehaviour();
 		if(m_deviate)
 		{
-			p->init(JAWE::Random::randf(1.5, 2.5), m_timeDeviation.front());
+			p->init(rand(m_lifeRange), m_timeDeviation.front());
 			p->setDeviation(m_positionDeviation.front(), m_sizeDeviation.front(),
 							m_colorDeviation.front());
 		}
 		else
-			p->init(JAWE::Random::randf(1.5, 2.5));
+			p->init(rand(m_lifeRange));
 
 		fill(p, rand(m_positionRange), &m_positions);
 		fill(p, rand(m_sizeRange), &m_sizes);

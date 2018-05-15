@@ -20,8 +20,8 @@ namespace JAF {
 			//virtual BurstBehaviour* create() override;
 		};
 
-		Range<float> m_timeRange { 0.2f, 0.5f };
-		Range<float> m_intervalRange { 0.001f, 0.01f };
+		JAWE::Range<float> m_timeRange { 0.2f, 0.5f };
+		JAWE::Range<float> m_intervalRange { 0.001f, 0.01f };
 
 		BalancedCollection<vec3_path_ptr> m_rotations;
 		BalancedCollection<UINT> m_nrPerCircleStep;
