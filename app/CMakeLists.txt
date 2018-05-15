@@ -17,6 +17,7 @@ add_library(    # Sets the name of the library.
                 src/main/cpp/native-engine-lib.cpp
                 src/main/cpp/jawe/engine.cpp
                 src/main/cpp/jawe/updater.cpp
+                src/main/cpp/jawe/texture.cpp
                 src/main/cpp/jawe/framebuffer.cpp
                 src/main/cpp/jawe/random.cpp
                 src/main/cpp/jaf/settings.cpp
@@ -54,6 +55,12 @@ find_library( OPENGL_LIB GLESv3 )
 find_library( EGL_LIB EGL )
 find_library( ANDROID_LIB android)
 
+
+add_library(libpng STATIC IMPORTED)
+set_target_properties(libpng PROPERTIES IMPORTED_LOCATION libs/libpng-android/obj/local/${ANDROID_ABI}/libpng.a)
+
+target_include_directories(native-engine-lib PRIVATE libs/libpng-android/jni/)
+
 # Specifies libraries CMake should link to your target library. You
 # can link multiple libraries, such as libraries you define in this
 # build script, prebuilt third-party libraries, or system libraries.
@@ -63,6 +70,7 @@ target_link_libraries( # Specifies the target library.
                        ${OPENGL_LIB}
                        ${EGL_LIB}
                        ${ANDROID_LIB}
+                       ${libpng}
 
                        # Links the target library to the log library
                        # included in the NDK.
