@@ -1,4 +1,5 @@
 #include "engine.h"
+#include "../jawe/texture_loader.h"
 
 namespace JAF {
 

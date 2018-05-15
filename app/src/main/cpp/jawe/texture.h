@@ -27,8 +27,8 @@ namespace JAWE {
 			m_pHandles = nullptr;
 		}
 
-		bool init(GLenum format, GLsizei width, GLsizei height, const char* pPixels);
-        bool load(AAssetManager* pAssetManager, std::string filename)
+		bool init(GLenum format, GLsizei width, GLsizei height, const unsigned char* pPixels);
+        bool load(AAssetManager* pAssetManager, std::string filename);
 
 		void bind()
 		{

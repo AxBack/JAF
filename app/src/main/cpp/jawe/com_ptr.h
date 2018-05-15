@@ -9,15 +9,22 @@ namespace JAWE {
     private:
 
         T m_pItem {nullptr};
-        std::function<void(T*)> m_destructor;
+        std::function<void(T)> m_destructor;
 
     public:
 
         ComPtr(T p, std::function<void(T)> destructor)
         {
             m_pItem = p;
-            m_destructor = m_destructor;
+            m_destructor = destructor;
         }
+
+        ComPtr(std::function<void(T)> destructor)
+        {
+            m_destructor = destructor;
+        }
+
+        void set(T p) { m_pItem = p; }
 
         ~ComPtr()
         {
