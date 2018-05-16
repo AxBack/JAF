@@ -2,9 +2,8 @@
 
 namespace JAF {
 
-#define TEXTURE0 "uTexture"
-#define TEXTURE1 "uBloomTexture"
-#define OVERLAY "uOverlay"
+#define TEXTURE0 "uTexture0"
+#define TEXTURE1 "uTexture1"
 
 	bool BloomShader::init(AAssetManager* pAssetManager, const Mesh& mesh)
 	{
@@ -12,7 +11,7 @@ namespace JAF {
 
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/ThresholdShader_ps.glsl", GL_FRAGMENT_SHADER);
-			m_thresholdPass = setupPass(vs, ps, TEXTURE0, nullptr, mesh);
+			m_thresholdPass = setupPass(vs, ps, TEXTURE0, TEXTURE1, mesh);
 			glDeleteShader(ps);
 		}
 
@@ -41,7 +40,7 @@ namespace JAF {
 
 	auto BloomShader::setupPass(GLuint vs, GLuint ps, const char* texture0, const char* texture1, const Mesh& mesh)->Pass
 	{
-		Pass pass = {0,0,-1};
+		Pass pass = {0,0,-1, -1};
 		pass.program = createProgram(vs, ps);
 		pass.textureLocation0 = texture0 == nullptr ? -1 : getLocation(pass.program, texture0);
 		pass.textureLocation1 = texture1 == nullptr ? -1 : getLocation(pass.program, texture1);
@@ -71,21 +70,21 @@ namespace JAF {
 		m_swapChain.set();
 		m_swapChain.clear();
 
-		preparePass(m_thresholdPass, &swapChain);
+		preparePass(m_thresholdPass, &swapChain, &swapChain);
 		mesh.render();
 
 		m_swapChain.step();
 		m_swapChain.set();
 		m_swapChain.clear();
 
-		preparePass(m_horizontalBlurPass, &m_swapChain, 0);
+		preparePass(m_horizontalBlurPass, &m_swapChain);
 		mesh.render();
 
 		m_swapChain.step();
 		m_swapChain.set();
 		m_swapChain.clear();
 
-		preparePass(m_verticalBlurPass, &m_swapChain, 0);
+		preparePass(m_verticalBlurPass, &m_swapChain);
 		mesh.render();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -101,7 +100,7 @@ namespace JAF {
 		mesh.render();
 	}
 
-	void BloomShader::preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1)
+	void BloomShader::preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1, size_t offset1)
 	{
 		glUseProgram(pass.program);
 		glBindVertexArray(pass.vao);
@@ -116,7 +115,7 @@ namespace JAF {
 		if (pass.textureLocation1 >= 0)
 		{
 			glActiveTexture(GL_TEXTURE1);
-			pTexture1->bind();
+			pTexture1->bind(offset1);
 			glUniform1i(pass.textureLocation1, 1);
 		}
 	}
