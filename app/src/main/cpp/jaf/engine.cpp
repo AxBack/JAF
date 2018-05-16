@@ -80,7 +80,7 @@ namespace JAF {
             m_sizeChanged = false;
             m_camera.updateProjection(m_viewport[2], m_viewport[3]);
 			m_bloomShader.updateSize(m_viewport[2], m_viewport[3]);
-			m_swapChain.init(2, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
+			m_swapChain.init(4, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
         }
 
 		m_updater.updateInstances(m_particleMesh);

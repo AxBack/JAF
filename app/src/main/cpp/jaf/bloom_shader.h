@@ -21,6 +21,8 @@ namespace JAF {
 			GLuint vao;
 			GLint textureLocation0;
 			GLint textureLocation1;
+			GLint textureLocation2;
+			GLint textureLocation3;
 		};
 
 		Pass m_thresholdPass;
@@ -33,7 +35,7 @@ namespace JAF {
 
 		SwapChain m_swapChain;
 
-		static Pass setupPass(GLuint vs, GLuint ps, const char* texture0, const char* texture1, const Mesh& mesh);
+		static Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
 		static void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
 
 	public:

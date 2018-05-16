@@ -4,6 +4,8 @@ namespace JAF {
 
 #define TEXTURE0 "uTexture0"
 #define TEXTURE1 "uTexture1"
+#define TEXTURE2 "uTexture2"
+#define TEXTURE3 "uTexture3"
 
 	bool BloomShader::init(AAssetManager* pAssetManager, const Mesh& mesh)
 	{
@@ -11,25 +13,25 @@ namespace JAF {
 
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/ThresholdShader_ps.glsl", GL_FRAGMENT_SHADER);
-			m_thresholdPass = setupPass(vs, ps, TEXTURE0, TEXTURE1, mesh);
+			m_thresholdPass = setupPass(mesh, vs, ps, TEXTURE0, TEXTURE1, TEXTURE2, TEXTURE3);
 			glDeleteShader(ps);
 		}
 
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/BlurHorizontal_ps.glsl", GL_FRAGMENT_SHADER);
-			m_horizontalBlurPass = setupPass(vs, ps, TEXTURE0, nullptr, mesh);
+			m_horizontalBlurPass = setupPass(mesh, vs, ps, TEXTURE0, nullptr);
 			glDeleteShader(ps);
 		}
 
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/BlurVertical_ps.glsl", GL_FRAGMENT_SHADER);
-			m_verticalBlurPass = setupPass(vs, ps, TEXTURE0, nullptr, mesh);
+			m_verticalBlurPass = setupPass(mesh, vs, ps, TEXTURE0, nullptr);
 			glDeleteShader(ps);
 		}
 
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/BloomShader_ps.glsl", GL_FRAGMENT_SHADER);
-			m_finalPass = setupPass(vs, ps, TEXTURE0, TEXTURE1, mesh);
+			m_finalPass = setupPass(mesh, vs, ps, TEXTURE0, TEXTURE1);
 			glDeleteShader(ps);
 		}
 
@@ -38,12 +40,14 @@ namespace JAF {
 		return true;
 	}
 
-	auto BloomShader::setupPass(GLuint vs, GLuint ps, const char* texture0, const char* texture1, const Mesh& mesh)->Pass
+	auto BloomShader::setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1, const char* texture2, const char* texture3)->Pass
 	{
 		Pass pass = {0,0,-1, -1};
 		pass.program = createProgram(vs, ps);
 		pass.textureLocation0 = texture0 == nullptr ? -1 : getLocation(pass.program, texture0);
 		pass.textureLocation1 = texture1 == nullptr ? -1 : getLocation(pass.program, texture1);
+		pass.textureLocation2 = texture2 == nullptr ? -1 : getLocation(pass.program, texture2);
+		pass.textureLocation3 = texture3 == nullptr ? -1 : getLocation(pass.program, texture3);
 
 		glGenVertexArrays(1, &pass.vao);
 		glBindVertexArray(pass.vao);
@@ -117,6 +121,20 @@ namespace JAF {
 			glActiveTexture(GL_TEXTURE1);
 			pTexture1->bind(offset1);
 			glUniform1i(pass.textureLocation1, 1);
+		}
+
+		if (pass.textureLocation2 >= 0)
+		{
+			glActiveTexture(GL_TEXTURE2);
+			pTexture1->bind(offset1+1);
+			glUniform1i(pass.textureLocation2, 2);
+		}
+
+		if (pass.textureLocation3 >= 0)
+		{
+			glActiveTexture(GL_TEXTURE3);
+			pTexture1->bind(offset1+2);
+			glUniform1i(pass.textureLocation3, 3);
 		}
 	}
 }
