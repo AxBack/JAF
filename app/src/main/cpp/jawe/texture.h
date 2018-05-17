@@ -10,8 +10,7 @@ namespace JAWE {
 	class Texture
 	{
 	protected:
-		GLsizei m_nrHandles { 1 };
-		std::unique_ptr<GLuint[]> m_pHandles;
+		GLuint m_handle { UINT_MAX };
 
 	public:
 
@@ -22,9 +21,8 @@ namespace JAWE {
 
 		void clear()
 		{
-			if(m_pHandles)
-				glDeleteTextures(1, m_pHandles.get());
-			m_pHandles = nullptr;
+			if(m_handle < UINT_MAX)
+				glDeleteTextures(1, &m_handle);
 		}
 
 		bool init(GLenum format, GLsizei width, GLsizei height, const unsigned char* pPixels);
@@ -32,7 +30,7 @@ namespace JAWE {
 
 		void bind()
 		{
-			glBindTexture(GL_TEXTURE_2D, m_pHandles[0]);
+			glBindTexture(GL_TEXTURE_2D, m_handle);
 		}
 	};
 

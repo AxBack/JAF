@@ -5,6 +5,7 @@
 #include "vertex.h"
 #include "../jawe/framebuffer.h"
 #include "../jawe/swap_chain.h"
+#include "../jawe/texture.h"
 
 namespace JAF {
 
@@ -26,17 +27,14 @@ namespace JAF {
 		};
 
 		Pass m_thresholdPass;
-
 		Pass m_horizontalBlurPass;
-
 		Pass m_verticalBlurPass;
-
 		Pass m_finalPass;
 
 		SwapChain m_swapChain;
 
-		static Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
-		static void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
+		Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
+		void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
 
 	public:
 

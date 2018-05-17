@@ -53,7 +53,7 @@ namespace JAWE {
 
         png_get_IHDR(pPng.get(), pInfo, &width, &height, &bit_depth, &color_type, nullptr, nullptr, nullptr);
 
-        if(isPow((int)width) || isPow((int)height))
+        if(!isPow((int)width) || !isPow((int)height))
         {
             LOGE("Can only load pow2 images for now");
             return false;
