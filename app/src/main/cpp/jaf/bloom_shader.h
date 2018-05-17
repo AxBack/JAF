@@ -33,8 +33,8 @@ namespace JAF {
 
 		SwapChain m_swapChain;
 
-		Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
-		void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
+		static Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
+		static void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
 
 	public:
 
