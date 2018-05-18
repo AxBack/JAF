@@ -14,7 +14,7 @@ std::map<int, JAF::Engine*> engines;
 extern "C" {
 
 JNIEXPORT jint JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/,
+Java_com_axb_jaf_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/,
 												  jobject assetManager)
 {
     JAF::Engine* pEngine = new JAF::Engine;
@@ -33,12 +33,12 @@ Java_com_wallpaper_axb_engine_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_reset(JNIEnv* pEnv, jobject /*thiz*/, jint id, jstring internalFile)
+Java_com_axb_jaf_NativeEngine_reset(JNIEnv* pEnv, jobject /*thiz*/, jint id, jstring internalFile)
 {
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_destroy(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
+Java_com_axb_jaf_NativeEngine_destroy(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
 {
 	auto it = engines.find(id);
 	if(it == engines.end())
@@ -50,7 +50,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_destroy(JNIEnv* /*pEnv*/, jobject /*t
 }
 
 JNIEXPORT jboolean JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_render(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
+Java_com_axb_jaf_NativeEngine_render(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -61,7 +61,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_render(JNIEnv* /*pEnv*/, jobject /*th
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_resume(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
+Java_com_axb_jaf_NativeEngine_resume(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -71,7 +71,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_resume(JNIEnv* /*pEnv*/, jobject /*th
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_pause(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
+Java_com_axb_jaf_NativeEngine_pause(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -81,7 +81,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_pause(JNIEnv* /*pEnv*/, jobject /*thi
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_setSize(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, int w, int h)
+Java_com_axb_jaf_NativeEngine_setSize(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, int w, int h)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -91,7 +91,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_setSize(JNIEnv* /*pEnv*/, jobject /*t
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
+Java_com_axb_jaf_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -101,7 +101,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*t
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
+Java_com_axb_jaf_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
 {
 	auto it = engines.find(id);
 	if(it != engines.end())
@@ -111,8 +111,8 @@ Java_com_wallpaper_axb_engine_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_onPinch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float diff)
-{
+Java_com_axb_jaf_NativeEngine_onPinch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float diff)
+	{
 	auto it = engines.find(id);
 	if(it != engines.end())
 		it->second->pinch(diff);
@@ -121,7 +121,7 @@ Java_com_wallpaper_axb_engine_NativeEngine_onPinch(JNIEnv* /*pEnv*/, jobject /*t
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
+Java_com_axb_jaf_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
 {
     auto it = engines.find(id);
     if(it != engines.end())
@@ -131,49 +131,49 @@ Java_com_wallpaper_axb_engine_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, job
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_immersiveMode(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
+Java_com_axb_jaf_NativeEngine_immersiveMode(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
 {
 	JAF::Settings::immersive(static_cast<bool>(enable));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_interactive(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
+Java_com_axb_jaf_NativeEngine_interactive(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
 {
 	JAF::Settings::interactive(static_cast<bool>(enable));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_allowRocketDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+Java_com_axb_jaf_NativeEngine_allowRocketDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
 {
 	JAF::Settings::allowRocketDeviation(static_cast<bool>(allow));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_allowBurstDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+Java_com_axb_jaf_NativeEngine_allowBurstDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
 {
 	JAF::Settings::allowBurstDeviation(static_cast<bool>(allow));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_allowTrailDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
+Java_com_axb_jaf_NativeEngine_allowTrailDeviation(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean allow)
 {
 	JAF::Settings::allowTrailDeviation(static_cast<bool>(allow));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_setNrBursts(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+Java_com_axb_jaf_NativeEngine_setNrBursts(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
 {
 	JAF::Settings::nrBursts(static_cast<int>(nr));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_setMinNrRockets(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+Java_com_axb_jaf_NativeEngine_setMinNrRockets(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
 {
 	JAF::Settings::minNrRockets(static_cast<int>(nr));
 }
 
 JNIEXPORT void JNICALL
-Java_com_wallpaper_axb_engine_NativeEngine_setMaxNrRocketsPerSequence(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
+Java_com_axb_jaf_NativeEngine_setMaxNrRocketsPerSequence(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint nr)
 {
 	JAF::Settings::maxNrRocketsPerSequence(static_cast<int>(nr));
 }

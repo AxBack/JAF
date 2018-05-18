@@ -1,4 +1,4 @@
-package com.wallpaper.axb.view;
+package com.axb.jaf;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
@@ -7,8 +7,6 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import com.wallpaper.axb.engine.R;
 
 public class SliderItem extends LinearLayout implements SeekBar.OnSeekBarChangeListener {
 

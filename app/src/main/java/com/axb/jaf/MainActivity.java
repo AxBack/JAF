@@ -1,4 +1,4 @@
-package com.wallpaper.axb.view;
+package com.axb.jaf;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
@@ -13,10 +13,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.wallpaper.axb.engine.R;
-import com.wallpaper.axb.engine.Renderer;
-import com.wallpaper.axb.engine.WallpaperService;
 
 /**
  * The main activity for this app.

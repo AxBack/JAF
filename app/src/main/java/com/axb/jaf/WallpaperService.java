@@ -1,15 +1,12 @@
-package com.wallpaper.axb.engine;
+package com.axb.jaf;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.opengl.GLSurfaceView;
 import android.support.v4.view.GestureDetectorCompat;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
-
-import com.wallpaper.axb.view.MainActivity;
 
 public class WallpaperService extends android.service.wallpaper.WallpaperService {
 
@@ -90,7 +87,7 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
         private class WallpaperView extends GLSurfaceView
         {
 
-            private com.wallpaper.axb.engine.Renderer mRenderer;
+            private com.axb.jaf.Renderer mRenderer;
 
             private final ScaleGestureDetector mScaleGestureDetector;
             private final GestureDetectorCompat mGestureDetector;
@@ -106,7 +103,7 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
                     setDebugFlags(GLSurfaceView.DEBUG_CHECK_GL_ERROR);
                 }
 
-                mRenderer = new com.wallpaper.axb.engine.Renderer(WallpaperService.this);
+                mRenderer = new com.axb.jaf.Renderer(WallpaperService.this);
                 setRenderer(mRenderer);
                 setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
