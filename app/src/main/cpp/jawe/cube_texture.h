@@ -42,5 +42,10 @@ namespace JAWE {
         }
 
         bool load(const std::string& path, PngLoader* pLoader);
+
+        void bind()
+        {
+            glBindTexture(GL_TEXTURE_CUBE_MAP, m_handle);
+        }
     };
 }
