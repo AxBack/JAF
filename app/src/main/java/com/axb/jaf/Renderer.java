@@ -175,7 +175,7 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.resume(mNativeId);
 
         SharedPreferences prefs = mContext.getSharedPreferences("JAF", MODE_PRIVATE);
-        boolean b = prefs.getBoolean(IMMERSIVE_MODE, false);
+        boolean b = prefs.getBoolean(IMMERSIVE_MODE, true);
         immersiveMode(b);
 
         b = prefs.getBoolean(INTERACTIVE_MODE, true);
