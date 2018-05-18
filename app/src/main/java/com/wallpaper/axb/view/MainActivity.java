@@ -43,8 +43,8 @@ public class MainActivity extends Activity {
         setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION, true);
 
         setupSlider(main, R.string.nr_bursts_label, R.string.nr_burst_desc, 1, 5, 3, Renderer.NR_BURSTS);
-        setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 1, Renderer.MIN_NR_ROCKETS);
-        setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 6, Renderer.MAX_NR_ROCKETS);
+        setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 3, Renderer.MIN_NR_ROCKETS);
+        setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 4, Renderer.MAX_NR_ROCKETS);
 
     }
 
