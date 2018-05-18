@@ -1,5 +1,6 @@
 #include "engine.h"
-#include "../jawe/texture_loader.h"
+#include "../jawe/png_loader.h"
+#include "../jawe/cube_texture.h"
 
 namespace JAF {
 
@@ -20,6 +21,11 @@ namespace JAF {
             return false;
 
 		m_sensor.init(m_id);
+
+		JAWE::PngLoader loader(pAssetManager);
+		JAWE::CubeTexture t;
+		if(!t.load("skybox/", &loader))
+			return false;
 
         LOGI("JAF::Engine( Init end: %d )", m_id);
         return true;

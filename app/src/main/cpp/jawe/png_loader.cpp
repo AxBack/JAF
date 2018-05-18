@@ -1,7 +1,9 @@
-#include "texture_loader.h"
+#include "png_loader.h"
 #include "com_ptr.h"
+#include "../pch.h"
 
 #include <png.h>
+#include <android/asset_manager.h>
 
 namespace JAWE {
 
@@ -13,9 +15,9 @@ namespace JAWE {
         AAsset_read(s_asset.get(), data, length);
     }
 
-    bool TextureLoader::load(AAssetManager* pAssetManager, const char* file, Texture& out) const
+    bool PngLoader::load(Png& data) const
     {
-        s_asset.set(AAssetManager_open(pAssetManager, file, AASSET_MODE_STREAMING));
+        s_asset.set(AAssetManager_open(m_pAssetManager, data.file, AASSET_MODE_STREAMING));
         if(!s_asset.get())
             return false;
 
@@ -53,7 +55,10 @@ namespace JAWE {
 
         png_get_IHDR(pPng.get(), pInfo, &width, &height, &bit_depth, &color_type, nullptr, nullptr, nullptr);
 
-        if(!isPow((int)width) || !isPow((int)height))
+        data.width = static_cast<int>(width);
+        data.height = static_cast<int>(height);
+
+        if(!isPow(data.width) || !isPow(data.height))
         {
             LOGE("Can only load pow2 images for now");
             return false;
@@ -62,18 +67,18 @@ namespace JAWE {
         png_read_update_info(pPng.get(), pInfo);
 
         size_t bytesPerRow = png_get_rowbytes(pPng.get(), pInfo);
-        std::unique_ptr<png_byte[]> pImageData(new png_byte[bytesPerRow * height]);
+        data.pPixels.reset( new png_byte[bytesPerRow * data.height]);
 
-        std::unique_ptr<png_bytep[]> pRowPointers(new png_bytep[height]);
+        std::unique_ptr<png_bytep[]> pRowPointers(new png_bytep[data.height]);
 
-        for(int i=0; i < height; ++i)
+        for(int i=0; i < data.height; ++i)
         {
-            pRowPointers[i] = pImageData.get() + i * bytesPerRow;
+            pRowPointers[i] = data.pPixels.get() + i * bytesPerRow;
         }
 
         png_read_image(pPng.get(), pRowPointers.get());
 
-        return out.init(GL_RGBA, width, height, static_cast<const unsigned char*>(pImageData.get()));
+        return true;
     }
 
 }

@@ -4,6 +4,7 @@
 #include <android/asset_manager.h>
 #include <memory>
 #include "util.h"
+#include "png_loader.h"
 
 namespace JAWE {
 
@@ -26,6 +27,7 @@ namespace JAWE {
 		}
 
 		bool init(GLenum format, GLsizei width, GLsizei height, const unsigned char* pPixels);
+		bool load(const char* file, PngLoader* pLoader);
 
 		void bind()
 		{
