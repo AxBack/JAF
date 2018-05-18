@@ -14,6 +14,9 @@ namespace JAF {
 		if(!setupPostProcess(pAssetManager))
 			return false;
 
+		if(!setupSkybox(pAssetManager))
+			return false;
+
         m_camera.updateProjection(1080,1920);
         m_camera.updateView(Vector3(0,0,-100), Vector3(0,0,0), Vector3(0,1,0));
 
@@ -77,6 +80,30 @@ namespace JAF {
 		return true;
 	}
 
+	bool Engine::setupSkybox(AAssetManager* pAssetManager)
+	{
+		LOGI("JAF::Engine( setupSkybox begin: %d )", m_id);
+
+		PositionVertex vertices[] = {
+				{-1,-1,0},
+				{ 1,-1,0},
+				{ 1, 1,0},
+				{-1, 1,0}
+		};
+
+		GLushort indices[] = {0, 1, 2, 0, 2, 3};
+
+		if(!m_skyboxMesh.init(4, vertices, 6, indices))
+			return false;
+
+		if(!m_skyboxShader.init(pAssetManager, m_skyboxMesh))
+			return false;
+
+		LOGI("JAF::Engine( setupSkybox end: %d )", m_id);
+
+		return true;
+	}
+
     bool Engine::render()
 	{
 		if(!Settings::interactive() && !m_updater.isRunning())
@@ -132,6 +159,8 @@ namespace JAF {
         glClearColor(0,0,0,0);
         glClearDepthf(1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		m_skyboxShader.render(m_camera, m_skyboxMesh);
 
 		m_swapChain.step();
 		m_swapChain.set();

@@ -21,6 +21,7 @@ namespace JAF {
         GLint m_forwardLocation;
         GLint m_rightLocation;
         GLint m_upLocation;
+        GLint m_arLocation;
 
         JAWE::CubeTexture m_texture;
 
@@ -41,19 +42,6 @@ namespace JAF {
             }
         }
 
-        void render(const JAWE::Camera& camera, const Mesh& mesh)
-        {
-            glUseProgram(m_program);
-
-            glActiveTexture(GL_TEXTURE0);
-            m_texture.bind();
-            glUniform1f(m_textureLocation, 0);
-
-            glBindVertexArray(m_vao);
-            glUniform3fv(m_forwardLocation, 1, camera.getForward().data());
-            glUniform3fv(m_upLocation, 1, camera.getUp().data());
-            glUniform3fv(m_rightLocation, 1, camera.getRight().data());
-            mesh.render();
-        }
+        void render(const JAWE::Camera& camera, const Mesh& mesh);
     };
 }

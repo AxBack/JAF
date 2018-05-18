@@ -25,6 +25,8 @@ namespace JAWE {
 		Vector3 	m_right { 1,0,0 };
 		Vector3		m_up { 0,1,0};
 
+		float 		m_aspectRatio;
+
 		Matrix      m_view;
 		Matrix      m_projection;
 
@@ -58,6 +60,7 @@ namespace JAWE {
 		const Vector3& getForward() const { return m_forward; }
 		const Vector3& getUp() const { return m_up; }
 		const Vector3& getRight() const { return m_right; }
+		float getAspectRatio() const { return m_aspectRatio; }
 
         void updateView(const Vector3& position, const Vector3& at, const Vector3& up)
         {
@@ -70,6 +73,7 @@ namespace JAWE {
 
 		void updateProjection(float w, float h)
 		{
+			m_aspectRatio = w / h;
 			Matrix::perspective(m_projection, 90.0f, w / h, m_zMin, m_zMax);
 			m_vpDirty = true;
 		}

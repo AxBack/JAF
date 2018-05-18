@@ -31,11 +31,13 @@ namespace JAWE {
 
     public:
 
-        virtual ~CubeTexture() {
+        virtual ~CubeTexture()
+        {
             clear();
         }
 
-        void clear() {
+        void clear()
+        {
             if(m_handle < UINT_MAX)
                 glDeleteTextures(1, &m_handle);
             m_handle = UINT_MAX;

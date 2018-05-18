@@ -13,6 +13,7 @@
 #include "animator.h"
 #include "../jawe/sensor.h"
 #include "../jawe/swap_chain.h"
+#include "skybox_shader.h"
 
 namespace JAF {
 
@@ -54,8 +55,12 @@ namespace JAF {
 		BloomShader m_bloomShader;
 		JAWE::Mesh<TexturedVertex> m_screenMesh;
 
+		JAWE::Mesh<PositionVertex> m_skyboxMesh;
+		SkyboxShader m_skyboxShader;
+
         bool setupParticles(AAssetManager* pAssetManager);
         bool setupPostProcess(AAssetManager* pAssetManager);
+		bool setupSkybox(AAssetManager* pAssetManager);
 
     public:
 
