@@ -71,8 +71,11 @@ struct Color : public SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32_t r = scale;
+				float32x4_t result = vmulq_n_f32(l, r);
 				Color v;
-				vmulq_n_f32(vld1q_f32(v.m_data), scale);
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[R] * scale, m_data[G] * scale, m_data[B] * scale, m_data[A] * scale};
@@ -80,8 +83,12 @@ struct Color : public SimdObject {
 
 		void operator*=(const float rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
+			if(Utils::SIMD::ready){
+				float32x4_t l = vld1q_f32(m_data);
+				float32_t r = rhs;
+				float32x4_t result = vmulq_n_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[A] *= rhs;
@@ -108,8 +115,11 @@ struct Color : public SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vaddq_f32(l, r);
 				Color v;
-				vst1q_f32(v.m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[R] + rhs.m_data[R], m_data[G] + rhs.m_data[G],
@@ -133,8 +143,11 @@ struct Color : public SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vsubq_f32(l, r);
 				Color v;
-				vst1q_f32(v.m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			else
@@ -146,8 +159,12 @@ struct Color : public SimdObject {
 
 		void operator-=(const Color &rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+			if(Utils::SIMD::ready){
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vsubq_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[A] -= rhs.m_data[A];
@@ -161,8 +178,11 @@ struct Color : public SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vmulq_f32(l, r);
 				Color v;
-				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[R] * rhs.m_data[R], m_data[G] * rhs.m_data[G],
@@ -171,8 +191,12 @@ struct Color : public SimdObject {
 
 		void operator*=(const Color &rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+			if(Utils::SIMD::ready) {
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vmulq_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[A] *= rhs.m_data[A];

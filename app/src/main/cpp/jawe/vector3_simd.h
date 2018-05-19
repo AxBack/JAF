@@ -89,9 +89,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
 				float32_t r = scale;
+				float32x4_t result = vmulq_n_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, vmulq_n_f32(vld1q_f32(m_data), scale));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
@@ -101,8 +103,10 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
 				float32_t r = rhs;
-				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
+				float32x4_t result = vmulq_n_f32(l, r);
+				vst1q_f32(m_data, result);
 			}
 			else
 			{
@@ -138,8 +142,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vaddq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[X] + rhs.m_data[X], m_data[Y] + rhs.m_data[Y], m_data[Z] + rhs.m_data[Z]};
@@ -147,8 +154,12 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator+=(const Vector3 &rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+			if(Utils::SIMD::ready){
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vaddq_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[X] += rhs.m_data[X];
@@ -161,8 +172,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vsubq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[X] - rhs.m_data[X], m_data[Y] - rhs.m_data[Y], m_data[Z] - rhs.m_data[Z]};
@@ -170,8 +184,12 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator-=(const Vector3 &rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+			if(Utils::SIMD::ready){
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vsubq_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[X] -= rhs.m_data[X];
@@ -184,8 +202,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vmulq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+				vst1q_f32(v.m_data, result);
 				return v;
 			}
 			return {m_data[X] * rhs.m_data[X], m_data[Y] * rhs.m_data[Y], m_data[Z] * rhs.m_data[Z]};
@@ -193,8 +214,12 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator*=(const Vector3 &rhs)
 		{
-			if(Utils::SIMD::ready)
-				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+			if(Utils::SIMD::ready){
+				float32x4_t l = vld1q_f32(m_data);
+				float32x4_t r = vld1q_f32(rhs.m_data);
+				float32x4_t result = vmulq_f32(l, r);
+				vst1q_f32(m_data, result);
+			}
 			else
 			{
 				m_data[X] *= rhs.m_data[X];
@@ -225,13 +250,11 @@ struct Vector3 : public Math::SimdObject {
 
 		const float* data() const { return &m_data[0]; }
 
-		float length() {
-
+		float length() const {
 			return static_cast<float>(sqrt(lengthSq()));
 		}
 
-		float lengthSq()  {
-			unload();
+		float lengthSq() const {
 			return std::abs(m_data[X] * m_data[X] + m_data[Y] * m_data[Y] + m_data[Z] * m_data[Z]);
 		}
 
@@ -240,8 +263,7 @@ struct Vector3 : public Math::SimdObject {
 			this->operator*=(l);
 		}
 
-		Vector3 cross(const Vector3 &other) {
-			unload();
+		Vector3 cross(const Vector3 &other) const {
 			return {
 					m_data[Y] * other.m_data[Z] - m_data[Z] * other.m_data[Y],
 					m_data[Z] * other.m_data[X] - m_data[X] * other.m_data[Z],
