@@ -3,6 +3,9 @@
 #include <arm_neon.h>
 
 #include "binary_reader.h"
+#include "simd_object.h"
+#include "../pch.h"
+#include "util.h"
 
 namespace Math {
 
@@ -11,13 +14,15 @@ namespace Math {
 #define B 2
 #define A 3
 
-	struct Color {
+struct Color : public SimdObject {
 	private:
 		float m_data[4] { 0,0,0,0 };
+		float32x4_t m_simdData;
 
 	public:
 
 		Color()
+			:Color(0,0,0,0)
 		{
 		}
 
@@ -27,6 +32,7 @@ namespace Math {
 			m_data[R] = r;
 			m_data[G] = g;
 			m_data[B] = b;
+			load();
 		}
 
 		float a() const { return m_data[A]; }
@@ -39,89 +45,140 @@ namespace Math {
 			m_data[R] = in->read<float>();
 			m_data[R] = in->read<float>();
 			m_data[B] = in->read<float>();
+			load();
 		}
 
-		Color& operator=(const Color &rhs) {
+		virtual void load() override
+		{
+			m_simdData = vld1q_f32(m_data);
+		}
+
+		virtual void unload() override
+		{
+			vst1q_f32(m_data, m_simdData);
+		}
+
+		Color& operator=(const Color &rhs)
+		{
 			m_data[A] = rhs.m_data[A];
 			m_data[R] = rhs.m_data[R];
 			m_data[G] = rhs.m_data[G];
 			m_data[B] = rhs.m_data[B];
+			m_simdData = rhs.m_simdData;
 			return *this;
 		}
 
-		Color operator*(const float scale) const {
-			float32x4_t l = vld1q_f32(m_data);
-			float32_t r = scale;
-			float32x4_t result = vmulq_n_f32(l, r);
-			Color v;
-			vst1q_f32(v.m_data, result);
-			return v;
+		Color operator*(const float scale) const
+		{
+			if(Util::SIMD_READY)
+			{
+				Color v;
+				v.m_simdData = vmulq_n_f32(m_simdData, scale);
+				return v;
+			}
+			return {m_data[R] * scale, m_data[G] * scale, m_data[B] * scale, m_data[A] * scale};
 		}
 
-		void operator*=(const float rhs) {
-			float32x4_t l = vld1q_f32(m_data);
-			float32_t r = rhs;
-			float32x4_t result = vmulq_n_f32(l, r);
-			vst1q_f32(m_data, result);
+		void operator*=(const float rhs)
+		{
+			if(Util::SIMD_READY)
+				m_simdData = vmulq_n_f32(m_simdData, rhs);
+			else
+			{
+				m_data[A] *= rhs;
+				m_data[R] *= rhs;
+				m_data[G] *= rhs;
+				m_data[B] *= rhs;
+			}
 		}
 
-		Color operator/(const float scale) const {
+		Color operator/(const float scale) const
+		{
 			return {m_data[R] / scale, m_data[G] / scale, m_data[B] / scale, m_data[A] / scale};
 		}
 
-		void operator/=(const float rhs) {
+		void operator/=(const float rhs)
+		{
 			m_data[A] /= rhs;
 			m_data[R] /= rhs;
 			m_data[G] /= rhs;
 			m_data[B] /= rhs;
 		}
 
-		Color operator+(const Color &rhs) const {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vaddq_f32(l, r);
-			Color v;
-			vst1q_f32(v.m_data, result);
-			return v;
+		Color operator+(const Color &rhs) const
+		{
+			if(Util::SIMD_READY)
+			{
+				Color v;
+				v.m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
+				return v;
+			}
+			return {m_data[R] + rhs.m_data[R], m_data[G] + rhs.m_data[G],
+					m_data[B] + rhs.m_data[B], m_data[A] + rhs.m_data[A]};
 		}
 
-		void operator+=(const Color &rhs) {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vaddq_f32(l, r);
-			vst1q_f32(m_data, result);
+		void operator+=(const Color &rhs)
+		{
+			if(Util::SIMD_READY)
+				m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
+			else
+			{
+				m_data[A] += rhs.m_data[A];
+				m_data[R] += rhs.m_data[R];
+				m_data[G] += rhs.m_data[G];
+				m_data[B] += rhs.m_data[B];
+			}
 		}
 
-		Color operator-(const Color &rhs) const {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vsubq_f32(l, r);
-			Color v;
-			vst1q_f32(v.m_data, result);
-			return v;
+		Color operator-(const Color &rhs) const
+		{
+			if(Util::SIMD_READY)
+			{
+				Color v;
+				v.m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
+				return v;
+			}
+			else
+			{
+				return {m_data[R] - rhs.m_data[R], m_data[G] - rhs.m_data[G],
+						m_data[B] - rhs.m_data[B], m_data[A] - rhs.m_data[A]};
+			}
 		}
 
-		void operator-=(const Color &rhs) {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vsubq_f32(l, r);
-			vst1q_f32(m_data, result);
+		void operator-=(const Color &rhs)
+		{
+			if(Util::SIMD_READY)
+				m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
+			else
+			{
+				m_data[A] -= rhs.m_data[A];
+				m_data[R] -= rhs.m_data[R];
+				m_data[G] -= rhs.m_data[G];
+				m_data[B] -= rhs.m_data[B];
+			}
 		}
 
 		Color operator*(const Color &rhs) const {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vmulq_f32(l, r);
-			Color v;
-			vst1q_f32(v.m_data, result);
-			return v;
+			if(Util::SIMD_READY)
+			{
+				Color v;
+				v.m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
+				return v;
+			}
+			return {m_data[R] * rhs.m_data[R], m_data[G] * rhs.m_data[G],
+					m_data[B] * rhs.m_data[B], m_data[A] * rhs.m_data[A]};
 		}
 
 		void operator*=(const Color &rhs) {
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_f32(rhs.m_data);
-			float32x4_t result = vmulq_f32(l, r);
-			vst1q_f32(m_data, result);
+			if(Util::SIMD_READY)
+				m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
+			else
+			{
+				m_data[A] *= rhs.m_data[A];
+				m_data[R] *= rhs.m_data[R];
+				m_data[G] *= rhs.m_data[G];
+				m_data[B] *= rhs.m_data[B];
+			}
 		}
 
 		Color operator/(const Color &rhs) const {

@@ -6,7 +6,7 @@
 
 #include "binary_reader.h"
 #include "../pch.h"
-
+#include "simd_object.h"
 
 #include <math.h>
 #include <cmath>
@@ -17,7 +17,7 @@ namespace Math {
 #define Y 1
 #define Z 2
 
-	struct Vector3 {
+struct Vector3 : public Math::SimdObject {
     private:
 		float m_data[3] {0,0,0};
 

@@ -2,10 +2,11 @@
 
 #include "binary_reader.h"
 #include "../pch.h"
+#include "simd_object.h"
+#include "util.h"
 
 #include <math.h>
 #include <cmath>
-
 #include <arm_neon.h>
 
 namespace Math {
@@ -14,9 +15,11 @@ namespace Math {
 #define Y 1
 #define Z 2
 
-	struct Vector3 {
+struct Vector3 : public Math::SimdObject {
 	private:
 		float m_data[4];
+
+		float32x4_t m_simdData;
 
 	public:
 
@@ -31,6 +34,7 @@ namespace Math {
 			m_data[Y] = y;
 			m_data[Z] = z;
 			m_data[3] = 0;
+			load();
 		}
 
 		float x() const { return m_data[X]; }
@@ -46,12 +50,24 @@ namespace Math {
 			m_data[X] = in->read<float>();
 			m_data[Y] = in->read<float>();
 			m_data[Z] = in->read<float>();
+			load();
+		}
+
+		virtual void load() override
+		{
+			m_simdData = vld1q_f32(m_data);
+		}
+
+		virtual void unload() override
+		{
+			vst1q_f32(m_data, m_simdData);
 		}
 
 		Vector3& operator=(const Vector3 &rhs) {
 			m_data[X] = rhs.m_data[X];
 			m_data[Y] = rhs.m_data[Y];
 			m_data[Z] = rhs.m_data[Z];
+			m_simdData = rhs.m_simdData;
 			return *this;
 		}
 
@@ -71,13 +87,11 @@ namespace Math {
 
 		Vector3 operator*(const float scale) const
 		{
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
 				float32_t r = scale;
-				float32x4_t result = vmulq_n_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				v.m_simdData = vmulq_n_f32(m_simdData, r);
 				return v;
 			}
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
@@ -85,12 +99,10 @@ namespace Math {
 
 		void operator*=(const float rhs)
 		{
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
 				float32_t r = rhs;
-				float32x4_t result = vmulq_n_f32(l, r);
-				vst1q_f32(m_data, result);
+				m_simdData = vmulq_n_f32(m_simdData, r);
 			}
 			else
 			{
@@ -124,13 +136,10 @@ namespace Math {
 
 		Vector3 operator+(const Vector3 &rhs) const
 		{
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vaddq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				v.m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
 				return v;
 			}
 			return {m_data[X] + rhs.m_data[X], m_data[Y] + rhs.m_data[Y], m_data[Z] + rhs.m_data[Z]};
@@ -138,12 +147,9 @@ namespace Math {
 
 		void operator+=(const Vector3 &rhs)
 		{
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vaddq_f32(l, r);
-				vst1q_f32(m_data, result);
+				m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
 			}
 			else
 			{
@@ -154,25 +160,19 @@ namespace Math {
 		}
 
 		Vector3 operator-(const Vector3 &rhs) const {
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vsubq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				v.m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
 				return v;
 			}
 			return {m_data[X] - rhs.m_data[X], m_data[Y] - rhs.m_data[Y], m_data[Z] - rhs.m_data[Z]};
 		}
 
 		void operator-=(const Vector3 &rhs) {
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vsubq_f32(l, r);
-				vst1q_f32(m_data, result);
+				m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
 			}
 			else
 			{
@@ -183,25 +183,19 @@ namespace Math {
 		}
 
 		Vector3 operator*(const Vector3 &rhs) const {
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vmulq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				v.m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
 				return v;
 			}
 			return {m_data[X] * rhs.m_data[X], m_data[Y] * rhs.m_data[Y], m_data[Z] * rhs.m_data[Z]};
 		}
 
 		void operator*=(const Vector3 &rhs) {
-			if(SIMD_READY)
+			if(Util::SIMD_READY)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vmulq_f32(l, r);
-				vst1q_f32(m_data, result);
+				m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
 			}
 			else
 			{

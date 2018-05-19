@@ -5,6 +5,7 @@
 #else
 
 #include "binary_reader.h"
+#include "simd_object.h"
 
 namespace Math {
 
@@ -13,7 +14,7 @@ namespace Math {
 #define B 2
 #define A 3
 
-	struct Color {
+struct Color : public SimdObject {
 	private:
 		float m_data[4] { 0,0,0,0 };
 

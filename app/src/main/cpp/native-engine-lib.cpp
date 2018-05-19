@@ -17,7 +17,7 @@ JNIEXPORT jint JNICALL
 Java_com_axb_jaf_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/, jobject assetManager)
 {
 #if defined(__ARM_NEON)
-	verifySIMD();
+	Util::verifySIMD();
 #endif
 
     JAF::Engine* pEngine = new JAF::Engine;
