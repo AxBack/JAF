@@ -11,8 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.Random;
 
 /**
  * The main activity for this app.
@@ -26,6 +29,23 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ImageView image = findViewById(R.id.imageView);
+        switch (new Random().nextInt(4))
+        {
+            case 0:
+                image.setImageResource(R.drawable.banner_0);
+                break;
+            case 1:
+                image.setImageResource(R.drawable.banner_1);
+                break;
+            case 2:
+                image.setImageResource(R.drawable.banner_2);
+                break;
+            case 3:
+                image.setImageResource(R.drawable.banner_3);
+                break;
+        }
 
         final LinearLayout main = findViewById(R.id.main);
 

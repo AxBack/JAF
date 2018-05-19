@@ -2,7 +2,11 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#dbdcdd</color>
+
+    <color name="backgroundColor">#000000</color>
+    <color name="labelColor">#dbdcdd</color>
+    <color name="descColor">#dbdcdd</color>
 
     <color name="settings_background">#ececec</color>
     <color name="settings_card_background">#ffffff</color>

@@ -24,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/generic_margin"
                 android:text="test"
+                android:textColor="@color/labelColor"
                 android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
         </LinearLayout>
 
@@ -50,6 +51,7 @@
         android:paddingBottom="@dimen/item_padding_ends"
         android:paddingEnd="@dimen/generic_margin"
         android:paddingStart="@dimen/generic_margin"
+        android:textColor="@color/descColor"
         android:text="text"/>
 
 </com.axb.jaf.SliderItem>

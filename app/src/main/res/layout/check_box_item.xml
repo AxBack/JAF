@@ -19,7 +19,8 @@
             android:layout_weight="1"
             android:padding="@dimen/generic_margin"
             android:text="test"
-            android:textAppearance="@android:style/TextAppearance.Material.Subhead"/>
+            android:textAppearance="@android:style/TextAppearance.Material.Subhead"
+            android:textColor="@color/labelColor"/>
 
         <Switch
             android:id="@+id/switchbox"
@@ -44,6 +45,7 @@
         android:paddingBottom="@dimen/item_padding_ends"
         android:paddingEnd="@dimen/generic_margin"
         android:paddingStart="@dimen/generic_margin"
-        android:text="text"/>
+        android:text="text"
+        android:textColor="@color/descColor"/>
 
 </com.axb.jaf.CheckBoxItem>
