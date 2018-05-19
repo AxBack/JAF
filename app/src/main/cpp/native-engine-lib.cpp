@@ -6,7 +6,6 @@
 #include "jaf/settings.h"
 
 #include <map>
-#include <cpu-features.h>
 
 int id = 0;
 
@@ -17,16 +16,9 @@ extern "C" {
 JNIEXPORT jint JNICALL
 Java_com_axb_jaf_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/, jobject assetManager)
 {
-	uint64_t family = android_getCpuFamily();
-
-	if( (family == ANDROID_CPU_FAMILY_ARM || family == ANDROID_CPU_FAMILY_ARM64) &&
-			(android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0)
-	{
-		LOGI("SIMD::enabled");
-		SIMD_READY = true;
-	}
-	else
-		LOGI("SIMD::disabled");
+#if defined(__ARM_NEON)
+	verifySIMD();
+#endif
 
     JAF::Engine* pEngine = new JAF::Engine;
 

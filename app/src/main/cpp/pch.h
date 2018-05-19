@@ -4,6 +4,7 @@
 #include <GLES3/gl3.h>
 #include <string.h>
 #include <android/log.h>
+#include <cpu-features.h>
 
 #define SAFE_DELETE( p ) { if( p ) { delete ( p ); ( p ) = nullptr; } }
 #define SAFE_DELETE_ARRAY( p ) { if( p ) { delete [] ( p ); ( p ) = nullptr; } }
@@ -22,4 +23,16 @@
 #define TO_RADIANS(degrees) ((degrees) * static_cast<float>(M_PI) / 180.0f)
 #define TO_DEGREES(radians) ((radians) * 180.0f / static_cast<float>(M_PI))
 
+#if defined(__ARM_NEON)
+
 static bool SIMD_READY = false;
+static void verifySIMD()
+{
+	uint32_t family = android_getCpuFamily();
+	SIMD_READY = (family == ANDROID_CPU_FAMILY_ARM || family == ANDROID_CPU_FAMILY_ARM64)
+				&& (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0;
+
+	LOGD(SIMD_READY ? "SIMD::enabled" : "SIMD::disable");
+}
+
+#endif

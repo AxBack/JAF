@@ -71,30 +71,16 @@ namespace Math {
 				   m_data[Z] != rhs.m_data[Z];
 		}
 
-		Vector3 operator*(const float scale) const {
-#if defined(__ARM_NEON)
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_dup_f32(&scale);
-			float32x4_t result = vmulq_f32(r, l);
-			Vector3 v;
-			vst1q_f32(v.m_data, result);
-			return v;
-#else
+		Vector3 operator*(const float scale) const
+		{
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
-#endif
 		}
 
-		void operator*=(const float rhs) {
-#if defined(__ARM_NEON)
-			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_dup_f32(&rhs);
-			float32x4_t result = vmulq_f32(r, l);
-			vst1q_f32(m_data, result);
-#else
-				m_data[X] *= rhs;
-				m_data[Y] *= rhs;
-				m_data[Z] *= rhs;
-#endif
+		void operator*=(const float rhs)
+		{
+			m_data[X] *= rhs;
+			m_data[Y] *= rhs;
+			m_data[Z] *= rhs;
 		}
 
 		Vector3 operator/(const float scale) const {
