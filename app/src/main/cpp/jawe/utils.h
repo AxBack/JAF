@@ -2,21 +2,21 @@
 
 #include "../pch.h"
 
-namespace Util {
+namespace Utils {
 
-#if defined(__ARM_NEON)
-
-	static bool SIMD_READY = false;
-	static void verifySIMD()
+	struct SIMD
 	{
-		uint32_t family = android_getCpuFamily();
-		SIMD_READY = (family == ANDROID_CPU_FAMILY_ARM || family == ANDROID_CPU_FAMILY_ARM64)
-					 && (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0;
-
-		LOGD(SIMD_READY ? "SIMD::enabled" : "SIMD::disable");
-	}
-
+		static bool ready;
+		static void verify()
+		{
+#if defined(__ARM_NEON)
+			uint32_t family = android_getCpuFamily();
+			ready = (family == ANDROID_CPU_FAMILY_ARM || family == ANDROID_CPU_FAMILY_ARM64)
+						 && (android_getCpuFeatures() & ANDROID_CPU_ARM_FEATURE_NEON) != 0;
 #endif
+			LOGD(ready ? "SIMD::enabled" : "SIMD::disable");
+		}
+	};
 
 	static void setupTexture(GLuint target, GLenum filter, GLenum wrap)
 	{

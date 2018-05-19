@@ -3,7 +3,7 @@
 #include <string>
 #include <android/asset_manager.h>
 #include <memory>
-#include "util.h"
+#include "utils.h"
 #include "png_loader.h"
 
 namespace JAWE {

@@ -9,7 +9,7 @@ namespace JAWE {
         glActiveTexture(GL_TEXTURE);
         glBindTexture(GL_TEXTURE_2D, m_handle);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, pPixels);
-        Util::setupTexture(GL_TEXTURE_2D, GL_LINEAR, GL_REPEAT);
+		Utils::setupTexture(GL_TEXTURE_2D, GL_LINEAR, GL_REPEAT);
         glBindTexture(GL_TEXTURE_2D, 0);
 
         return true;

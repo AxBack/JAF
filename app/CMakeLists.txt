@@ -21,6 +21,7 @@ add_library(    # Sets the name of the library.
 
                 # Provides a relative path to your source file(s).
                 src/main/cpp/native-engine-lib.cpp
+                src/main/cpp/jawe/utils.cpp
                 src/main/cpp/jawe/engine.cpp
                 src/main/cpp/jawe/updater.cpp
                 src/main/cpp/jawe/texture.cpp

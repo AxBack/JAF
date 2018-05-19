@@ -11,7 +11,7 @@ namespace JAWE {
             return false;
 
         glTexImage2D(target, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.pPixels.get());
-        Util::setupTexture(target, GL_LINEAR, GL_REPEAT);
+        Utils::setupTexture(target, GL_LINEAR, GL_REPEAT);
 
         return true;
     }
@@ -23,7 +23,7 @@ namespace JAWE {
         glGenTextures(1, &m_handle);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_CUBE_MAP, m_handle);
-        Util::setupTexture(GL_TEXTURE_CUBE_MAP, GL_LINEAR, GL_CLAMP_TO_EDGE);
+        Utils::setupTexture(GL_TEXTURE_CUBE_MAP, GL_LINEAR, GL_CLAMP_TO_EDGE);
 
         for(UINT i=0; i<6; ++i)
         {

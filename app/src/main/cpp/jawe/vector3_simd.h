@@ -3,7 +3,7 @@
 #include "binary_reader.h"
 #include "../pch.h"
 #include "simd_object.h"
-#include "util.h"
+#include "utils.h"
 
 #include <math.h>
 #include <cmath>
@@ -18,8 +18,6 @@ namespace Math {
 struct Vector3 : public Math::SimdObject {
 	private:
 		float m_data[4];
-
-		float32x4_t m_simdData;
 
 	public:
 
@@ -55,24 +53,25 @@ struct Vector3 : public Math::SimdObject {
 
 		virtual void load() override
 		{
-			m_simdData = vld1q_f32(m_data);
+			//m_simdData = vld1q_f32(m_data);
 		}
 
 		virtual void unload() override
 		{
-			vst1q_f32(m_data, m_simdData);
+			//vst1q_f32(m_data, m_simdData);
 		}
 
 		Vector3& operator=(const Vector3 &rhs) {
 			m_data[X] = rhs.m_data[X];
 			m_data[Y] = rhs.m_data[Y];
 			m_data[Z] = rhs.m_data[Z];
-			m_simdData = rhs.m_simdData;
+			//m_simdData = rhs.m_simdData;
 			return *this;
 		}
 
 		bool operator==(const Vector3& rhs)
 		{
+			unload();
 			return m_data[X] == rhs.m_data[X] &&
 				   m_data[Y] == rhs.m_data[Y] &&
 				   m_data[Z] == rhs.m_data[Z];
@@ -80,6 +79,7 @@ struct Vector3 : public Math::SimdObject {
 
 		bool operator!=(const Vector3& rhs)
 		{
+			unload();
 			return m_data[X] != rhs.m_data[X] ||
 				   m_data[Y] != rhs.m_data[Y] ||
 				   m_data[Z] != rhs.m_data[Z];
@@ -87,11 +87,11 @@ struct Vector3 : public Math::SimdObject {
 
 		Vector3 operator*(const float scale) const
 		{
-			if(Util::SIMD_READY)
+			if(Utils::SIMD::ready)
 			{
 				float32_t r = scale;
 				Vector3 v;
-				v.m_simdData = vmulq_n_f32(m_simdData, r);
+				vst1q_f32(v.m_data, vmulq_n_f32(vld1q_f32(m_data), scale));
 				return v;
 			}
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
@@ -99,10 +99,10 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator*=(const float rhs)
 		{
-			if(Util::SIMD_READY)
+			if(Utils::SIMD::ready)
 			{
 				float32_t r = rhs;
-				m_simdData = vmulq_n_f32(m_simdData, r);
+				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
 			}
 			else
 			{
@@ -136,10 +136,10 @@ struct Vector3 : public Math::SimdObject {
 
 		Vector3 operator+(const Vector3 &rhs) const
 		{
-			if(Util::SIMD_READY)
+			if(Utils::SIMD::ready)
 			{
 				Vector3 v;
-				v.m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
+				vst1q_f32(v.m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] + rhs.m_data[X], m_data[Y] + rhs.m_data[Y], m_data[Z] + rhs.m_data[Z]};
@@ -147,10 +147,8 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator+=(const Vector3 &rhs)
 		{
-			if(Util::SIMD_READY)
-			{
-				m_simdData = vaddq_f32(m_simdData, rhs.m_simdData);
-			}
+			if(Utils::SIMD::ready)
+				vst1q_f32(m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			else
 			{
 				m_data[X] += rhs.m_data[X];
@@ -159,21 +157,21 @@ struct Vector3 : public Math::SimdObject {
 			}
 		}
 
-		Vector3 operator-(const Vector3 &rhs) const {
-			if(Util::SIMD_READY)
+		Vector3 operator-(const Vector3 &rhs) const
+		{
+			if(Utils::SIMD::ready)
 			{
 				Vector3 v;
-				v.m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
+				vst1q_f32(v.m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] - rhs.m_data[X], m_data[Y] - rhs.m_data[Y], m_data[Z] - rhs.m_data[Z]};
 		}
 
-		void operator-=(const Vector3 &rhs) {
-			if(Util::SIMD_READY)
-			{
-				m_simdData = vsubq_f32(m_simdData, rhs.m_simdData);
-			}
+		void operator-=(const Vector3 &rhs)
+		{
+			if(Utils::SIMD::ready)
+				vst1q_f32(m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			else
 			{
 				m_data[X] -= rhs.m_data[X];
@@ -182,21 +180,21 @@ struct Vector3 : public Math::SimdObject {
 			}
 		}
 
-		Vector3 operator*(const Vector3 &rhs) const {
-			if(Util::SIMD_READY)
+		Vector3 operator*(const Vector3 &rhs) const
+		{
+			if(Utils::SIMD::ready)
 			{
 				Vector3 v;
-				v.m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
+				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] * rhs.m_data[X], m_data[Y] * rhs.m_data[Y], m_data[Z] * rhs.m_data[Z]};
 		}
 
-		void operator*=(const Vector3 &rhs) {
-			if(Util::SIMD_READY)
-			{
-				m_simdData = vmulq_f32(m_simdData, rhs.m_simdData);
-			}
+		void operator*=(const Vector3 &rhs)
+		{
+			if(Utils::SIMD::ready)
+				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			else
 			{
 				m_data[X] *= rhs.m_data[X];
@@ -227,11 +225,13 @@ struct Vector3 : public Math::SimdObject {
 
 		const float* data() const { return &m_data[0]; }
 
-		float length() const {
+		float length() {
+
 			return static_cast<float>(sqrt(lengthSq()));
 		}
 
-		float lengthSq() const {
+		float lengthSq()  {
+			unload();
 			return std::abs(m_data[X] * m_data[X] + m_data[Y] * m_data[Y] + m_data[Z] * m_data[Z]);
 		}
 
@@ -240,7 +240,8 @@ struct Vector3 : public Math::SimdObject {
 			this->operator*=(l);
 		}
 
-		Vector3 cross(const Vector3 &other) const {
+		Vector3 cross(const Vector3 &other) {
+			unload();
 			return {
 					m_data[Y] * other.m_data[Z] - m_data[Z] * other.m_data[Y],
 					m_data[Z] * other.m_data[X] - m_data[X] * other.m_data[Z],
