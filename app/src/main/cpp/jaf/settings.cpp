@@ -10,5 +10,6 @@ namespace JAF {
 	std::atomic_int Settings::s_nrBursts(3);
 	std::atomic_int Settings::s_minNrRockets(1);
 	std::atomic_int Settings::s_maxNrRocketsPerSequence(5);
+	std::atomic_int Settings::s_rotationSpan(90);
 
 }

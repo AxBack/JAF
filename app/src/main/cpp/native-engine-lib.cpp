@@ -178,4 +178,10 @@ Java_com_axb_jaf_NativeEngine_setMaxNrRocketsPerSequence(JNIEnv* /*pEnv*/, jobje
 	JAF::Settings::maxNrRocketsPerSequence(static_cast<int>(nr));
 }
 
+JNIEXPORT void JNICALL
+Java_com_axb_jaf_NativeEngine_setRotationSpan(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint degrees)
+{
+	JAF::Settings::rotationSpan(static_cast<int>(degrees));
+}
+
 }

@@ -19,6 +19,7 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
     public static final String NR_BURSTS = "NrBursts";
     public static final String MIN_NR_ROCKETS = "MinNrRockets";
     public static final String MAX_NR_ROCKETS = "MaxNrRockets";
+    public static final String ROTATION_SPAN = "RotationSpan";
 
     protected final Context mContext;
     protected final NativeEngine mRenderEngine = new NativeEngine();
@@ -57,6 +58,10 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         else if(key.equals(MAX_NR_ROCKETS)) {
             int n = sharedPreferences.getInt(MAX_NR_ROCKETS, 6);
             setMaxNrRocketsPerSequence(n);
+        }
+        else if(key.equals(ROTATION_SPAN)) {
+            int n = sharedPreferences.getInt(ROTATION_SPAN, 90);
+            setRotationSpan(n);
         }
     }
 
@@ -152,6 +157,11 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.setMaxNrRocketsPerSequence(mNativeId, nr);
     }
 
+    public void setRotationSpan(int nr) {
+        if(mNativeId >= 0)
+            mRenderEngine.setRotationSpan(mNativeId, nr);
+    }
+
     public void onTouch(float x, float y) {
         if(mNativeId >= 0)
             mRenderEngine.onTouch(mNativeId,x,y);
@@ -198,6 +208,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
 
         nr = prefs.getInt(MAX_NR_ROCKETS, 6);
         setMaxNrRocketsPerSequence(nr);
+
+        nr = prefs.getInt(ROTATION_SPAN, 6);
+        setRotationSpan(nr);
 
         prefs.registerOnSharedPreferenceChangeListener(this);
     }

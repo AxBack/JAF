@@ -41,6 +41,7 @@ namespace JAF {
 
         JAWE::Camera m_camera;
         float_path m_rotation;
+		float m_rotationSpan { 0 };
 
 		Range<float> m_tiltRange = {-90, 90};
 		float_path m_tiltPath;
@@ -68,10 +69,6 @@ namespace JAF {
             : JAWE::Engine()
             , m_camera(1.0f, 2000.0f)
         {
-            {
-                float points[] = { 90, -90 };
-                m_rotation.add(1.0f, 2, points);
-            }
 			{
 				float points[] = {-10, -2, 0, 2, 10};
 				m_tiltPath.add(180, 5, points);

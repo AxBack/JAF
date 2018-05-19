@@ -18,6 +18,7 @@ namespace JAF {
 		static std::atomic_int s_nrBursts;
 		static std::atomic_int s_minNrRockets;
 		static std::atomic_int s_maxNrRocketsPerSequence;
+		static std::atomic_int s_rotationSpan;
 
 	public:
 
@@ -29,6 +30,7 @@ namespace JAF {
 		static UINT nrBursts() { return s_nrBursts; }
 		static int minNrRockets() { return s_minNrRockets; }
 		static int maxRocketsPerSequence() { return s_maxNrRocketsPerSequence; }
+		static int rotationSpan() { return s_rotationSpan; }
 
 		static void immersive(bool enable) { s_immersive = enable; }
 		static void interactive(bool enable) { s_interactive = enable; }
@@ -39,5 +41,6 @@ namespace JAF {
 		static void nrBursts(int nr) { s_nrBursts = nr; }
 		static void minNrRockets(int nr) { s_minNrRockets = nr; }
 		static void maxNrRocketsPerSequence(int nr) { s_maxNrRocketsPerSequence = nr; }
+		static void rotationSpan(int degrees) { s_rotationSpan = degrees; }
 	};
 };

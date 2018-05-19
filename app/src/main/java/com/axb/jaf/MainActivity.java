@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
         setupSlider(main, R.string.nr_bursts_label, R.string.nr_burst_desc, 1, 5, 3, Renderer.NR_BURSTS);
         setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 3, Renderer.MIN_NR_ROCKETS);
         setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 4, Renderer.MAX_NR_ROCKETS);
+        setupSlider(main, R.string.rotation_label, R.string.rotation_desc, 0, 360, 90, Renderer.ROTATION_SPAN);
 
     }
 

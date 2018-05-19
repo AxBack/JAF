@@ -18,4 +18,6 @@
     <string name="min_number_rockets_desc">The minimum number of rocket until a new sequence of rockets is fired. The bigger this number is the more intense the presentation. (Warning: A big number will increase battery consumption)</string>
     <string name="max_number_rockets_label">Maximum number of rockets per sequence.</string>
     <string name="max_number_rockets_desc">Determines the maximum number of rockets that can be fired as part of a sequence.</string>
+    <string name="rotation_label">Camera rotation.</string>
+    <string name="rotation_desc">Sets the camera rotation span.</string>
 </resources>

@@ -117,6 +117,14 @@ namespace JAF {
 			m_swapChain.init(4, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
         }
 
+		if(m_rotationSpan != Settings::rotationSpan())
+		{
+			m_rotation.clear();
+			m_rotationSpan = static_cast<float>(Settings::rotationSpan());
+			float points[] = { m_rotationSpan*0.5f, m_rotationSpan*-0.5f };
+			m_rotation.add(1.0f, 2, points);
+		}
+
 		m_updater.updateInstances(m_particleMesh);
 		m_sensor.update();
 		Math::Vector3 at = {0,0,1};
