@@ -1,8 +1,6 @@
 #pragma once
 
-#if defined(__ARM_NEON)
-#include "color_simd.h"
-#else
+#include <arm_neon.h>
 
 #include "binary_reader.h"
 
@@ -19,17 +17,17 @@ namespace Math {
 
 	public:
 
-        Color()
-        {
-        }
+		Color()
+		{
+		}
 
-        Color(float r, float g, float b, float a)
-        {
-            m_data[A] = a;
-            m_data[R] = r;
-            m_data[G] = g;
-            m_data[B] = b;
-        }
+		Color(float r, float g, float b, float a)
+		{
+			m_data[A] = a;
+			m_data[R] = r;
+			m_data[G] = g;
+			m_data[B] = b;
+		}
 
 		float a() const { return m_data[A]; }
 		float r() const { return m_data[R]; }
@@ -43,7 +41,7 @@ namespace Math {
 			m_data[B] = in->read<float>();
 		}
 
-		Color &operator=(const Color &rhs) {
+		Color& operator=(const Color &rhs) {
 			m_data[A] = rhs.m_data[A];
 			m_data[R] = rhs.m_data[R];
 			m_data[G] = rhs.m_data[G];
@@ -52,14 +50,19 @@ namespace Math {
 		}
 
 		Color operator*(const float scale) const {
-			return {m_data[R] * scale, m_data[G] * scale, m_data[B] * scale, m_data[A] * scale};
+			float32x4_t l = vld1q_f32(m_data);
+			float32_t r = scale;
+			float32x4_t result = vmulq_n_f32(l, r);
+			Color v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator*=(const float rhs) {
-			m_data[A] *= rhs;
-			m_data[R] *= rhs;
-			m_data[G] *= rhs;
-			m_data[B] *= rhs;
+			float32x4_t l = vld1q_f32(m_data);
+			float32_t r = rhs;
+			float32x4_t result = vmulq_n_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Color operator/(const float scale) const {
@@ -74,39 +77,51 @@ namespace Math {
 		}
 
 		Color operator+(const Color &rhs) const {
-			return {m_data[R] + rhs.m_data[R], m_data[G] + rhs.m_data[G],
-					m_data[B] + rhs.m_data[B], m_data[A] + rhs.m_data[A]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vaddq_f32(l, r);
+			Color v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator+=(const Color &rhs) {
-			m_data[A] += rhs.m_data[A];
-			m_data[R] += rhs.m_data[R];
-			m_data[G] += rhs.m_data[G];
-			m_data[B] += rhs.m_data[B];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vaddq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Color operator-(const Color &rhs) const {
-			return {m_data[R] - rhs.m_data[R], m_data[G] - rhs.m_data[G],
-					m_data[B] - rhs.m_data[B], m_data[A] - rhs.m_data[A]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vsubq_f32(l, r);
+			Color v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator-=(const Color &rhs) {
-			m_data[A] -= rhs.m_data[A];
-			m_data[R] -= rhs.m_data[R];
-			m_data[G] -= rhs.m_data[G];
-			m_data[B] -= rhs.m_data[B];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vsubq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Color operator*(const Color &rhs) const {
-			return {m_data[R] * rhs.m_data[R], m_data[G] * rhs.m_data[G],
-					m_data[B] * rhs.m_data[B], m_data[A] * rhs.m_data[A]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vmulq_f32(l, r);
+			Color v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator*=(const Color &rhs) {
-			m_data[A] *= rhs.m_data[A];
-			m_data[R] *= rhs.m_data[R];
-			m_data[G] *= rhs.m_data[G];
-			m_data[B] *= rhs.m_data[B];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vmulq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Color operator/(const Color &rhs) const {
@@ -125,5 +140,3 @@ namespace Math {
 	};
 
 }
-
-#endif

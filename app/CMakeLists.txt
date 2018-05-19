@@ -5,6 +5,9 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+include(AndroidNdkModules)
+android_ndk_import_module_cpufeatures()
+
 add_library(libpng STATIC IMPORTED)
 set_target_properties(libpng PROPERTIES IMPORTED_LOCATION ${ANDROID_NDK}/libs/libpng-android/obj/local/${ANDROID_ABI}/libpng.a)
 
@@ -74,6 +77,7 @@ target_link_libraries( # Specifies the target library.
                        ${OPENGL_LIB}
                        ${EGL_LIB}
                        ${ANDROID_LIB}
+                       cpufeatures
 
                        # Links the target library to the log library
                        # included in the NDK.

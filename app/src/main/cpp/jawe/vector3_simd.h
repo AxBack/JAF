@@ -1,15 +1,12 @@
 #pragma once
 
-#if defined(__ARM_NEON)
-#include "vector3_simd.h"
-#else
-
 #include "binary_reader.h"
 #include "../pch.h"
 
-
 #include <math.h>
 #include <cmath>
+
+#include <arm_neon.h>
 
 namespace Math {
 
@@ -18,14 +15,14 @@ namespace Math {
 #define Z 2
 
 	struct Vector3 {
-    private:
-		float m_data[3] {0,0,0};
+	private:
+		float m_data[4];
 
-    public:
+	public:
 
 		Vector3()
+		 :Vector3(0,0,0)
 		{
-			memset(m_data, 0, sizeof(m_data));
 		}
 
 		Vector3(float x, float y, float z)
@@ -33,6 +30,7 @@ namespace Math {
 			m_data[X] = x;
 			m_data[Y] = y;
 			m_data[Z] = z;
+			m_data[3] = 0;
 		}
 
 		float x() const { return m_data[X]; }
@@ -57,14 +55,14 @@ namespace Math {
 			return *this;
 		}
 
-		bool operator==(const Vector3& rhs) const
+		bool operator==(const Vector3& rhs)
 		{
 			return m_data[X] == rhs.m_data[X] &&
-					m_data[Y] == rhs.m_data[Y] &&
-					m_data[Z] == rhs.m_data[Z];
+				   m_data[Y] == rhs.m_data[Y] &&
+				   m_data[Z] == rhs.m_data[Z];
 		}
 
-		bool operator!=(const Vector3& rhs) const
+		bool operator!=(const Vector3& rhs)
 		{
 			return m_data[X] != rhs.m_data[X] ||
 				   m_data[Y] != rhs.m_data[Y] ||
@@ -72,76 +70,104 @@ namespace Math {
 		}
 
 		Vector3 operator*(const float scale) const {
-#if defined(__ARM_NEON)
 			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_dup_f32(&scale);
-			float32x4_t result = vmulq_f32(r, l);
+			float32_t r = scale;
+			float32x4_t result = vmulq_n_f32(l, r);
 			Vector3 v;
 			vst1q_f32(v.m_data, result);
 			return v;
-#else
-			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
-#endif
 		}
 
 		void operator*=(const float rhs) {
-#if defined(__ARM_NEON)
 			float32x4_t l = vld1q_f32(m_data);
-			float32x4_t r = vld1q_dup_f32(&rhs);
-			float32x4_t result = vmulq_f32(r, l);
+			float32_t r = rhs;
+			float32x4_t result = vmulq_n_f32(l, r);
 			vst1q_f32(m_data, result);
-#else
-				m_data[X] *= rhs;
-				m_data[Y] *= rhs;
-				m_data[Z] *= rhs;
-#endif
 		}
 
 		Vector3 operator/(const float scale) const {
+			//float32x4_t l = vld1q_f32(m_data);
+			//float32x4_t r = vld1q_f32(&scale);
+			//float32x4_t result = vdivq_f32(l, r);
+			//Vector3 v;
+			//vst1q_f32(v.m_data, result);
+			//return v;
 			return {m_data[X] / scale, m_data[Y] / scale, m_data[Z] / scale};
 		}
 
 		void operator/=(const float rhs) {
+			//float32x4_t l = vld1q_f32(m_data);
+			//float32x4_t r = vld1q_f32(&rhs);
+			//float32x4_t result = vdivq_f32(l, r);
+			//vst1q_f32(m_data, result);
 			m_data[X] /= rhs;
 			m_data[Y] /= rhs;
 			m_data[Z] /= rhs;
 		}
 
 		Vector3 operator+(const Vector3 &rhs) const {
-			return {m_data[X] + rhs.m_data[X], m_data[Y] + rhs.m_data[Y], m_data[Z] + rhs.m_data[Z]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vaddq_f32(l, r);
+			Vector3 v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator+=(const Vector3 &rhs) {
-			m_data[X] += rhs.m_data[X];
-			m_data[Y] += rhs.m_data[Y];
-			m_data[Z] += rhs.m_data[Z];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vaddq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Vector3 operator-(const Vector3 &rhs) const {
-			return {m_data[X] - rhs.m_data[X], m_data[Y] - rhs.m_data[Y], m_data[Z] - rhs.m_data[Z]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vsubq_f32(l, r);
+			Vector3 v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator-=(const Vector3 &rhs) {
-			m_data[X] -= rhs.m_data[X];
-			m_data[Y] -= rhs.m_data[Y];
-			m_data[Z] -= rhs.m_data[Z];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vsubq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Vector3 operator*(const Vector3 &rhs) const {
-			return {m_data[X] * rhs.m_data[X], m_data[Y] * rhs.m_data[Y], m_data[Z] * rhs.m_data[Z]};
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vmulq_f32(l, r);
+			Vector3 v;
+			vst1q_f32(v.m_data, result);
+			return v;
 		}
 
 		void operator*=(const Vector3 &rhs) {
-			m_data[X] *= rhs.m_data[X];
-			m_data[Y] *= rhs.m_data[Y];
-			m_data[Z] *= rhs.m_data[Z];
+			float32x4_t l = vld1q_f32(m_data);
+			float32x4_t r = vld1q_f32(rhs.m_data);
+			float32x4_t result = vmulq_f32(l, r);
+			vst1q_f32(m_data, result);
 		}
 
 		Vector3 operator/(const Vector3 &rhs) const {
+			//float32x4_t l = vld1q_f32(m_data);
+			//float32x4_t r = vld1q_dup_f32(rhs.m_data);
+			//float32x4_t result = vdivq_f32(l, r);
+			//Vector3 v;
+			//vst1q_f32(v.m_data, result);
+			//return v;
 			return {m_data[X] / rhs.m_data[X], m_data[Y] / rhs.m_data[Y], m_data[Z] / rhs.m_data[Z]};
 		}
 
 		void operator/=(const Vector3 &rhs) {
+			//float32x4_t l = vld1q_f32(m_data);
+			//float32x4_t r = vld1q_dup_f32(rhs.m_data);
+			//float32x4_t result = vdivq_f32(l, r);
+			//vst1q_f32(m_data, result);
 			m_data[X] /= rhs.m_data[X];
 			m_data[Y] /= rhs.m_data[Y];
 			m_data[Z] /= rhs.m_data[Z];
@@ -159,9 +185,7 @@ namespace Math {
 
 		void normalize() {
 			float l = 1.f / length();
-			m_data[X] *= l;
-			m_data[Y] *= l;
-			m_data[Z] *= l;
+			this->operator*=(l);
 		}
 
 		Vector3 cross(const Vector3 &other) const {
@@ -187,5 +211,3 @@ namespace Math {
 		}
 	};
 }
-
-#endif

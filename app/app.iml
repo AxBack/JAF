@@ -126,8 +126,10 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/symbols" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/transforms" />
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
-      <excludeFolder url="file://$MODULE_DIR$/build/reports" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
+    </content>
+    <content url="file://F:/android_sdk/ndk-bundle/sources/android/cpufeatures">
+      <sourceFolder url="file://F:/android_sdk/ndk-bundle/sources/android/cpufeatures" isTestSource="false" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 27 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
