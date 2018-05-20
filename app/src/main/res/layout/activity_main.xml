@@ -35,7 +35,8 @@
             android:paddingStart="@dimen/generic_margin"
             android:paddingTop="@dimen/generic_margin"
             android:text="@string/set_text"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:background="@drawable/button"/>
 
     </LinearLayout>
 
@@ -51,7 +52,7 @@
             android:layout_height="wrap_content"
             android:divider="@drawable/divider"
             android:orientation="vertical"
-            android:showDividers="beginning|middle|end"/>
+            android:showDividers="middle|end"/>
     </ScrollView>
 
 </LinearLayout>
