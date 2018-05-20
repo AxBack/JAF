@@ -89,11 +89,8 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32_t r = scale;
-				float32x4_t result = vmulq_n_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				vst1q_f32(v.m_data, vmulq_n_f32(vld1q_f32(m_data), scale));
 				return v;
 			}
 			return {m_data[X] * scale, m_data[Y] * scale, m_data[Z] * scale};
@@ -103,10 +100,7 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32_t r = rhs;
-				float32x4_t result = vmulq_n_f32(l, r);
-				vst1q_f32(m_data, result);
+				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
 			}
 			else
 			{
@@ -118,35 +112,35 @@ struct Vector3 : public Math::SimdObject {
 
 		Vector3 operator/(const float scale) const
 		{
-			//float32x4_t l = vld1q_f32(m_data);
-			// float32x4_t r = vld1q_f32(&scale);
-			//float32x4_t result = vdivq_f32(l, r);
-			//Vector3 v;
-			//vst1q_f32(v.m_data, result);
-			//return v;
+			if(Utils::SIMD::ready)
+			{
+				Vector3 v;
+				vst1q_f32(v.m_data, vmulq_n_f32(vld1q_f32(m_data), scale));
+				return v;
+			}
 			return {m_data[X] / scale, m_data[Y] / scale, m_data[Z] / scale};
 		}
 
 		void operator/=(const float rhs)
 		{
-			//float32x4_t l = vld1q_f32(m_data);
-			//float32x4_t r = vld1q_f32(&rhs);
-			//float32x4_t result = vdivq_f32(l, r);
-			//vst1q_f32(m_data, result);
-			m_data[X] /= rhs;
-			m_data[Y] /= rhs;
-			m_data[Z] /= rhs;
+			if(Utils::SIMD::ready)
+			{
+				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
+			}
+			else
+			{
+				m_data[X] /= rhs;
+				m_data[Y] /= rhs;
+				m_data[Z] /= rhs;
+			}
 		}
 
 		Vector3 operator+(const Vector3 &rhs) const
 		{
 			if(Utils::SIMD::ready)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vaddq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				vst1q_f32(v.m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] + rhs.m_data[X], m_data[Y] + rhs.m_data[Y], m_data[Z] + rhs.m_data[Z]};
@@ -155,10 +149,7 @@ struct Vector3 : public Math::SimdObject {
 		void operator+=(const Vector3 &rhs)
 		{
 			if(Utils::SIMD::ready){
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vaddq_f32(l, r);
-				vst1q_f32(m_data, result);
+				vst1q_f32(m_data, vaddq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			}
 			else
 			{
@@ -172,11 +163,8 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vsubq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				vst1q_f32(v.m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] - rhs.m_data[X], m_data[Y] - rhs.m_data[Y], m_data[Z] - rhs.m_data[Z]};
@@ -185,10 +173,7 @@ struct Vector3 : public Math::SimdObject {
 		void operator-=(const Vector3 &rhs)
 		{
 			if(Utils::SIMD::ready){
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vsubq_f32(l, r);
-				vst1q_f32(m_data, result);
+				vst1q_f32(m_data, vsubq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			}
 			else
 			{
@@ -202,11 +187,8 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vmulq_f32(l, r);
 				Vector3 v;
-				vst1q_f32(v.m_data, result);
+				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 				return v;
 			}
 			return {m_data[X] * rhs.m_data[X], m_data[Y] * rhs.m_data[Y], m_data[Z] * rhs.m_data[Z]};
@@ -214,11 +196,9 @@ struct Vector3 : public Math::SimdObject {
 
 		void operator*=(const Vector3 &rhs)
 		{
-			if(Utils::SIMD::ready){
-				float32x4_t l = vld1q_f32(m_data);
-				float32x4_t r = vld1q_f32(rhs.m_data);
-				float32x4_t result = vmulq_f32(l, r);
-				vst1q_f32(m_data, result);
+			if(Utils::SIMD::ready)
+			{
+				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
 			}
 			else
 			{
@@ -228,24 +208,29 @@ struct Vector3 : public Math::SimdObject {
 			}
 		}
 
-		Vector3 operator/(const Vector3 &rhs) const {
-			//float32x4_t l = vld1q_f32(m_data);
-			//float32x4_t r = vld1q_dup_f32(rhs.m_data);
-			//float32x4_t result = vdivq_f32(l, r);
-			//Vector3 v;
-			//vst1q_f32(v.m_data, result);
-			//return v;
+		Vector3 operator/(const Vector3 &rhs) const
+		{
+			if(Utils::SIMD::ready)
+			{
+				Vector3 v;
+				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vld1q_dup_f32(rhs.m_data))));
+				return v;
+			}
 			return {m_data[X] / rhs.m_data[X], m_data[Y] / rhs.m_data[Y], m_data[Z] / rhs.m_data[Z]};
 		}
 
-		void operator/=(const Vector3 &rhs) {
-			//float32x4_t l = vld1q_f32(m_data);
-			//float32x4_t r = vld1q_dup_f32(rhs.m_data);
-			//float32x4_t result = vdivq_f32(l, r);
-			//vst1q_f32(m_data, result);
-			m_data[X] /= rhs.m_data[X];
-			m_data[Y] /= rhs.m_data[Y];
-			m_data[Z] /= rhs.m_data[Z];
+		void operator/=(const Vector3 &rhs)
+		{
+			if(Utils::SIMD::ready)
+			{
+				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vld1q_dup_f32(rhs.m_data))));
+			}
+			else
+			{
+				m_data[X] /= rhs.m_data[X];
+				m_data[Y] /= rhs.m_data[Y];
+				m_data[Z] /= rhs.m_data[Z];
+			}
 		}
 
 		const float* data() const { return &m_data[0]; }
@@ -264,11 +249,7 @@ struct Vector3 : public Math::SimdObject {
 		}
 
 		Vector3 cross(const Vector3 &other) const {
-			return {
-					m_data[Y] * other.m_data[Z] - m_data[Z] * other.m_data[Y],
-					m_data[Z] * other.m_data[X] - m_data[X] * other.m_data[Z],
-					m_data[X] * other.m_data[Y] - m_data[Y] * other.m_data[X]
-			};
+			return cross(*this, other);
 		}
 
 		static Vector3 cross(const Vector3& lhs, const Vector3& rhs)
@@ -282,6 +263,13 @@ struct Vector3 : public Math::SimdObject {
 
 		static float dot(const Vector3& lhs, const Vector3& rhs)
 		{
+			if(Utils::SIMD::ready)
+			{
+				float v[4];
+				vst1q_f32(v, vmulq_f32(vld1q_f32(lhs.m_data), vld1q_f32(rhs.m_data)) );
+				return v[0] + v[1] + v[2];
+				// vaddvq_f32 not defined for som reason...
+			}
 			return lhs.m_data[X] * rhs.m_data[X] + lhs.m_data[Y] * rhs.m_data[Y] + lhs.m_data[Z] * rhs.m_data[Z];
 		}
 	};
