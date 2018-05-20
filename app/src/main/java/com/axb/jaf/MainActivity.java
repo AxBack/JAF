@@ -22,6 +22,12 @@ import java.util.Random;
  */
 public class MainActivity extends Activity {
 
+    private static final int[] BANNERS = {
+            R.drawable.banner_0, R.drawable.banner_1, R.drawable.banner_2,
+            R.drawable.banner_3, R.drawable.banner_4, R.drawable.banner_5,
+            R.drawable.banner_6
+    };
+
     /**
      * {@inheritDoc}
      */
@@ -31,21 +37,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         ImageView image = findViewById(R.id.imageView);
-        switch (new Random().nextInt(4))
-        {
-            case 0:
-                image.setImageResource(R.drawable.banner_0);
-                break;
-            case 1:
-                image.setImageResource(R.drawable.banner_1);
-                break;
-            case 2:
-                image.setImageResource(R.drawable.banner_2);
-                break;
-            case 3:
-                image.setImageResource(R.drawable.banner_3);
-                break;
-        }
+        image.setImageResource(BANNERS[(new Random()).nextInt(7)]);
 
         final LinearLayout main = findViewById(R.id.main);
 
