@@ -7,7 +7,6 @@ namespace JAF {
 #define RIGHT "cameraRight"
 #define TEXTURE "uTexture"
 #define ASPECT_RATIO "ar"
-#define INTENSITY "uIntensity"
 
     bool SkyboxShader::init(AAssetManager *pAssetManager, const JAF::SkyboxShader::Mesh &mesh)
     {
@@ -15,14 +14,13 @@ namespace JAF {
         if(!m_texture.load("skybox/", &loader))
             return false;
 
-        m_program = createProgram(pAssetManager, "shaders/skybox_vs.glsl", "shaders/skybox_fs.glsl");
+        m_program = createProgram(pAssetManager, "shaders/skybox_vs.glsl", "shaders/skybox_ps.glsl");
 
         m_textureLocation = getLocation(m_program, TEXTURE);
         m_forwardLocation = getLocation(m_program, FORWARD);
         m_upLocation = getLocation(m_program, UP);
         m_rightLocation = getLocation(m_program, RIGHT);
 		m_arLocation = getLocation(m_program, ASPECT_RATIO);
-		m_intensityLocation = getLocation(m_program, INTENSITY);
 
         glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
@@ -34,8 +32,6 @@ namespace JAF {
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(PositionVertex), nullptr);
 
         glBindVertexArray(0);
-
-		m_counter.step();
         return true;
     }
 
@@ -52,7 +48,6 @@ namespace JAF {
         glUniform3fv(m_upLocation, 1, camera.getUp().data());
         glUniform3fv(m_rightLocation, 1, camera.getRight().data());
 		glUniform1f(m_arLocation, camera.getAspectRatio());
-		glUniform1f(m_intensityLocation, m_intensityRange.smoothstep(m_counter.time()));
         mesh.render();
     }
 }

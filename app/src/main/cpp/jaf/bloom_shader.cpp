@@ -6,6 +6,7 @@ namespace JAF {
 #define TEXTURE1 "uTexture1"
 #define TEXTURE2 "uTexture2"
 #define TEXTURE3 "uTexture3"
+#define INTENSITY "uIntensity"
 
 	bool BloomShader::init(AAssetManager* pAssetManager, const Mesh& mesh)
 	{
@@ -32,11 +33,12 @@ namespace JAF {
 		{
 			GLuint ps = createShader(pAssetManager, "shaders/BloomShader_ps.glsl", GL_FRAGMENT_SHADER);
 			m_finalPass = setupPass(mesh, vs, ps, TEXTURE0, TEXTURE1);
+			m_intensityLocation = getLocation(m_finalPass.program, INTENSITY);
 			glDeleteShader(ps);
 		}
 
 		glDeleteShader(vs);
-
+		m_counter.step();
 		return true;
 	}
 
@@ -101,6 +103,7 @@ namespace JAF {
 		m_swapChain.step();
 
 		preparePass(m_finalPass, &swapChain, &m_swapChain);
+		glUniform1f(m_intensityLocation, m_intensityRange.smoothstep(m_counter.time()));
 		mesh.render();
 	}
 

@@ -8,6 +8,10 @@
     <color name="labelColor">#dbdcdd</color>
     <color name="descColor">#dbdcdd</color>
 
+    <color name="switchThumbNormal">#001f51</color>
+
+    <color name="dividerColor">#001f51</color>
+
     <color name="settings_background">#ececec</color>
     <color name="settings_card_background">#ffffff</color>
 

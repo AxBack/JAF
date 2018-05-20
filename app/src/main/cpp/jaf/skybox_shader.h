@@ -5,8 +5,6 @@
 #include "vertex.h"
 #include "../jawe/camera.h"
 #include "../jawe/cube_texture.h"
-#include "../jawe/counter.h"
-#include "../jawe/range.h"
 
 namespace JAF {
 
@@ -24,12 +22,8 @@ namespace JAF {
         GLint m_rightLocation;
         GLint m_upLocation;
         GLint m_arLocation;
-		GLint m_intensityLocation;
 
         JAWE::CubeTexture m_texture;
-
-        JAWE::Counter m_counter;
-		JAWE::Range<float> m_intensityRange { 0.0f, 2.0f };
 
     public:
 

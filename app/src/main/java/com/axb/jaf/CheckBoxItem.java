@@ -3,6 +3,7 @@ package com.axb.jaf;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.Switch;
@@ -27,7 +28,7 @@ public class CheckBoxItem extends LinearLayout {
     }
 
     public void setData(@StringRes int label, @StringRes int desc, boolean checked, Switch.OnCheckedChangeListener listener) {
-        Switch s = findViewById(R.id.switchbox);
+        SwitchCompat s = findViewById(R.id.switchbox);
         s.setChecked(checked);
         s.setOnCheckedChangeListener(listener);
 

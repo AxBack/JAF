@@ -22,7 +22,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Subhead"
             android:textColor="@color/labelColor"/>
 
-        <Switch
+        <android.support.v7.widget.SwitchCompat
             android:id="@+id/switchbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,6 +33,7 @@
             android:paddingStart="@dimen/generic_margin"
             android:paddingTop="@dimen/generic_margin"
             android:switchPadding="20dp"
+            android:trackTint="@color/colorPrimary"
             />
 
     </LinearLayout>
