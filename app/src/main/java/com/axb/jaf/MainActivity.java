@@ -55,6 +55,7 @@ public class MainActivity extends Activity {
         setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 4, Renderer.MAX_NR_ROCKETS);
         setupSlider(main, R.string.rotation_label, R.string.rotation_desc, 0, 360, 90, Renderer.ROTATION_SPAN);
 
+        setupText(main, R.string.special_thanks_label, R.string.special_thanks_text);
     }
 
     private void setupCheckBox(LinearLayout main, @StringRes int label, @StringRes int desc, String key, boolean def) {
@@ -77,6 +78,13 @@ public class MainActivity extends Activity {
                 updatePrefs(key, value);
                 Toast.makeText(MainActivity.this, Integer.toString(value), Toast.LENGTH_SHORT).show();
         });
+        main.addView(v);
+    }
+
+    private void setupText(LinearLayout main, @StringRes int label, @StringRes int desc) {
+        View v = LayoutInflater.from(this).inflate(R.layout.text_item, main, false);
+        final TextItem item = v.findViewById(R.id.text_item);
+        item.setData(label, desc);
         main.addView(v);
     }
 
