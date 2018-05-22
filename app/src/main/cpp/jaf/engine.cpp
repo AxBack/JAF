@@ -115,6 +115,12 @@ namespace JAF {
             m_camera.updateProjection(m_viewport[2], m_viewport[3]);
 			m_bloomShader.updateSize(m_viewport[2], m_viewport[3]);
 			m_swapChain.init(4, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
+			for(int i=0; i<4; ++i)
+			{
+				m_swapChain.set();
+				m_swapChain.clear();
+				m_swapChain.step();
+			}
         }
 
 		if(m_rotationSpan != Settings::rotationSpan())
