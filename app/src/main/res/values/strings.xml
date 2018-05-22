@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">JAF</string>
-    <string name="description">JAF Desc</string>
+    <string name="app_name">Night Sky Lights</string>
+    <string name="description">Colorful fireworks live-wallpaper</string>
     <string name="set_text">Set wallpaper</string>
     <string name="immersive_label">Immersive mode</string>
     <string name="immersive_desc">Enables device sensors to allow you to look around.</string>
