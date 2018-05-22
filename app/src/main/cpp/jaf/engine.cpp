@@ -4,7 +4,7 @@
 
 namespace JAF {
 
-    bool Engine::init(AAssetManager *pAssetManager)
+    bool Engine::onInit(AAssetManager *pAssetManager)
     {
         LOGI("JAF::Engine( Init begin: %d )", m_id);
 
@@ -104,7 +104,7 @@ namespace JAF {
 		return true;
 	}
 
-    bool Engine::render()
+    bool Engine::onRender()
 	{
 		if(!Settings::interactive() && !m_updater.isRunning())
 			m_updater.resume();

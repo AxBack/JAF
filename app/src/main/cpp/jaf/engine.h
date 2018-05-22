@@ -63,6 +63,43 @@ namespace JAF {
         bool setupPostProcess(AAssetManager* pAssetManager);
 		bool setupSkybox(AAssetManager* pAssetManager);
 
+	protected:
+
+		virtual bool onInit(AAssetManager *pAssetManager) override;
+		virtual bool onRender() override;
+
+		virtual void onResume() override
+		{
+			m_yaw = m_pitch = 0.0f;
+			if(Settings::immersive())
+				m_sensor.resume();
+			m_updater.resume();
+		}
+
+		virtual void onPause() override
+		{
+			m_yaw = m_pitch = 0.0f;
+			if(m_sensor.active())
+				m_sensor.pause();
+			m_updater.pause();
+		}
+
+		virtual void onDoubleTap(float x, float y) override
+		{
+			if(Settings::interactive())
+			{
+				if(m_updater.isRunning())
+					m_updater.pause();
+				else
+					m_updater.resume();
+			}
+		}
+
+		virtual void onOffset(float x, float y) override
+		{
+			m_offset = x;
+		}
+
     public:
 
         Engine()
@@ -78,42 +115,6 @@ namespace JAF {
         virtual ~Engine()
         {
             m_updater.pause();
-        }
-
-        virtual bool init(AAssetManager *pAssetManager) override;
-
-        virtual bool render() override;
-
-        virtual void resume() override
-		{
-			m_yaw = m_pitch = 0.0f;
-			if(Settings::immersive())
-				m_sensor.resume();
-			m_updater.resume();
-		}
-
-        virtual void pause() override
-		{
-			m_yaw = m_pitch = 0.0f;
-			if(m_sensor.active())
-				m_sensor.pause();
-			m_updater.pause();
-		}
-
-		virtual void doubleTap(float x, float y) override
-		{
-			if(Settings::interactive())
-			{
-				if(m_updater.isRunning())
-					m_updater.pause();
-				else
-					m_updater.resume();
-			}
-		}
-
-        virtual void setOffset(float x, float y) override
-        {
-            m_offset = x;
         }
 
         virtual void updateSize(int width, int height) override

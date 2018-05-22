@@ -20,6 +20,23 @@ namespace JAWE {
 
         GLint m_viewport[4] { 0,0,0,0 };
 
+		AAssetManager* m_pAssetManager;
+		std::atomic_bool m_initialized { false };
+
+		std::mutex m_mutex;
+
+	protected:
+
+		virtual bool onInit(AAssetManager* pAssetManager) = 0;
+		virtual bool onRender() = 0;
+		virtual void onResume() = 0;
+		virtual void onPause() = 0;
+
+		virtual void onTouch(float /*x*/, float /*y*/) {}
+		virtual void onDoubleTap(float /*x*/, float /*y*/) {}
+		virtual void onPinch(float /*diff*/) {}
+		virtual void onOffset(float /*x*/, float /*y*/) {}
+
     public:
 
         Engine() {
@@ -29,28 +46,77 @@ namespace JAWE {
             clear();
         }
 
-        virtual void clear() {};
+        void clear() {}
 
-        virtual bool init(AAssetManager *pAssetManager) = 0;
+        bool init(AAssetManager *pAssetManager)
+        {
+			m_pAssetManager = pAssetManager;
+			m_initialized = false;
+			return true;
+        }
 
-        virtual bool render() = 0;
+        bool render()
+        {
+			if(!m_initialized && m_pAssetManager)
+				m_initialized = onInit(m_pAssetManager);
 
-        virtual void resume() = 0;
+			std::lock_guard<std::mutex> _(m_mutex);
+			return m_initialized && onRender();
+        }
 
-        virtual void pause() = 0;
+        void resume()
+        {
+			std::lock_guard<std::mutex> _(m_mutex);
+			if(m_initialized)
+				onResume();
+        }
+
+        void pause()
+        {
+			std::lock_guard<std::mutex> _(m_mutex);
+			if(m_initialized)
+				onPause();
+        }
 
         virtual void updateSize(int width, int height)
         {
+			std::lock_guard<std::mutex> _(m_mutex);
             LOGI("engine(size updated: %d, %d )", width, height);
             m_viewport[0] = m_viewport[1] = 0;
             m_viewport[2] = width;
             m_viewport[3] = height;
         }
 
-        virtual void touch(float /*x*/, float /*y*/) {}
-        virtual void doubleTap(float /*x*/, float /*y*/) {}
-        virtual void pinch(float /*diff*/) {}
-		virtual void rotate(float /*angle*/) {}
-        virtual void setOffset(float /*x*/, float /*y*/) {}
+        void touch(float x, float y)
+		{
+			if(!m_initialized)
+				return;
+			std::lock_guard<std::mutex> _(m_mutex);
+			onTouch(x,y);
+		}
+
+        void doubleTap(float x, float y)
+		{
+			if(!m_initialized)
+				return;
+			std::lock_guard<std::mutex> _(m_mutex);
+			onDoubleTap(x,y);
+		}
+
+        void pinch(float diff)
+		{
+			if(!m_initialized)
+				return;
+			std::lock_guard<std::mutex> _(m_mutex);
+			onPinch(diff);
+		}
+
+        void setOffset(float x, float y)
+		{
+			if(!m_initialized)
+				return;
+			std::lock_guard<std::mutex> _(m_mutex);
+			onOffset(x,y);
+		}
     };
 }
