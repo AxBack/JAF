@@ -51,7 +51,7 @@ namespace JAWE {
 				m_viewProjection = m_projection * m_view;
 				m_forward = m_at - m_position;
 				m_forward.normalize();
-				m_right = m_forward.cross(m_up);
+				m_right = m_up.cross(m_forward);
 			}
 		}
 
