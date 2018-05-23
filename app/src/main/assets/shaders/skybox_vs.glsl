@@ -13,7 +13,7 @@ out vec3 normal;
 void main() {
     normal = normalize(
         cameraNormal +
-        (cameraRight * inPosition.x * ar) +
+        (-cameraRight * inPosition.x * ar) +
         (cameraUp * inPosition.y)
         );
 
