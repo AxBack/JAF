@@ -19,6 +19,7 @@ namespace JAF {
 		static std::atomic_int s_minNrRockets;
 		static std::atomic_int s_maxNrRocketsPerSequence;
 		static std::atomic_int s_rotationSpan;
+		static std::atomic<float> s_deltaFactor;
 
 	public:
 
@@ -31,6 +32,7 @@ namespace JAF {
 		static int minNrRockets() { return s_minNrRockets; }
 		static int maxRocketsPerSequence() { return s_maxNrRocketsPerSequence; }
 		static int rotationSpan() { return s_rotationSpan; }
+		static float deltaFactor() { return s_deltaFactor; }
 
 		static void immersive(bool enable) { s_immersive = enable; }
 		static void interactive(bool enable) { s_interactive = enable; }
@@ -42,5 +44,6 @@ namespace JAF {
 		static void minNrRockets(int nr) { s_minNrRockets = nr; }
 		static void maxNrRocketsPerSequence(int nr) { s_maxNrRocketsPerSequence = nr; }
 		static void rotationSpan(int degrees) { s_rotationSpan = degrees; }
+		static void deltaFactor(float factor) { s_deltaFactor = factor; }
 	};
-};
+}

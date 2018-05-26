@@ -19,6 +19,7 @@ class NativeEngine {
     public native void setMinNrRockets(int id, int nr);
     public native void setMaxNrRocketsPerSequence(int id, int nr);
     public native void setRotationSpan(int id, int nr);
+    public native void setDeltaFactor(int id, float factor);
 
     public native void setSize(int id, int w, int h);
     public native void onTouch(int id, float x, float y);

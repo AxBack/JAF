@@ -20,6 +20,7 @@ namespace JAF {
 
     void Updater::advance(float dt)
     {
+        dt *= Settings::deltaFactor();
 		UpdateData data = {this, &m_particleCollector, dt };
 
         m_particleCollector.begin();

@@ -185,4 +185,10 @@ Java_com_axb_jaf_NativeEngine_setRotationSpan(JNIEnv* /*pEnv*/, jobject /*thiz*/
 	JAF::Settings::rotationSpan(static_cast<int>(degrees));
 }
 
+JNIEXPORT void JNICALL
+Java_com_axb_jaf_NativeEngine_setDeltaFactor(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jfloat factor)
+{
+	JAF::Settings::deltaFactor(static_cast<float>(factor));
+}
+
 }

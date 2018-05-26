@@ -28,6 +28,8 @@ public class MainActivity extends Activity {
             R.drawable.banner_6
     };
 
+    Toast mToast = null;
+
     /**
      * {@inheritDoc}
      */
@@ -50,12 +52,21 @@ public class MainActivity extends Activity {
         setupCheckBox(main, R.string.allow_burst_deviation_label, R.string.burst_deviation_desc, Renderer.BURST_DEVIATION, true);
         setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION, true);
 
-        setupSlider(main, R.string.nr_bursts_label, R.string.nr_burst_desc, 1, 5, 3, Renderer.NR_BURSTS);
-        setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 3, Renderer.MIN_NR_ROCKETS);
-        setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 4, Renderer.MAX_NR_ROCKETS);
-        setupSlider(main, R.string.rotation_label, R.string.rotation_desc, 0, 360, 180, Renderer.ROTATION_SPAN);
+        setupSlider(main, R.string.nr_bursts_label, R.string.nr_burst_desc, 1, 5, 3, Renderer.NR_BURSTS, true);
+        setupSlider(main, R.string.min_number_rockets_label, R.string.min_number_rockets_desc, 1, 10, 3, Renderer.MIN_NR_ROCKETS, true);
+        setupSlider(main, R.string.max_number_rockets_label, R.string.max_number_rockets_desc, 1, 9, 4, Renderer.MAX_NR_ROCKETS, true);
+        setupSlider(main, R.string.rotation_label, R.string.rotation_desc, 0, 360, 180, Renderer.ROTATION_SPAN, true);
+        setupSlider(main, R.string.delta_factor_label, R.string.delta_factor_desc, 0, 2, 1, Renderer.DELTA_FACTOR, false);
 
         setupText(main, R.string.special_thanks_label, R.string.special_thanks_text);
+    }
+
+    private void showToast(String msg ) {
+        if(mToast != null)
+            mToast.cancel();
+
+        mToast = Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT);
+        mToast.show();
     }
 
     private void setupCheckBox(LinearLayout main, @StringRes int label, @StringRes int desc, String key, boolean def) {
@@ -68,7 +79,7 @@ public class MainActivity extends Activity {
         main.addView(v);
     }
 
-    private void setupSlider(LinearLayout main, @StringRes int label, @StringRes int desc, int min, int max, int def, String key) {
+    private void setupSlider(LinearLayout main, @StringRes int label, @StringRes int desc, int min, int max, int def, String key, boolean showToast) {
         SharedPreferences prefs = getPrefs();
         int curr = prefs.getInt(key, def);
 
@@ -76,7 +87,8 @@ public class MainActivity extends Activity {
         final SliderItem item = v.findViewById(R.id.slider_item);
         item.setData(label, desc, min, max, curr, (int value) -> {
                 updatePrefs(key, value);
-                Toast.makeText(MainActivity.this, Integer.toString(value), Toast.LENGTH_SHORT).show();
+                if(showToast)
+                    showToast(Integer.toString(value));
         });
         main.addView(v);
     }

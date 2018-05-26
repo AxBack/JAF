@@ -20,6 +20,7 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
     public static final String MIN_NR_ROCKETS = "MinNrRockets";
     public static final String MAX_NR_ROCKETS = "MaxNrRockets";
     public static final String ROTATION_SPAN = "RotationSpan";
+    public static final String DELTA_FACTOR = "DeltaFactor";
 
     protected final Context mContext;
     protected final NativeEngine mRenderEngine = new NativeEngine();
@@ -62,6 +63,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         else if(key.equals(ROTATION_SPAN)) {
             int n = sharedPreferences.getInt(ROTATION_SPAN, 90);
             setRotationSpan(n);
+        } else if(key.equals(DELTA_FACTOR)) {
+            int n = sharedPreferences.getInt(DELTA_FACTOR, 2);
+            setDeltaFactor(n);
         }
     }
 
@@ -127,39 +131,57 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.interactive(mNativeId, enable);
     }
 
-    public void allowRocketDeviation(boolean allow) {
+    private void allowRocketDeviation(boolean allow) {
         if(mNativeId >= 0)
             mRenderEngine.allowRocketDeviation(mNativeId, allow);
     }
 
-    public void allowBurstDeviation(boolean allow) {
+    private void allowBurstDeviation(boolean allow) {
         if(mNativeId >= 0)
             mRenderEngine.allowBurstDeviation(mNativeId, allow);
     }
 
-    public void allowTrailDeviation(boolean allow) {
+    private void allowTrailDeviation(boolean allow) {
         if(mNativeId >= 0)
             mRenderEngine.allowTrailDeviation(mNativeId, allow);
     }
 
-    public void setNrBursts(int nr) {
+    private void setNrBursts(int nr) {
         if(mNativeId >= 0)
             mRenderEngine.setNrBursts(mNativeId, nr);
     }
 
-    public void setMinNrRockets(int nr) {
+    private void setMinNrRockets(int nr) {
         if(mNativeId >= 0)
             mRenderEngine.setMinNrRockets(mNativeId, nr);
     }
 
-    public void setMaxNrRocketsPerSequence(int nr) {
+    private void setMaxNrRocketsPerSequence(int nr) {
         if(mNativeId >= 0)
             mRenderEngine.setMaxNrRocketsPerSequence(mNativeId, nr);
     }
 
-    public void setRotationSpan(int nr) {
+    private void setRotationSpan(int nr) {
         if(mNativeId >= 0)
             mRenderEngine.setRotationSpan(mNativeId, nr);
+    }
+
+    private void setDeltaFactor(int factor) {
+        if (mNativeId >= 0) {
+            float f = 1.0f;
+            switch (factor) {
+                case 0:
+                    f = 0.5f;
+                    break;
+                case 1:
+                    f = 1.0f;
+                    break;
+                case 2:
+                    f = 1.5f;
+                    break;
+            }
+            mRenderEngine.setDeltaFactor(mNativeId, f);
+        }
     }
 
     public void onTouch(float x, float y) {
@@ -211,6 +233,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
 
         nr = prefs.getInt(ROTATION_SPAN, 6);
         setRotationSpan(nr);
+
+        nr = prefs.getInt(DELTA_FACTOR, 1);
+        setDeltaFactor(nr);
 
         prefs.registerOnSharedPreferenceChangeListener(this);
     }

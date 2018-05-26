@@ -20,6 +20,8 @@
     <string name="max_number_rockets_desc">Determines the maximum number of rockets that can be fired as part of a sequence</string>
     <string name="rotation_label">Camera rotation</string>
     <string name="rotation_desc">Sets the camera rotation span</string>
+    <string name="delta_factor_label">Speed</string>
+    <string name="delta_factor_desc">Sets the speed of presentation.</string>
     <string name="special_thanks_label">Special thanks</string>
     <string name="special_thanks_text">wwwtyro for making an awesome skybox generator. <a href="https://wwwtyro.github.io/space-3d">https://wwwtyro.github.io/space-3d</a></string>
 </resources>
