@@ -38,8 +38,8 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             boolean b = sharedPreferences.getBoolean(IMMERSIVE_MODE, true);
             immersiveMode(b);
         } else if(key.equals(INTERACTIVE_MODE)) {
-            boolean b = sharedPreferences.getBoolean(INTERACTIVE_MODE, true);
-            interactive(b);
+            int s = sharedPreferences.getInt(INTERACTIVE_MODE, 2);
+            interactive(s);
         } else if(key.equals(ROCKET_DEVIATION)) {
             boolean b = sharedPreferences.getBoolean(ROCKET_DEVIATION, true);
             allowRocketDeviation(b);
@@ -126,9 +126,9 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.immersiveMode(mNativeId, enable);
     }
 
-    public void interactive(boolean enable) {
+    public void interactive(int state) {
         if(mNativeId >= 0)
-            mRenderEngine.interactive(mNativeId, enable);
+            mRenderEngine.interactive(mNativeId, state);
     }
 
     private void allowRocketDeviation(boolean allow) {
@@ -189,6 +189,12 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
             mRenderEngine.onTouch(mNativeId,x,y);
     }
 
+    public void onTap(float x, float y)
+    {
+        if(mNativeId >= 0)
+            mRenderEngine.onTap(mNativeId, x, y);
+    }
+
     public void onDoubleTap(float x, float y) {
         if(mNativeId >= 0)
             mRenderEngine.onDoubleTap(mNativeId, x, y);
@@ -210,9 +216,6 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         boolean b = prefs.getBoolean(IMMERSIVE_MODE, true);
         immersiveMode(b);
 
-        b = prefs.getBoolean(INTERACTIVE_MODE, true);
-        interactive(b);
-
         b = prefs.getBoolean(ROCKET_DEVIATION, true);
         allowRocketDeviation(b);
 
@@ -222,7 +225,10 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
         b = prefs.getBoolean(TRAIL_DEVIATION, true);
         allowTrailDeviation(b);
 
-        int nr = prefs.getInt(NR_BURSTS, 3);
+        int nr = prefs.getInt(INTERACTIVE_MODE, 2);
+        interactive(nr);
+
+        nr = prefs.getInt(NR_BURSTS, 3);
         setNrBursts(nr);
 
         nr = prefs.getInt(MIN_NR_ROCKETS, 1);

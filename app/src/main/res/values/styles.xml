@@ -10,6 +10,7 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorSwitchThumbNormal">@color/switchThumbNormal</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="android:textColor">@color/labelColor</item>
     </style>
 
 </resources>

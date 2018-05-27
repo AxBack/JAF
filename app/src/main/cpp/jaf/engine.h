@@ -84,9 +84,20 @@ namespace JAF {
 			m_updater.pause();
 		}
 
+		virtual void onTap(float x, float y) override
+		{
+			if(Settings::interactive() == TAP)
+			{
+				if(m_updater.isRunning())
+					m_updater.pause();
+				else
+					m_updater.resume();
+			}
+		}
+
 		virtual void onDoubleTap(float x, float y) override
 		{
-			if(Settings::interactive())
+			if(Settings::interactive() == DOUBLE_TAP)
 			{
 				if(m_updater.isRunning())
 					m_updater.pause();

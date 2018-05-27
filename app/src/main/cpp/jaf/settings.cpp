@@ -3,7 +3,7 @@
 namespace JAF {
 
 	std::atomic_bool Settings::s_immersive(true);
-	std::atomic_bool Settings::s_interactive(true);
+	std::atomic<INTERACTIVE_STATE> Settings::s_interactive(DOUBLE_TAP);
 	std::atomic_bool Settings::s_allowRocketDeviation(true);
 	std::atomic_bool Settings::s_allowBurstDeviation(true);
 	std::atomic_bool Settings::s_allowTrailDeviation(true);

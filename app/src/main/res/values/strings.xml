@@ -5,7 +5,7 @@
     <string name="immersive_label">Immersive mode</string>
     <string name="immersive_desc">Enables device sensors to allow you to look around.</string>
     <string name="interactive_label">Interactive mode</string>
-    <string name="interactive_desc">Double-tapping on background pauses/resumes sequence.</string>
+    <string name="interactive_desc">Tapping/Double-tapping on background pauses/resumes sequence.</string>
     <string name="allow_rocket_deviation_label">Allow rocket deviation</string>
     <string name="rocket_deviation_desc">Enables deviation between rockets of same type. Makes the presentation more sporadic.</string>
     <string name="allow_burst_deviation_label">Allow burst deviation</string>
@@ -24,4 +24,10 @@
     <string name="delta_factor_desc">Sets the speed of presentation.</string>
     <string name="special_thanks_label">Special thanks</string>
     <string name="special_thanks_text">wwwtyro for making an awesome skybox generator. <a href="https://wwwtyro.github.io/space-3d">https://wwwtyro.github.io/space-3d</a></string>
+
+    <string-array name="interactable_options">
+        <item>Off</item>
+        <item>Tap</item>
+        <item>Double Tap</item>
+    </string-array>
 </resources>

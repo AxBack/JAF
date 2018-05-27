@@ -6,12 +6,14 @@
 
 namespace JAF {
 
+	enum INTERACTIVE_STATE { OFF, TAP, DOUBLE_TAP };
+
 	class Settings
 	{
 	private:
 
 		static std::atomic_bool s_immersive;
-		static std::atomic_bool s_interactive;
+		static std::atomic<INTERACTIVE_STATE> s_interactive;
 		static std::atomic_bool s_allowRocketDeviation;
 		static std::atomic_bool s_allowBurstDeviation;
 		static std::atomic_bool s_allowTrailDeviation;
@@ -24,7 +26,7 @@ namespace JAF {
 	public:
 
 		static bool immersive() { return s_immersive; }
-		static bool interactive() { return s_interactive; }
+		static INTERACTIVE_STATE interactive() { return s_interactive; }
 		static bool allowRocketDeviation() { return s_allowRocketDeviation; }
 		static bool allowBurstDeviation() { return s_allowBurstDeviation; }
 		static bool allowTrailDeviation()  { return s_allowTrailDeviation; }
@@ -35,7 +37,7 @@ namespace JAF {
 		static float deltaFactor() { return s_deltaFactor; }
 
 		static void immersive(bool enable) { s_immersive = enable; }
-		static void interactive(bool enable) { s_interactive = enable; }
+		static void interactive(INTERACTIVE_STATE state) { s_interactive = state; }
 		static void allowRocketDeviation(bool allow) { s_allowRocketDeviation = allow; }
 		static void allowBurstDeviation(bool allow) { s_allowBurstDeviation = allow; }
 		static void allowTrailDeviation(bool allow) { s_allowTrailDeviation = allow; }

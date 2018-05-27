@@ -6,9 +6,11 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.ArrayRes;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -46,8 +48,9 @@ public class MainActivity extends Activity {
         Button btn = findViewById(R.id.setBtn);
         btn.setOnClickListener((View v) -> setAsWallpaper());
 
+        setupComboBox(main ,R.string.interactive_label, R.string.interactive_desc, R.array.interactable_options, Renderer.INTERACTIVE_MODE, 2);
+        //setupCheckBox(main, R.string.interactive_label, R.string.interactive_desc, Renderer.INTERACTIVE_MODE, true);
         setupCheckBox(main, R.string.immersive_label, R.string.immersive_desc, Renderer.IMMERSIVE_MODE, true);
-        setupCheckBox(main, R.string.interactive_label, R.string.interactive_desc, Renderer.INTERACTIVE_MODE, true);
         setupCheckBox(main, R.string.allow_rocket_deviation_label, R.string.rocket_deviation_desc, Renderer.ROCKET_DEVIATION, true);
         setupCheckBox(main, R.string.allow_burst_deviation_label, R.string.burst_deviation_desc, Renderer.BURST_DEVIATION, true);
         setupCheckBox(main, R.string.allow_trail_deviation_label, R.string.trail_deviation_desc, Renderer.TRAIL_DEVIATION, true);
@@ -76,6 +79,26 @@ public class MainActivity extends Activity {
         View v = LayoutInflater.from(this).inflate(R.layout.check_box_item, main, false);
         final CheckBoxItem item = v.findViewById(R.id.check_box_item);
         item.setData(label, desc, state, (CompoundButton b, boolean checked) -> updatePrefs(key, checked) );
+        main.addView(v);
+    }
+
+    private void setupComboBox(LinearLayout main, @StringRes int label, @StringRes int desc, @ArrayRes int array, String key, int def) {
+        SharedPreferences prefs = getPrefs();
+        int state = prefs.getInt(key, def);
+
+        View v = LayoutInflater.from(this).inflate(R.layout.combobox_item, main, false);
+        final ComboBox item = v.findViewById(R.id.combo_box_item);
+        item.setData(label, desc, array, state, new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updatePrefs(key, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         main.addView(v);
     }
 

@@ -196,6 +196,12 @@ public class WallpaperService extends android.service.wallpaper.WallpaperService
                     mRenderer.onDoubleTap(e.getX(), e.getY());
                     return super.onDoubleTap(e);
                 }
+
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    mRenderer.onTap(e.getX(), e.getY());
+                    return super.onSingleTapUp(e);
+                }
             }
         }
     }

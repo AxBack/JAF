@@ -33,6 +33,7 @@ namespace JAWE {
 		virtual void onPause() = 0;
 
 		virtual void onTouch(float /*x*/, float /*y*/) {}
+		virtual void onTap(float /*x*/, float /*y*/) {}
 		virtual void onDoubleTap(float /*x*/, float /*y*/) {}
 		virtual void onPinch(float /*diff*/) {}
 		virtual void onOffset(float /*x*/, float /*y*/) {}
@@ -93,6 +94,14 @@ namespace JAWE {
 				return;
 			std::lock_guard<std::mutex> _(m_mutex);
 			onTouch(x,y);
+		}
+
+		void tap(float x, float y)
+		{
+			if(!m_initialized)
+				return;
+			std::lock_guard<std::mutex> _(m_mutex);
+			onTap(x,y);
 		}
 
         void doubleTap(float x, float y)

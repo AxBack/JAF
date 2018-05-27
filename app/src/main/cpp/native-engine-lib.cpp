@@ -102,6 +102,16 @@ Java_com_axb_jaf_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint i
 }
 
 JNIEXPORT void JNICALL
+Java_com_axb_jaf_NativeEngine_onTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
+{
+	auto it = engines.find(id);
+	if(it != engines.end())
+		it->second->tap(x,y);
+	else
+		LOGE("No engine to touch");
+}
+
+JNIEXPORT void JNICALL
 Java_com_axb_jaf_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, float x, float y)
 {
 	auto it = engines.find(id);
@@ -138,9 +148,10 @@ Java_com_axb_jaf_NativeEngine_immersiveMode(JNIEnv* /*pEnv*/, jobject /*thiz*/, 
 }
 
 JNIEXPORT void JNICALL
-Java_com_axb_jaf_NativeEngine_interactive(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jboolean enable)
+Java_com_axb_jaf_NativeEngine_interactive(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id, jint state)
 {
-	JAF::Settings::interactive(static_cast<bool>(enable));
+	if(state >= 0 && state <= 2)
+		JAF::Settings::interactive(static_cast<JAF::INTERACTIVE_STATE>(state));
 }
 
 JNIEXPORT void JNICALL
