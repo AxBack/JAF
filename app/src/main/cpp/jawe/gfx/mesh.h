@@ -1,12 +1,24 @@
 #pragma once
 
 #include <vector>
-#include "../pch.h"
+#include "../../pch.h"
+#include "instance_collector.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
+
+	class IMesh
+	{
+	public:
+
+		virtual void render() const = 0;
+
+		virtual GLuint getStaticBuffer() const = 0;
+		virtual GLuint getIndexBuffer() const = 0;
+		virtual GLuint getDynamicBuffer() const = 0;
+	};
 
 	template<class T>
-	class Mesh
+	class Mesh : public IMesh
 	{
 	protected:
 
@@ -48,13 +60,14 @@ namespace JAWE {
 			glDeleteBuffers(2, buffers);
 		}
 
-		virtual void render() const
+		virtual void render() const override
 		{
 			glDrawElements(GL_TRIANGLES, m_nrIndices, GL_UNSIGNED_SHORT, nullptr);
 		}
 
-		GLuint getStaticBuffer() const { return m_vertexBuffer; }
-		GLuint getIndexBuffer() const { return m_indexBuffer; }
+		GLuint getStaticBuffer() const override { return m_vertexBuffer; }
+		GLuint getIndexBuffer() const override { return m_indexBuffer; }
+		GLuint getDynamicBuffer() const override { return 0; }
 
 	};
 
@@ -65,6 +78,8 @@ namespace JAWE {
 
 		GLuint m_instanceBuffer;
 		GLuint m_nrInstances;
+
+		InstanceCollector<K> m_instances;
 
 	public:
 
@@ -111,7 +126,7 @@ namespace JAWE {
 		}
 
 		bool hasInstances() { return m_nrInstances > 0; }
-		GLuint getDynamicBuffer() const { return m_instanceBuffer; }
+		GLuint getDynamicBuffer() const override { return m_instanceBuffer; }
 	};
 
-};
+}}

@@ -5,7 +5,7 @@
 #include <exception>
 #include <deque>
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
 	class SwapChain
 	{
@@ -71,4 +71,4 @@ namespace JAWE {
 		}
 
 	};
-};
+} }

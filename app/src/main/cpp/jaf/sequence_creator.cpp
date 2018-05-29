@@ -12,7 +12,7 @@ namespace JAF {
 		for(int i = 0; i < nrRockets; ++i)
 			out.addRocket(i == 0 ? 0.0f : interval, pBehaviour);
 
-		Math::Vector3 offset = {0,0,0};
+		JAWE::MATH::Vector3 offset = {0,0,0};
 		float tag = 0;
 
 		auto release = m_offsets.front();

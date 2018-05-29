@@ -1,8 +1,8 @@
 #pragma once
 
 #include "behaviour.h"
-#include "../jawe/instance_collector.h"
-#include "../jawe/quaternion.h"
+#include "../jawe/gfx/instance_collector.h"
+#include "../jawe/math/quaternion.h"
 #include "vertex.h"
 
 namespace JAF {
@@ -24,8 +24,8 @@ namespace JAF {
 
         int m_type { 0 };
 
-		Math::Vector3 m_position { 0,0,0 };
-		Math::Vector3 m_lastPosition { 0,0,0 };
+		JAWE::MATH::Vector3 m_position { 0,0,0 };
+		JAWE::MATH::Vector3 m_lastPosition { 0,0,0 };
 
         ParticleInstance m_instance;
 
@@ -48,20 +48,20 @@ namespace JAF {
 
         bool update(UpdateData* pData);
 
-        virtual Math::Matrix calculateTransform() const override;
-		Math::Quaternion calculateRotation(const Math::Vector3& up = {0,1,0}) const;
+        virtual JAWE::MATH::Matrix calculateTransform() const override;
+		JAWE::MATH::Quaternion calculateRotation(const JAWE::MATH::Vector3& up = {0,1,0}) const;
 
         void setType(int type) { m_type = type; }
         int getType() const { return m_type; }
 
-        virtual void setPosition(const Math::Vector3& position) override;
+        virtual void setPosition(const JAWE::MATH::Vector3& position) override;
 
         virtual void setRadius(const float radius) override
         {
             m_instance.radius = radius;
         }
 
-        virtual void setColor(const Math::Color& color) override
+        virtual void setColor(const JAWE::MATH::Color& color) override
         {
             m_instance.a = color.a();
             m_instance.r = color.r();

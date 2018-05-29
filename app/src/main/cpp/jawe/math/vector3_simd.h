@@ -1,21 +1,21 @@
 #pragma once
 
-#include "binary_reader.h"
-#include "../pch.h"
+#include "../io/binary_reader.h"
+#include "../../pch.h"
 #include "simd_object.h"
-#include "utils.h"
+#include "../utils.h"
 
 #include <math.h>
 #include <cmath>
 #include <arm_neon.h>
 
-namespace Math {
+namespace JAWE { namespace MATH {
 
 #define X 0
 #define Y 1
 #define Z 2
 
-struct Vector3 : public Math::SimdObject {
+struct Vector3 : public MATH::SimdObject {
 	private:
 		float m_data[4];
 
@@ -99,9 +99,7 @@ struct Vector3 : public Math::SimdObject {
 		void operator*=(const float rhs)
 		{
 			if(Utils::SIMD::ready)
-			{
 				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
-			}
 			else
 			{
 				m_data[X] *= rhs;
@@ -115,7 +113,11 @@ struct Vector3 : public Math::SimdObject {
 			if(Utils::SIMD::ready)
 			{
 				Vector3 v;
-				vst1q_f32(v.m_data, vmulq_n_f32(vld1q_f32(m_data), scale));
+#if defined(__aarch64__)
+                vst1q_f32(v.m_data, vdivq_f32(vld1q_f32(m_data), vdupq_n_f32(scale)));
+#else
+                vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vdupq_n_f32(scale))));
+#endif
 				return v;
 			}
 			return {m_data[X] / scale, m_data[Y] / scale, m_data[Z] / scale};
@@ -125,7 +127,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				vst1q_f32(m_data, vmulq_n_f32(vld1q_f32(m_data), rhs));
+#if defined(__aarch64__)
+                vst1q_f32(m_data, vdivq_f32(vld1q_f32(m_data), vdupq_n_f32(rhs)));
+#else
+                vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vdupq_n_f32(rhs))));
+#endif
 			}
 			else
 			{
@@ -213,7 +219,11 @@ struct Vector3 : public Math::SimdObject {
 			if(Utils::SIMD::ready)
 			{
 				Vector3 v;
+#if defined(__aarch64__)
+                vst1q_f32(v.m_data, vdivq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+#else
 				vst1q_f32(v.m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vld1q_dup_f32(rhs.m_data))));
+#endif
 				return v;
 			}
 			return {m_data[X] / rhs.m_data[X], m_data[Y] / rhs.m_data[Y], m_data[Z] / rhs.m_data[Z]};
@@ -223,7 +233,11 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vld1q_dup_f32(rhs.m_data))));
+#if defined(__aarch64__)
+                vst1q_f32(m_data, vdivq_f32(vld1q_f32(m_data), vld1q_f32(rhs.m_data)));
+#else
+			    vst1q_f32(m_data, vmulq_f32(vld1q_f32(m_data), vrecpeq_f32(vld1q_dup_f32(rhs.m_data))));
+#endif
 			}
 			else
 			{
@@ -240,6 +254,18 @@ struct Vector3 : public Math::SimdObject {
 		}
 
 		float lengthSq() const {
+		    if(Utils::SIMD::ready) {
+#if defined(__aarch64__)
+                float32x4_t v = vld1q_f32(m_data);
+                return vaddvq_f32(vmulq_f32(v, v));
+
+#else
+                float d[4];
+                float32x4_t v = vld1q_f32(m_data);
+                vst1q_f32(d, vmulq_f32(v, v));
+                return d[0] + d[1] + d[2];
+#endif
+            }
 			return std::abs(m_data[X] * m_data[X] + m_data[Y] * m_data[Y] + m_data[Z] * m_data[Z]);
 		}
 
@@ -265,12 +291,15 @@ struct Vector3 : public Math::SimdObject {
 		{
 			if(Utils::SIMD::ready)
 			{
-				float v[4];
+#if defined(__aarch64__)
+			    return vaddvq_f32(vmulq_f32(vld1q_f32(lhs.m_data), vld1q_f32(rhs.m_data)));
+#else
+                float v[4];
 				vst1q_f32(v, vmulq_f32(vld1q_f32(lhs.m_data), vld1q_f32(rhs.m_data)) );
 				return v[0] + v[1] + v[2];
-				// vaddvq_f32 not defined for som reason...
+#endif
 			}
 			return lhs.m_data[X] * rhs.m_data[X] + lhs.m_data[Y] * rhs.m_data[Y] + lhs.m_data[Z] * rhs.m_data[Z];
 		}
 	};
-}
+}}

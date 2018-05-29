@@ -2,7 +2,7 @@
 
 #include <vector>
 
-namespace JAF {
+namespace JAWE { namespace GFX {
 
     template <typename T>
     class InstanceCollector
@@ -44,4 +44,4 @@ namespace JAF {
             memcpy(&out[0], &m_instances[0], sizeof(T) * m_index);
         }
     };
-}
+}}

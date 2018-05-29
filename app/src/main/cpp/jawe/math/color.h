@@ -4,10 +4,10 @@
 #include "color_simd.h"
 #else
 
-#include "binary_reader.h"
+#include "../io/binary_reader.h"
 #include "simd_object.h"
 
-namespace Math {
+namespace JAWE { namespace MATH {
 
 #define R 0
 #define G 1
@@ -125,6 +125,6 @@ struct Color : public SimdObject {
 		const float *data() const { return &m_data[0]; }
 	};
 
-}
+}}
 
 #endif

@@ -1,7 +1,7 @@
 #include "framebuffer.h"
-#include "utils.h"
+#include "../utils.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
 	bool Framebuffer::init(int width, int height, bool alpha, DepthType depthType)
 	{
@@ -65,4 +65,4 @@ namespace JAWE {
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthBuffer, 0);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
-}
+} }

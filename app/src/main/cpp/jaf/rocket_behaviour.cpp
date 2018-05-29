@@ -3,7 +3,7 @@
 
 namespace JAF {
 
-	void RocketBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
+	void RocketBehaviour::start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset)
 	{
 		Particle* pParticle = dynamic_cast<Particle*>(pItem);
 		if(pParticle == nullptr)
@@ -18,7 +18,7 @@ namespace JAF {
 
 		pData->weights = m_position.deviate(m_positionDeviation);
 
-		Math::Vector3 p = m_offset;
+		JAWE::MATH::Vector3 p = m_offset;
 		switch(m_offsetType)
 		{
 			default:
@@ -28,7 +28,7 @@ namespace JAF {
 				p = m_offset - (p * m_tag * static_cast<float>(m_nrReleased));
 				break;
 			case CIRCLE:
-				p = Math::Matrix::transform(Math::Matrix::setRotate(0, static_cast<float>(m_nrReleased) * m_tag, 0), p, 0.0f);
+				p = JAWE::MATH::Matrix::transform(JAWE::MATH::Matrix::setRotate(0, static_cast<float>(m_nrReleased) * m_tag, 0), p, 0.0f);
 				pData->factors = p;
 				pData->factors.normalize();
 				pData->factors.y(1);
@@ -51,7 +51,7 @@ namespace JAF {
 		float limit = m_timeLimit + pData->deviation;
 		if(time >= limit)
 		{
-			Math::Matrix offset = pItem->calculateTransform();
+			JAWE::MATH::Matrix offset = pItem->calculateTransform();
 			for(auto& it : m_bursts)
 			{
 				for(UINT i=0; i<it.nr; ++i)
@@ -66,7 +66,7 @@ namespace JAF {
 
 		float delta = time / limit;
 
-		Math::Vector3 p = pData->offset + (m_position.update({0,0,0}, pData->weights, delta) * pData->factors);
+		JAWE::MATH::Vector3 p = pData->offset + (m_position.update({0,0,0}, pData->weights, delta) * pData->factors);
 
 		pItem->setPosition(p);
 		pItem->setRadius(0);
@@ -77,7 +77,7 @@ namespace JAF {
 			if((counter -= pUpdateData->dt) <= 0)
 			{
 				counter += m_trails[i].interval;
-				Math::Matrix t = pItem->calculateTransform();
+				JAWE::MATH::Matrix t = pItem->calculateTransform();
 				Particle* p = pUpdateData->pUpdater->fireParticle();
 				m_trails[i].pBehaviour->start(p, t);
 			}

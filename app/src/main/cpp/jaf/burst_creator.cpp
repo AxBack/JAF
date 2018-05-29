@@ -43,9 +43,9 @@ namespace JAF {
 		m_deviation.push(false);
 
 		m_releaseRotation.push( createRelease({180,180,180}, {0,1}, 0, nullptr));
-		m_releaseRotation.push( createRelease({90,360,90}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
-		m_releaseRotation.push( createRelease({45,360,45}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
-		m_releaseRotation.push( createRelease({10,360,10}, {1.5f, 2.0f}, 1, (Math::Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({90,360,90}, {1.5f, 2.0f}, 1, (Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({45,360,45}, {1.5f, 2.0f}, 1, (Vector3[]){{0,0,0}}));
+		m_releaseRotation.push( createRelease({10,360,10}, {1.5f, 2.0f}, 1, (Vector3[]){{0,0,0}}));
 
 		for(float v=0.0f; v < 0.3f; v+=0.05f)
 		{

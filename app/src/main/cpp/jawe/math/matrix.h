@@ -1,13 +1,15 @@
 #pragma once
-//
-// Created by AxB on 4/23/2017.
-//
+
+#if defined(__ARM_NEON)
+#include "matrix_simd.h"
+#else
+
 
 #include <string.h>
 #include "vector3.h"
 #include "quaternion.h"
 
-namespace Math {
+namespace JAWE { namespace MATH {
 
 	class Matrix {
 	private:
@@ -310,9 +312,9 @@ namespace Math {
 
 		static Vector3 getOrientation(Matrix& m)
 		{
-			float x = TO_DEGREES(atan2f(m.m_data[M10], m.m_data[M11]));
-			float y = TO_DEGREES(asinf(-m.m_data[M12]));
-			float z = TO_DEGREES(atan2f(-m.m_data[M02], m.m_data[M22]));
+			float x = _to_degrees(atan2f(m.m_data[M10], m.m_data[M11]));
+			float y = _to_degrees(asinf(-m.m_data[M12]));
+			float z = _to_degrees(atan2f(-m.m_data[M02], m.m_data[M22]));
 
 			return {x,y,z};
 		}
@@ -433,4 +435,6 @@ namespace Math {
             return transform(m, point) * inv_w;
 		}
 	};
-}
+}}
+
+#endif

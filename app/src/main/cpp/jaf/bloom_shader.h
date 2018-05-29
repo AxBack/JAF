@@ -1,22 +1,22 @@
 #pragma once
 
-#include "../jawe/shader.h"
-#include "../jawe/mesh.h"
+#include "../jawe/gfx/shader.h"
+#include "../jawe/gfx/mesh.h"
 #include "vertex.h"
-#include "../jawe/framebuffer.h"
-#include "../jawe/swap_chain.h"
-#include "../jawe/texture.h"
+#include "../jawe/gfx/framebuffer.h"
+#include "../jawe/gfx/swap_chain.h"
+#include "../jawe/gfx/texture.h"
 #include "../jawe/range.h"
 #include "../jawe/counter.h"
 
 namespace JAF {
 
-	class BloomShader : public JAWE::Shader
+	class BloomShader : public JAWE::GFX::Shader
 	{
 	private:
 
-		typedef JAWE::Mesh<TexturedVertex> Mesh;
-		typedef JAWE::SwapChain SwapChain;
+		typedef JAWE::GFX::Mesh<TexturedVertex> Mesh;
+		typedef JAWE::GFX::SwapChain SwapChain;
 
 		struct Pass
 		{
@@ -65,13 +65,13 @@ namespace JAF {
 			m_swapChain.release();
 		}
 
-		void render(const Mesh& mesh, const JAWE::SwapChain& framebuffer);
+		void render(const Mesh& mesh, const JAWE::GFX::SwapChain& framebuffer);
 
 		void updateSize(GLsizei width, GLsizei height)
 		{
 			GLsizei w = static_cast<GLsizei>( static_cast<float>(width) * 0.15f);
 			GLsizei h = static_cast<GLsizei>( static_cast<float>(height) * 0.15f);
-			m_swapChain.init(2, w,h, true, JAWE::Framebuffer::NONE);
+			m_swapChain.init(2, w,h, true, JAWE::GFX::Framebuffer::NONE);
 		}
 	};
 };

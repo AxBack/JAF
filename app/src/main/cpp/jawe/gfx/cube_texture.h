@@ -2,9 +2,9 @@
 
 
 #include "texture.h"
-#include "png_loader.h"
+#include "../io/png_loader.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
     class CubeTexture
     {
@@ -27,7 +27,7 @@ namespace JAWE {
 
         GLuint m_handle { UINT_MAX };
 
-        bool loadTexture(const std::string& file, GLuint target, PngLoader* pLoader) const;
+        bool loadTexture(const std::string& file, GLuint target, IO::PngLoader* pLoader) const;
 
     public:
 
@@ -43,11 +43,11 @@ namespace JAWE {
             m_handle = UINT_MAX;
         }
 
-        bool load(const std::string& path, PngLoader* pLoader);
+        bool load(const std::string& path, IO::PngLoader* pLoader);
 
         void bind()
         {
             glBindTexture(GL_TEXTURE_CUBE_MAP, m_handle);
         }
     };
-}
+}}

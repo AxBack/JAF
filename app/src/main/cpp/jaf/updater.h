@@ -2,9 +2,9 @@
 
 #include "../jawe/updater.h"
 #include "vertex.h"
-#include "../jawe/mesh.h"
+#include "../jawe/gfx/mesh.h"
 #include "../jawe/bank.h"
-#include "../jawe/instance_collector.h"
+#include "../jawe/gfx/instance_collector.h"
 #include "director.h"
 
 #include <random>
@@ -16,7 +16,7 @@ namespace JAF {
     private:
 
         typedef std::vector<ParticleInstance> instance_vec;
-        typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
+        typedef JAWE::GFX::InstancedMesh<PositionVertex, ParticleInstance> particle_mesh;
         typedef std::vector<Particle*> particle_vec;
 
         std::mt19937 m_generator { 840331 };
@@ -27,7 +27,7 @@ namespace JAF {
         std::mutex m_particleMutex;
         instance_vec m_particlesInstances;
 
-        InstanceCollector<ParticleInstance> m_particleCollector;
+        JAWE::GFX::InstanceCollector<ParticleInstance> m_particleCollector;
 
         particle_vec m_particles;
         particle_vec m_particlesToAdd;

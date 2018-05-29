@@ -1,7 +1,8 @@
 #pragma once
 
 #include <android/sensor.h>
-#include "vector3.h"
+#include "math/vector3.h"
+#include "counter.h"
 
 namespace JAWE {
 
@@ -14,8 +15,8 @@ namespace JAWE {
 		Counter m_counter;
 		bool m_active { false };
 
-		Math::Vector3 m_rotation { 0,0,0 };
-		Math::Vector3 m_delta { 0,0,0 };
+		MATH::Vector3 m_rotation { 0,0,0 };
+		MATH::Vector3 m_delta { 0,0,0 };
 
 		ASensorManager* m_pSensorManager { nullptr };
 		const ASensor* m_pGyroscope { nullptr };
@@ -51,7 +52,7 @@ namespace JAWE {
 			ASensorEventQueue_setEventRate(m_pEventQueue, m_pGyroscope, 10000);
 			m_rotation = {0,0,0};
 			m_counter.step();
-			LOGD("Sensor::Resumed");
+			_logd("Sensor::Resumed");
 		}
 
 		void pause()
@@ -62,7 +63,7 @@ namespace JAWE {
 			m_active = false;
 			ASensorEventQueue_disableSensor(m_pEventQueue, m_pGyroscope);
 			m_rotation = {0,0,0};
-			LOGD("Sensor::Paused");
+			_logd("Sensor::Paused");
 		}
 
 		void update()
@@ -80,18 +81,18 @@ namespace JAWE {
 			ASensorEvent event;
 			while(ASensorEventQueue_getEvents(m_pEventQueue, &event, 1) > 0)
 			{
-				m_delta += Math::Vector3{
-						TO_DEGREES(event.vector.x),
-						TO_DEGREES(event.vector.y),
-						TO_DEGREES(event.vector.z)
+				m_delta += MATH::Vector3{
+						_to_degrees(event.vector.x),
+						_to_degrees(event.vector.y),
+						_to_degrees(event.vector.z)
 				} * dt;
 			}
 
 			m_rotation += m_delta;
 		}
 
-		Math::Vector3 getRotation() const { return m_rotation; }
-		Math::Vector3 getDelta() const { return m_delta; }
+		MATH::Vector3 getRotation() const { return m_rotation; }
+		MATH::Vector3 getDelta() const { return m_delta; }
 
 	};
 };

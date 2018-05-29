@@ -23,7 +23,7 @@ Java_com_axb_jaf_NativeEngine_create(JNIEnv* pEnv, jobject /*thiz*/, jobject ass
 	AAssetManager* pAssetManager = AAssetManager_fromJava(pEnv, assetManager);
 	if(!pEngine->init(pAssetManager))
 	{
-		SAFE_DELETE(pEngine);
+		_safe_delete(pEngine);
 		return -1;
 	}
 
@@ -45,9 +45,9 @@ Java_com_axb_jaf_NativeEngine_destroy(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint i
 	if(it == engines.end())
 		return;
 
-	SAFE_DELETE(it->second);
+	_safe_delete(it->second);
 	engines.erase(it);
-	LOGI("engine destroyed");
+	_logi("engine destroyed");
 }
 
 JNIEXPORT jboolean JNICALL
@@ -57,7 +57,7 @@ Java_com_axb_jaf_NativeEngine_render(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id
 	if(it != engines.end())
 		return static_cast<jboolean>(it->second->render());
 	else
-		LOGI("No engine to render");
+		_logi("No engine to render");
 	return JNI_TRUE;
 }
 
@@ -68,7 +68,7 @@ Java_com_axb_jaf_NativeEngine_resume(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id
 	if(it != engines.end())
 		engines[id]->resume();
 	else
-		LOGE("No engine to resume");
+		_loge("No engine to resume");
 }
 
 JNIEXPORT void JNICALL
@@ -78,7 +78,7 @@ Java_com_axb_jaf_NativeEngine_pause(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id)
 	if(it != engines.end())
 		it->second->pause();
 	else
-		LOGE("No engine to pause");
+		_loge("No engine to pause");
 }
 
 JNIEXPORT void JNICALL
@@ -88,7 +88,7 @@ Java_com_axb_jaf_NativeEngine_setSize(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint i
 	if(it != engines.end())
 		it->second->updateSize(w,h);
 	else
-		LOGE("No engine to set size to");
+		_loge("No engine to set size to");
 }
 
 JNIEXPORT void JNICALL
@@ -98,7 +98,7 @@ Java_com_axb_jaf_NativeEngine_onTouch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint i
 	if(it != engines.end())
 		it->second->touch(x,y);
 	else
-		LOGE("No engine to touch");
+		_loge("No engine to touch");
 }
 
 JNIEXPORT void JNICALL
@@ -108,7 +108,7 @@ Java_com_axb_jaf_NativeEngine_onTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint id,
 	if(it != engines.end())
 		it->second->tap(x,y);
 	else
-		LOGE("No engine to touch");
+		_loge("No engine to touch");
 }
 
 JNIEXPORT void JNICALL
@@ -118,7 +118,7 @@ Java_com_axb_jaf_NativeEngine_onDoubleTap(JNIEnv* /*pEnv*/, jobject /*thiz*/, ji
 	if(it != engines.end())
 		it->second->doubleTap(x,y);
 	else
-		LOGE("No engine to touch");
+		_loge("No engine to touch");
 }
 
 JNIEXPORT void JNICALL
@@ -128,7 +128,7 @@ Java_com_axb_jaf_NativeEngine_onPinch(JNIEnv* /*pEnv*/, jobject /*thiz*/, jint i
 	if(it != engines.end())
 		it->second->pinch(diff);
 	else
-		LOGE("No engine to touch");
+		_loge("No engine to touch");
 }
 
 JNIEXPORT void JNICALL
@@ -138,7 +138,7 @@ Java_com_axb_jaf_NativeEngine_onOffsetChanged(JNIEnv* /*pEnv*/, jobject /*thiz*/
     if(it != engines.end())
         it->second->setOffset(x,y);
     else
-        LOGE("No engine to touch");
+        _loge("No engine to touch");
 }
 
 JNIEXPORT void JNICALL

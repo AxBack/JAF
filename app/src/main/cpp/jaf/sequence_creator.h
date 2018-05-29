@@ -2,7 +2,7 @@
 
 #include "balanced_collection.h"
 #include "../jawe/path.h"
-#include "../jawe/vector3.h"
+#include "../jawe/math/vector3.h"
 #include "sequence.h"
 #include "rocket_creator.h"
 #include "trail_creator.h"

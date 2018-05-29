@@ -3,16 +3,16 @@
 #include "../jawe/engine.h"
 #include "vertex.h"
 
-#include "../jawe/mesh.h"
+#include "../jawe/gfx/mesh.h"
 #include "../jawe/camera.h"
-#include "../jawe/shader.h"
+#include "../jawe/gfx/shader.h"
 #include "particle_shader.h"
 #include "updater.h"
 #include "bloom_shader.h"
 #include "../jawe/counter.h"
 #include "animator.h"
 #include "../jawe/sensor.h"
-#include "../jawe/swap_chain.h"
+#include "../jawe/gfx/swap_chain.h"
 #include "skybox_shader.h"
 
 namespace JAF {
@@ -27,9 +27,9 @@ namespace JAF {
 			K clamp(K v) { return std::min(max, std::max(v, min)); }
 		};
 
-        typedef Math::Vector3 Vector3;
-        typedef Math::Matrix Matrix;
-        typedef Math::Quaternion Quaternion;
+        typedef JAWE::MATH::Vector3 Vector3;
+        typedef JAWE::MATH::Matrix Matrix;
+        typedef JAWE::MATH::Quaternion Quaternion;
         typedef JAWE::Path<float> float_path;
 
 		JAWE::Sensor m_sensor;
@@ -49,14 +49,14 @@ namespace JAF {
 		float m_pitch {0};
 
         ParticleShader m_particleShader;
-        JAWE::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
+        JAWE::GFX::InstancedMesh<PositionVertex, ParticleInstance> m_particleMesh;
 
-		JAWE::SwapChain m_swapChain;
+		JAWE::GFX::SwapChain m_swapChain;
 
 		BloomShader m_bloomShader;
-		JAWE::Mesh<TexturedVertex> m_screenMesh;
+		JAWE::GFX::Mesh<TexturedVertex> m_screenMesh;
 
-		JAWE::Mesh<PositionVertex> m_skyboxMesh;
+		JAWE::GFX::Mesh<PositionVertex> m_skyboxMesh;
 		SkyboxShader m_skyboxShader;
 
         bool setupParticles(AAssetManager* pAssetManager);

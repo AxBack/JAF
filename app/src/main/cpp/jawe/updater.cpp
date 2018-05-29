@@ -22,7 +22,7 @@ namespace JAWE {
 
         m_running = true;
         m_workThread = std::thread([=]() { this->run(); });
-        LOGI("WorkerThread( Started: %d )", m_id);
+        _logi("WorkerThread( Started: %d )", m_id);
     }
 
     void Updater::stop() {
@@ -34,10 +34,10 @@ namespace JAWE {
         if (m_workThread.joinable()) {
             try {
                 m_workThread.join();
-                LOGI("WorkerThread( Ended: %d )", m_id);
+                _logi("WorkerThread( Ended: %d )", m_id);
             }
             catch (...) {
-                LOGE("WorkerThread( Failed to join: %d )", m_id);
+                _loge("WorkerThread( Failed to join: %d )", m_id);
             }
         }
     }

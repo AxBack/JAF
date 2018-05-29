@@ -2,7 +2,7 @@
 
 #include <atomic>
 #include "balanced_collection.h"
-#include "../jawe/vector3.h"
+#include "../jawe/math/vector3.h"
 #include "creator.h"
 #include "burst_behaviour.h"
 #include "settings.h"
@@ -15,7 +15,7 @@ namespace JAF {
 
 		struct Release
 		{
-			Math::Vector3 rot;
+			JAWE::MATH::Vector3 rot;
 			JAWE::Range<float> weight;
 			vec3_path_ptr pForced;
 		};
@@ -42,7 +42,7 @@ namespace JAF {
 		Release* m_pCurrentRelease;
 		bool m_deviate { false };
 
-		Release createRelease(const Math::Vector3& rot, const JAWE::Range<float>& range, UINT nrPoints, Vector3* pPoints)
+		Release createRelease(const JAWE::MATH::Vector3& rot, const JAWE::Range<float>& range, UINT nrPoints, Vector3* pPoints)
 		{
 			Release r { rot, range };
 			if(nrPoints > 0)

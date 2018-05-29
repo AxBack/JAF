@@ -3,11 +3,11 @@
 #include <android/asset_manager_jni.h>
 
 #include <vector>
-#include "matrix.h"
+#include "math/matrix.h"
 #include "../pch.h"
 
 #include "updater.h"
-#include "mesh.h"
+#include "gfx/mesh.h"
 
 namespace JAWE {
 
@@ -82,7 +82,7 @@ namespace JAWE {
         virtual void updateSize(int width, int height)
         {
 			std::lock_guard<std::mutex> _(m_mutex);
-            LOGI("engine(size updated: %d, %d )", width, height);
+            _logi("engine(size updated: %d, %d )", width, height);
             m_viewport[0] = m_viewport[1] = 0;
             m_viewport[2] = width;
             m_viewport[3] = height;

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../pch.h"
+#include "../../pch.h"
 #include <mutex>
 #include <vector>
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
 	class Framebuffer
 	{
@@ -91,4 +91,4 @@ namespace JAWE {
 
 		GLuint getDepthBuffer()const { return m_depth; }
 	};
-};
+}}

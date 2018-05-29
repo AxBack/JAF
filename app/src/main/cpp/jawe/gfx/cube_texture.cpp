@@ -1,12 +1,12 @@
 #include "cube_texture.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
     constexpr CubeTexture::Side CubeTexture::SIDES[];
 
-    bool CubeTexture::loadTexture(const std::string& file, GLuint target, PngLoader* pLoader) const
+    bool CubeTexture::loadTexture(const std::string& file, GLuint target, IO::PngLoader* pLoader) const
     {
-        Png data {file.c_str()};
+        IO::Png data {file.c_str()};
         if(!pLoader->load(data))
             return false;
 
@@ -16,7 +16,7 @@ namespace JAWE {
         return true;
     }
 
-    bool CubeTexture::load(const std::string& path, PngLoader* pLoader)
+    bool CubeTexture::load(const std::string& path, IO::PngLoader* pLoader)
     {
         clear();
 
@@ -35,4 +35,4 @@ namespace JAWE {
 
         return true;
     }
-}
+}}

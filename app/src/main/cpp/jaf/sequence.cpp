@@ -4,7 +4,7 @@
 
 namespace JAF {
 
-	void Sequence::fireRelevant(Behaviour* pBehaviour, const Math::Matrix& offset, int type)
+	void Sequence::fireRelevant(Behaviour* pBehaviour, const JAWE::MATH::Matrix& offset, int type)
 	{
 		Particle* p = m_pUpdater->fireParticle();
 		p->setType(type);

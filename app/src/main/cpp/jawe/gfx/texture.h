@@ -3,10 +3,10 @@
 #include <string>
 #include <android/asset_manager.h>
 #include <memory>
-#include "utils.h"
-#include "png_loader.h"
+#include "../utils.h"
+#include "../io/png_loader.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
 	class Texture
 	{
@@ -27,7 +27,7 @@ namespace JAWE {
 		}
 
 		bool init(GLenum format, GLsizei width, GLsizei height, const unsigned char* pPixels);
-		bool load(const char* file, PngLoader* pLoader);
+		bool load(const char* file, IO::PngLoader* pLoader);
 
 		void bind()
 		{
@@ -35,4 +35,4 @@ namespace JAWE {
 		}
 	};
 
-};
+}}

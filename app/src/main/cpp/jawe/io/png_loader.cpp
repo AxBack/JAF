@@ -1,11 +1,11 @@
 #include "png_loader.h"
-#include "com_ptr.h"
-#include "../pch.h"
+#include "../com_ptr.h"
+#include "../../pch.h"
 
 #include <png.h>
 #include <android/asset_manager.h>
 
-namespace JAWE {
+namespace JAWE { namespace IO {
 
     bool isPow(int n) { return (n & (n-1)) == 0; }
 
@@ -60,7 +60,7 @@ namespace JAWE {
 
         if(!isPow(data.width) || !isPow(data.height))
         {
-            LOGE("Can only load pow2 images for now");
+            _loge("Can only load pow2 images for now");
             return false;
         }
 
@@ -80,5 +80,4 @@ namespace JAWE {
 
         return true;
     }
-
-}
+}}

@@ -44,7 +44,7 @@ namespace JAWE { namespace IO {
 		};
 
 		template <typename T>
-		T read() { return read<T>(m_swapEndian); }
+        T read() { return read<T>(m_swapEndian); }
 
 		template <typename T>
 		T read(bool swapEndian)
@@ -73,18 +73,6 @@ namespace JAWE { namespace IO {
 		virtual ~BinaryFileReader()
 		{
 			m_file.close();
-		}
-	};
-
-	class BinaryStringReader : public BinaryReader
-	{
-		std::stringstream m_stream;
-
-	public:
-		BinaryStringReader(const std::string& string, bool swapEndian = true)
-			: m_stream(string, std::ios::in | std::ios::binary)
-			, BinaryReader(&m_stream, swapEndian)
-		{
 		}
 	};
 }}

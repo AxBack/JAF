@@ -1,10 +1,13 @@
 #pragma once
 
+#if defined(__ARM_NEON)
+#include "quaternion_simd.h"
+#else
 #include <math.h>
-#include "../pch.h"
+#include "../../pch.h"
 #include "vector3.h"
 
-namespace Math {
+namespace JAWE { namespace MATH {
 
 #define X 0
 #define Y 1
@@ -151,9 +154,9 @@ namespace Math {
 
         static Quaternion fromEulerAngles(float x, float y, float z)
         {
-			x = TO_RADIANS(x);
-			y = TO_RADIANS(y);
-			z = TO_RADIANS(z);
+			x = _to_radians(x);
+			y = _to_radians(y);
+			z = _to_radians(z);
 
             float cx = cosf(x * 0.5f);
             float sx = sinf(x * 0.5f);
@@ -185,7 +188,7 @@ namespace Math {
 
         static Quaternion fromAxisAngle(Vector3 axis, float degrees)
         {
-			degrees = TO_RADIANS(degrees);
+			degrees = _to_radians(degrees);
             float d = sinf(degrees * 0.5f);
             axis *= d;
 
@@ -242,7 +245,7 @@ namespace Math {
 					axis = Vector3::cross({1,0,0}, n1);
 
 				axis.normalize();
-				return {axis.x(), axis.y(), axis.z(), TO_RADIANS(180.0f)};
+				return {axis.x(), axis.y(), axis.z(), _to_radians(180.0f)};
 			}
 
 			axis = Vector3::cross(n1, n2);
@@ -254,6 +257,8 @@ namespace Math {
 			return std::move(q);
 		}
     };
-}
+}}
 
 #include "matrix.h"
+
+#endif

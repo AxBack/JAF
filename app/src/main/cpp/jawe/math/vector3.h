@@ -4,20 +4,20 @@
 #include "vector3_simd.h"
 #else
 
-#include "binary_reader.h"
-#include "../pch.h"
+#include "../io/binary_reader.h"
+#include "../../pch.h"
 #include "simd_object.h"
 
 #include <math.h>
 #include <cmath>
 
-namespace Math {
+namespace JAWE { namespace MATH {
 
 #define X 0
 #define Y 1
 #define Z 2
 
-struct Vector3 : public Math::SimdObject {
+struct Vector3 : public MATH::SimdObject {
     private:
 		float m_data[3] {0,0,0};
 
@@ -172,6 +172,6 @@ struct Vector3 : public Math::SimdObject {
 			return lhs.m_data[X] * rhs.m_data[X] + lhs.m_data[Y] * rhs.m_data[Y] + lhs.m_data[Z] * rhs.m_data[Z];
 		}
 	};
-}
+}}
 
 #endif

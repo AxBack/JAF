@@ -23,11 +23,11 @@ namespace JAF {
 
 		std::queue<Rocket> m_rockets;
 
-		Math::Matrix m_offset;
+		JAWE::MATH::Matrix m_offset;
 
 	protected:
 
-		void fireRelevant(Behaviour* pBehaviour, const Math::Matrix& offset, int type = -1);
+		void fireRelevant(Behaviour* pBehaviour, const JAWE::MATH::Matrix& offset, int type = -1);
 
 	public:
 

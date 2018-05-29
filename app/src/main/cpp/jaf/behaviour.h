@@ -1,9 +1,9 @@
 #pragma once
 
 #include <random>
-#include "../jawe/color.h"
+#include "../jawe/math/color.h"
 #include "../jawe/random.h"
-#include "../jawe/matrix.h"
+#include "../jawe/math/matrix.h"
 
 namespace JAF {
 
@@ -21,14 +21,14 @@ namespace JAF {
 
     public:
 
-		virtual Math::Matrix calculateTransform() const = 0;
+		virtual JAWE::MATH::Matrix calculateTransform() const = 0;
 
 		void setData(Data* pData) { m_pData = pData; }
 		Data* getData() { return m_pData; }
 
-        virtual void setPosition(const Math::Vector3& position) = 0;
+        virtual void setPosition(const JAWE::MATH::Vector3& position) = 0;
         virtual void setRadius(const float size) = 0;
-        virtual void setColor(const Math::Color& color) = 0;
+        virtual void setColor(const JAWE::MATH::Color& color) = 0;
     };
 
 	class Behaviour;
@@ -75,7 +75,7 @@ namespace JAF {
 			}
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) = 0;
+		virtual void start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset) = 0;
 		virtual void end(BehaviourInfluenced* pItem) = 0;
 		virtual bool update(UpdateData* pData, BehaviourInfluenced* pItem, float dt) = 0;
 	};

@@ -6,19 +6,22 @@
 #include <android/log.h>
 #include <cpu-features.h>
 
-#define SAFE_DELETE( p ) { if( p ) { delete ( p ); ( p ) = nullptr; } }
-#define SAFE_DELETE_ARRAY( p ) { if( p ) { delete [] ( p ); ( p ) = nullptr; } }
+#define _safe_delete( p ) { if( p ) { delete ( p ); ( p ) = nullptr; } }
+#define _safe_delete_array( p ) { if( p ) { delete [] ( p ); ( p ) = nullptr; } }
 
-#define BUFFER_OFFSET(i) ((char *)NULL + (i * 4))
+#define _buffer_offset(i) ((char *)NULL + (i * 4))
 
 #define UINT unsigned int
 
 #define LOG_TAG "jaf"
 
-#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
-#define LOGW(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
-#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
-#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
+#define _loge(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+#define _logw(...) __android_log_print(ANDROID_LOG_WARN, LOG_TAG, __VA_ARGS__)
+#define _logd(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+#define _logi(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 
-#define TO_RADIANS(degrees) ((degrees) * static_cast<float>(M_PI) / 180.0f)
-#define TO_DEGREES(radians) ((radians) * 180.0f / static_cast<float>(M_PI))
+#define _to_radians(degrees) ((degrees) * static_cast<float>(M_PI) / 180.0f)
+#define _to_degrees(radians) ((radians) * 180.0f / static_cast<float>(M_PI))
+
+#define _lock(x) std::lock_guard<std::mutex> _(x)
+#define _for_each(v) for(auto& it : v)

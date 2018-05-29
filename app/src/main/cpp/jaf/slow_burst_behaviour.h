@@ -9,7 +9,7 @@ namespace JAF {
 	private:
 
 		typedef std::vector<float> float_vec;
-		typedef JAWE::Path<Math::Vector3> vec3_path;
+		typedef JAWE::Path<JAWE::MATH::Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
 
 		struct Release
@@ -23,7 +23,7 @@ namespace JAF {
 
 		struct Data : public BehaviourInfluenced::Data
 		{
-			Math::Matrix offset;
+			JAWE::MATH::Matrix offset;
 			float_vec counters;
 		};
 
@@ -46,7 +46,7 @@ namespace JAF {
 			m_releases.push_back({nrPerIRelease, interval, pRotation, pBehaviour->incrementUsers(), nrPerCircle});
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
+		virtual void start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{

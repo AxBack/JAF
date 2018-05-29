@@ -31,11 +31,11 @@ namespace JAF {
         glVertexAttribDivisor(1, 1);
 
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstance), BUFFER_OFFSET(3));
+        glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(ParticleInstance), _buffer_offset(3));
         glVertexAttribDivisor(2, 1);
 
         glEnableVertexAttribArray(3);
-        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleInstance), BUFFER_OFFSET(4));
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(ParticleInstance), _buffer_offset(4));
         glVertexAttribDivisor(3, 1);
 
         glBindVertexArray(0);

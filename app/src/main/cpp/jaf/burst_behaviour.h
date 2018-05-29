@@ -14,11 +14,11 @@ namespace JAF {
 		typedef std::vector<float> float_vec;
 		struct Data : public BehaviourInfluenced::Data
 		{
-			Math::Matrix offset;
+			JAWE::MATH::Matrix offset;
 			float_vec positionWeights;
 
-			Math::Vector3 position;
-			Math::Vector3 force;
+			JAWE::MATH::Vector3 position;
+			JAWE::MATH::Vector3 force;
 
 			float deviation;
 			float_vec sizeWeights;
@@ -30,19 +30,19 @@ namespace JAF {
 		typedef JAWE::Bank<Data*> data_bank;
 		data_bank m_data {[this](){ return new Data(); }, [](Data* p) { delete p; }};
 
-		WeightedValue<Math::Vector3> m_position;
+		WeightedValue<JAWE::MATH::Vector3> m_position;
 		WeightedValue<float> m_size;
-		WeightedValue<Math::Color> m_color;
+		WeightedValue<JAWE::MATH::Color> m_color;
 
-		Math::Vector3 m_gravity { 0,0,0 };
+		JAWE::MATH::Vector3 m_gravity { 0,0,0 };
 
-		Math::Vector3 m_releaseRotation { 180,180,180 };
+		JAWE::MATH::Vector3 m_releaseRotation { 180,180,180 };
 
 		float m_positionDeviation { 0.0f };
 		float m_sizeDeviation = { 0.0f };
 		float m_colorDeviation = { 0.0f };
 
-		virtual Math::Matrix calculateOffset(const Math::Matrix& transform)
+		virtual JAWE::MATH::Matrix calculateOffset(const JAWE::MATH::Matrix& transform)
 		{
 			float x = m_releaseRotation.x();
 			float y = m_releaseRotation.y();
@@ -52,7 +52,7 @@ namespace JAF {
 			y = JAWE::Random::randf(-y, y);
 			z = JAWE::Random::randf(-z, z);
 
-			return Math::Matrix::multiply(transform, Math::Matrix::setRotate(x,y,z) );
+			return JAWE::MATH::Matrix::multiply(transform, JAWE::MATH::Matrix::setRotate(x,y,z) );
 		}
 
 		Data* getData()
@@ -74,9 +74,9 @@ namespace JAF {
 			m_colorDeviation = 0.0f;
 		}
 
-		void setGravity(const Math::Vector3& gravity){ m_gravity = gravity;  }
+		void setGravity(const JAWE::MATH::Vector3& gravity){ m_gravity = gravity;  }
 
-		void setReleaseRotation(const Math::Vector3& rot) { m_releaseRotation = rot; }
+		void setReleaseRotation(const JAWE::MATH::Vector3& rot) { m_releaseRotation = rot; }
 
 		void setDeviation(float position, float size, float color)
 		{
@@ -85,7 +85,7 @@ namespace JAF {
 			m_colorDeviation = color;
 		}
 
-		void add(float weight, JAWE::Path<Math::Vector3>* pPosition)
+		void add(float weight, JAWE::Path<JAWE::MATH::Vector3>* pPosition)
 		{
 			m_position.add(weight, pPosition);
 		}
@@ -95,7 +95,7 @@ namespace JAF {
 			m_size.add(weight, pSize);
 		}
 
-		void add(float weight, JAWE::Path<Math::Color>* pColor)
+		void add(float weight, JAWE::Path<JAWE::MATH::Color>* pColor)
 		{
 			m_color.add(weight, pColor);
 		}
@@ -107,7 +107,7 @@ namespace JAF {
 			m_color.normalize();
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
+		virtual void start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{

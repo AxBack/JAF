@@ -4,7 +4,7 @@
 
 namespace JAF {
 
-	void TrailBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
+	void TrailBehaviour::start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset)
 	{
 		Particle* pParticle = dynamic_cast<Particle*>(pItem);
 		if(pParticle == nullptr)
@@ -12,7 +12,7 @@ namespace JAF {
 
 		TransformData* pData = m_data.pop();
 
-		Math::Vector3 dir {JAWE::Random::randf(-m_dispersion, m_dispersion), 1, JAWE::Random::randf(-m_dispersion, m_dispersion)};
+		JAWE::MATH::Vector3 dir {JAWE::Random::randf(-m_dispersion, m_dispersion), 1, JAWE::Random::randf(-m_dispersion, m_dispersion)};
 		dir.normalize();
 		dir *= 50.0f;
 		pData->force = offset.transform(dir, 0.0f);

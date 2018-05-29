@@ -3,7 +3,7 @@
 #include <android/asset_manager.h>
 #include <memory>
 
-namespace JAWE {
+namespace JAWE { namespace IO {
 
     struct Png
     {
@@ -28,4 +28,4 @@ namespace JAWE {
         bool load(Png& data) const;
 
     };
-}
+}}

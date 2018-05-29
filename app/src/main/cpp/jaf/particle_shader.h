@@ -1,17 +1,17 @@
 #pragma once
 
-#include "../jawe/shader.h"
+#include "../jawe/gfx/shader.h"
 #include "vertex.h"
-#include "../jawe/mesh.h"
+#include "../jawe/gfx/mesh.h"
 #include "../jawe/camera.h"
 
 namespace JAF {
 
-    class ParticleShader : public JAWE::Shader
+    class ParticleShader : public JAWE::GFX::Shader
     {
     private:
 
-        typedef JAWE::InstancedMesh<PositionVertex, ParticleInstance> Mesh;
+        typedef JAWE::GFX::InstancedMesh<PositionVertex, ParticleInstance> Mesh;
 
         GLuint m_program { 0 };
         GLuint m_vao { 0 };

@@ -3,7 +3,11 @@
 #include <vector>
 #include <memory>
 #include "../pch.h"
-#include "quaternion.h"
+
+#if defined(__ARM_NEON)
+#include "math/vector3.h"
+#include "math/color.h"
+#endif
 
 namespace JAWE {
 
@@ -75,6 +79,11 @@ namespace JAWE {
         }
     };
 
+#if defined(__ARM_NEON)
+    template <> MATH::Vector3 Linear<MATH::Vector3>::traverse(float dt);
+    template <> MATH::Color Linear<MATH::Color>::traverse(float dt);
+#endif
+
 	template <typename T>
 	class Quadratic : public Traversable<T>
 	{
@@ -105,6 +114,12 @@ namespace JAWE {
 			return (((m_start * inv) + (m_middle * dt)) * inv) + (((m_middle * inv) + (m_end * dt)) * dt);
 		}
 	};
+
+#if defined(__ARM_NEON)
+    template <> MATH::Vector3 Quadratic<MATH::Vector3>::traverse(float dt);
+    template <> MATH::Color Quadratic<MATH::Color>::traverse(float dt);
+#endif
+
 
 	template <typename T>
 	class Cubic : public Traversable<T>
@@ -142,6 +157,10 @@ namespace JAWE {
 		}
 	};
 
+#if defined(__ARM_NEON)
+    template <> MATH::Vector3 Cubic<MATH::Vector3>::traverse(float dt);
+    template <> MATH::Color Cubic<MATH::Color>::traverse(float dt);
+#endif
 
     template <typename T>
     class Bezier : public Traversable<T>
@@ -180,6 +199,11 @@ namespace JAWE {
             return m_backup[0];
         }
     };
+
+#if defined(__ARM_NEON)
+    template <> MATH::Vector3 Bezier<MATH::Vector3>::traverse(float dt);
+    template <> MATH::Color Bezier<MATH::Color>::traverse(float dt);
+#endif
 
     template <typename T>
     class Path

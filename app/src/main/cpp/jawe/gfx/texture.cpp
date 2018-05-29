@@ -1,6 +1,6 @@
 #include "texture.h"
 
-namespace JAWE {
+namespace JAWE { namespace GFX {
 
     bool Texture::init(GLenum format, GLsizei width, GLsizei height, const unsigned char* pPixels)
     {
@@ -15,11 +15,11 @@ namespace JAWE {
         return true;
     }
 
-    bool Texture::load(const char *file, PngLoader* pLoader) {
-        Png data { file };
+    bool Texture::load(const char *file, IO::PngLoader* pLoader) {
+        IO::Png data { file };
         if(!pLoader->load(data))
             return false;
 
         return init(GL_RGBA, data.width, data.height, data.pPixels.get());
     }
-}
+} }

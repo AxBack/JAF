@@ -32,8 +32,8 @@ namespace JAF {
 
 		struct TransformData : public BehaviourInfluenced::Data
 		{
-			Math::Vector3 offset {0,0,0};
-			Math::Vector3 factors {1,1,1};
+			JAWE::MATH::Vector3 offset {0,0,0};
+			JAWE::MATH::Vector3 factors {1,1,1};
 			float deviation = 0.0f;
 			float_vec weights;
 			float_vec counters;
@@ -42,14 +42,14 @@ namespace JAF {
 		typedef JAWE::Bank<TransformData*> data_bank;
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
-		WeightedValue<Math::Vector3> m_position;
+		WeightedValue<JAWE::MATH::Vector3> m_position;
 		float m_positionDeviation = {0.0f};
 
 		burst_vec m_bursts;
 		trail_vec m_trails;
 
 		OffsetType m_offsetType { POINT };
-		Math::Vector3 m_offset { 0,0,0 };
+		JAWE::MATH::Vector3 m_offset { 0,0,0 };
 		float m_tag { 0 };
 		UINT m_nrReleased { 0 };
 
@@ -71,7 +71,7 @@ namespace JAF {
 			m_trails.clear();
 		}
 
-		void add(float weight, JAWE::Path<Math::Vector3>* pPosition)
+		void add(float weight, JAWE::Path<JAWE::MATH::Vector3>* pPosition)
 		{
 			m_position.add(weight, pPosition);
 		}
@@ -89,14 +89,14 @@ namespace JAF {
 			m_trails.push_back({ interval, pBehaviour });
 		}
 
-		void setOffset(OffsetType type, const Math::Vector3& v, float t)
+		void setOffset(OffsetType type, const JAWE::MATH::Vector3& v, float t)
 		{
 			m_offsetType = type;
 			m_offset = v;
 			m_tag = t;
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
+		virtual void start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{

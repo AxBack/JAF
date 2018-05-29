@@ -1,12 +1,12 @@
 #include "engine.h"
-#include "../jawe/png_loader.h"
-#include "../jawe/cube_texture.h"
+#include "../jawe/io/png_loader.h"
+#include "../jawe/gfx/cube_texture.h"
 
 namespace JAF {
 
     bool Engine::onInit(AAssetManager *pAssetManager)
     {
-        LOGI("JAF::Engine( Init begin: %d )", m_id);
+        _logi("JAF::Engine( Init begin: %d )", m_id);
 
 		if(!setupParticles(pAssetManager))
 			return false;
@@ -17,7 +17,7 @@ namespace JAF {
 		if(!setupSkybox(pAssetManager))
 			return false;
 
-        m_camera.updateProjection(1080,1920);
+        m_camera.setProjection(1080,1920);
         m_camera.updateView(Vector3(0,0,-100), Vector3(0,0,0), Vector3(0,1,0));
 
         if(!m_updater.init())
@@ -25,18 +25,18 @@ namespace JAF {
 
 		m_sensor.init(m_id);
 
-		JAWE::PngLoader loader(pAssetManager);
-		JAWE::CubeTexture t;
+		JAWE::IO::PngLoader loader(pAssetManager);
+		JAWE::GFX::CubeTexture t;
 		if(!t.load("skybox/", &loader))
 			return false;
 
-        LOGI("JAF::Engine( Init end: %d )", m_id);
+        _logi("JAF::Engine( Init end: %d )", m_id);
         return true;
     }
 
     bool Engine::setupParticles(AAssetManager* pAssetManager)
     {
-		LOGI("JAF::Engine( SetupParticles begin: %d )", m_id);
+		_logi("JAF::Engine( SetupParticles begin: %d )", m_id);
 
         PositionVertex vertices[] = {
                 {-1, 0, 0}, {0, 0.5f, 0}, {1, 0, 0}, {0, -0.5f, 0},
@@ -51,14 +51,14 @@ namespace JAF {
         if (!m_particleShader.init(pAssetManager, m_particleMesh))
             return false;
 
-		LOGI("JAF::Engine( SetupParticles end: %d )", m_id);
+		_logi("JAF::Engine( SetupParticles end: %d )", m_id);
 
 		return true;
     }
 
 	bool Engine::setupPostProcess(AAssetManager* pAssetManager)
 	{
-		LOGI("JAF::Engine( setupPostProcess begin: %d )", m_id);
+		_logi("JAF::Engine( setupPostProcess begin: %d )", m_id);
 
 		TexturedVertex vertices[] = {
 				{-1,-1,0,0,0},
@@ -75,14 +75,14 @@ namespace JAF {
 		if (!m_bloomShader.init(pAssetManager, m_screenMesh))
 			return false;
 
-		LOGI("JAF::Engine( setupPostProcess end: %d )", m_id);
+		_logi("JAF::Engine( setupPostProcess end: %d )", m_id);
 
 		return true;
 	}
 
 	bool Engine::setupSkybox(AAssetManager* pAssetManager)
 	{
-		LOGI("JAF::Engine( setupSkybox begin: %d )", m_id);
+		_logi("JAF::Engine( setupSkybox begin: %d )", m_id);
 
 		PositionVertex vertices[] = {
 				{-1,-1,0},
@@ -99,7 +99,7 @@ namespace JAF {
 		if(!m_skyboxShader.init(pAssetManager, m_skyboxMesh))
 			return false;
 
-		LOGI("JAF::Engine( setupSkybox end: %d )", m_id);
+		_logi("JAF::Engine( setupSkybox end: %d )", m_id);
 
 		return true;
 	}
@@ -112,9 +112,9 @@ namespace JAF {
         if (m_sizeChanged)
         {
             m_sizeChanged = false;
-            m_camera.updateProjection(m_viewport[2], m_viewport[3]);
+            m_camera.setProjection(m_viewport[2], m_viewport[3]);
 			m_bloomShader.updateSize(m_viewport[2], m_viewport[3]);
-			m_swapChain.init(4, m_viewport[2], m_viewport[3], true, JAWE::Framebuffer::READ_WRITE);
+			m_swapChain.init(4, m_viewport[2], m_viewport[3], true, JAWE::GFX::Framebuffer::READ_WRITE);
 			for(int i=0; i<4; ++i)
 			{
 				m_swapChain.set();
@@ -133,26 +133,26 @@ namespace JAF {
 
 		m_updater.updateInstances(m_particleMesh);
 		m_sensor.update();
-		Math::Vector3 at = {0,0,1};
+		JAWE::MATH::Vector3 at = {0,0,1};
 
 		if(Settings::immersive())
 		{
 			if(!m_sensor.active())
 				m_sensor.resume();
 
-			Math::Vector3 r = m_sensor.getDelta();
+			JAWE::MATH::Vector3 r = m_sensor.getDelta();
 			m_yaw = m_tiltRange.clamp(m_yaw + r.x());
 			m_pitch = m_tiltRange.clamp(m_pitch + r.y());
-			Math::Quaternion pitch = Math::Quaternion::fromAxisAngle({1, 0, 0}, m_tiltPath.traverse( m_yaw + 90));
-			Math::Quaternion yaw = Math::Quaternion::fromAxisAngle({0, 1, 0}, -m_tiltPath.traverse(m_pitch + 90));
-			//Math::Quaternion roll = Math::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
+			JAWE::MATH::Quaternion pitch = JAWE::MATH::Quaternion::fromAxisAngle({1, 0, 0}, m_tiltPath.traverse( m_yaw + 90));
+			JAWE::MATH::Quaternion yaw = JAWE::MATH::Quaternion::fromAxisAngle({0, 1, 0}, -m_tiltPath.traverse(m_pitch + 90));
+			//JAWE::MATH::Quaternion roll = JAWE::MATH::Quaternion::fromAxisAngle({0, 0,1}, r.z()* 0.1f);
 
 			at = Matrix::transform(Matrix::setRotate(pitch * yaw), at, 0.0);
 		}
 		else if(m_sensor.active())
 			m_sensor.pause();
 
-		Math::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
+		JAWE::MATH::Quaternion yaw = Quaternion::fromAxisAngle(0,1,0, m_rotation.traverse(m_offset));
 		Matrix rot;
 		Matrix::setRotate(rot,  yaw);
 		Vector3 pos = Matrix::transform(rot, {0,1000,-1000});

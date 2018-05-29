@@ -52,22 +52,22 @@ namespace JAF {
 		m_nrParticlesPerBurst.push(2);
 		m_nrParticlesPerBurst.push(3);
 
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,360,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,540,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,960,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,1080}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,-1080}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {1080,1080,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-1080,-1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,360,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,540,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,960,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,-1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1080,1080}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,-1080,-1080}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {1080,1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {-1080,-1080,0}}));
 
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,2160,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-2160,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1080,2160}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,-1080,-2160}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {2160,1080,0}}));
-		m_rotations.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-2160,-1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,2160,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,-2160,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1080,2160}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,-1080,-2160}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {2160,1080,0}}));
+		m_rotations.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {-2160,-1080,0}}));
 
 
 		m_nrPerCircleStep.push(5);

@@ -10,7 +10,7 @@ namespace JAF {
 	{
 	private:
 
-		typedef JAWE::Path<Math::Vector3> vec3_path;
+		typedef JAWE::Path<JAWE::MATH::Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
 
 		class ParticleCreator : public BurstCreator
