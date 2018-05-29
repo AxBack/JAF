@@ -33,7 +33,7 @@ namespace JAF {
         return true;
     }
 
-    void Particle::setPosition(const Math::Vector3& position)
+    void Particle::setPosition(const JAWE::MATH::Vector3& position)
     {
 		m_lastPosition = m_position;
 		m_position = position;
@@ -43,32 +43,32 @@ namespace JAF {
         m_instance.z = m_position.z();
     }
 
-    Math::Matrix Particle::calculateTransform() const
+	JAWE::MATH::Matrix Particle::calculateTransform() const
     {
-        Math::Vector3 up = {0,1,0};
+		JAWE::MATH::Vector3 up = {0,1,0};
 
-		Math::Matrix t;
-		Math::Matrix::setIdentity(t);
-		Math::Matrix::translate(t, m_position);
+		JAWE::MATH::Matrix t;
+		JAWE::MATH::Matrix::setIdentity(t);
+		JAWE::MATH::Matrix::translate(t, m_position);
 
-        Math::Quaternion rot = calculateRotation(up);
+		JAWE::MATH::Quaternion rot = calculateRotation(up);
 		if(!rot.isIdentity())
 		{
-			Math::Matrix r;
-			Math::Matrix::setRotate(r, rot);
+			JAWE::MATH::Matrix r;
+			JAWE::MATH::Matrix::setRotate(r, rot);
 			t = t * r;
 		}
 
         return std::move(t);
     }
 
-    Math::Quaternion Particle::calculateRotation(const Math::Vector3& up) const
+	JAWE::MATH::Quaternion Particle::calculateRotation(const JAWE::MATH::Vector3& up) const
     {
-        Math::Vector3 normal = m_position - m_lastPosition;
+		JAWE::MATH::Vector3 normal = m_position - m_lastPosition;
         if (normal.lengthSq() == 0)
-            return Math::Quaternion::identity();
+            return JAWE::MATH::Quaternion::identity();
 
         normal.normalize();
-        return Math::Quaternion::rotationBetweenNormals(normal, up);
+        return JAWE::MATH::Quaternion::rotationBetweenNormals(normal, up);
     }
 }

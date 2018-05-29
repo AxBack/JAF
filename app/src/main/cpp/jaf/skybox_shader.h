@@ -1,18 +1,18 @@
 #pragma once
 
-#include "../jawe/shader.h"
-#include "../jawe/mesh.h"
+#include "../jawe/gfx/shader.h"
+#include "../jawe/gfx/mesh.h"
 #include "vertex.h"
 #include "../jawe/camera.h"
-#include "../jawe/cube_texture.h"
+#include "../jawe/gfx/cube_texture.h"
 
 namespace JAF {
 
-    class SkyboxShader : public JAWE::Shader
+    class SkyboxShader : public JAWE::GFX::Shader
     {
     private:
 
-        typedef JAWE::Mesh<PositionVertex> Mesh;
+        typedef JAWE::GFX::Mesh<PositionVertex> Mesh;
 
         GLuint m_program { 0 };
         GLuint m_vao { 0 };
@@ -23,7 +23,7 @@ namespace JAF {
         GLint m_upLocation;
         GLint m_arLocation;
 
-        JAWE::CubeTexture m_texture;
+        JAWE::GFX::CubeTexture m_texture;
 
     public:
 

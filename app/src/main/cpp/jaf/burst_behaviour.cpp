@@ -4,7 +4,7 @@
 
 namespace JAF {
 
-	void BurstBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
+	void BurstBehaviour::start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset)
 	{
 		Particle* pParticle = dynamic_cast<Particle*>(pItem);
 		if(pParticle == nullptr)
@@ -19,7 +19,7 @@ namespace JAF {
 		else
 		{
 			float_vec dev = m_position.deviate(m_positionDeviation);
-			Math::Matrix t = calculateOffset(offset);
+			JAWE::MATH::Matrix t = calculateOffset(offset);
 			pData->position = offset.transform({0,0,0}, 1);
 			pData->force =  t.transform(m_position.update({0,0,0}, dev, JAWE::Random::randf(0.5f, 1.0f)), 0);
 		}
@@ -48,7 +48,7 @@ namespace JAF {
 
 		if(pData->positionWeights.size() > 0)
 		{
-			Math::Vector3 p = pData->offset.transform(m_position.update({0, 0, 0}, pData->positionWeights, delta), 1);
+			JAWE::MATH::Vector3 p = pData->offset.transform(m_position.update({0, 0, 0}, pData->positionWeights, delta), 1);
 			pItem->setPosition(p);
 		}
 		else

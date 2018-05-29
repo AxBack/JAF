@@ -14,8 +14,8 @@ namespace JAF {
 
 		struct TransformData : public BehaviourInfluenced::Data
 		{
-			Math::Vector3 position;
-			Math::Vector3 force;
+			JAWE::MATH::Vector3 position;
+			JAWE::MATH::Vector3 force;
 			float deviation;
 			float_vec sizeWeights;
 			float_vec colorWeights;
@@ -25,13 +25,13 @@ namespace JAF {
 		data_bank m_data {[](){return new TransformData(); }, [](TransformData* p) { delete p; }};
 
 		WeightedValue<float> m_size;
-		WeightedValue<Math::Color> m_color;
+		WeightedValue<JAWE::MATH::Color> m_color;
 
 		float m_dispersion { 2.0f };
 		float m_sizeDeviation = { 0.0f };
 		float m_colorDeviation = { 0.0f };
 
-		Math::Vector3 m_gravity { 0, -980, 0};
+		JAWE::MATH::Vector3 m_gravity { 0, -980, 0};
 
 	public:
 
@@ -50,14 +50,14 @@ namespace JAF {
 			m_sizeDeviation = size;
 			m_colorDeviation = color;
 		}
-		void setGravity(const Math::Vector3& gravity) { m_gravity = gravity; }
+		void setGravity(const JAWE::MATH::Vector3& gravity) { m_gravity = gravity; }
 
 		void add(float weight, JAWE::Path<float>* pSize)
 		{
 			m_size.add(weight, pSize);
 		}
 
-		void add(float weight, JAWE::Path<Math::Color>* pColor)
+		void add(float weight, JAWE::Path<JAWE::MATH::Color>* pColor)
 		{
 			m_color.add(weight, pColor);
 		}
@@ -68,7 +68,7 @@ namespace JAF {
 			m_color.normalize();
 		}
 
-		virtual void start(BehaviourInfluenced* pItem, const Math::Matrix& offset) override;
+		virtual void start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset) override;
 
 		virtual void end(BehaviourInfluenced* pItem) override
 		{

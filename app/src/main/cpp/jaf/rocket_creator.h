@@ -1,7 +1,7 @@
 #pragma once
 
 #include "balanced_collection.h"
-#include "../jawe/vector3.h"
+#include "../jawe/math/vector3.h"
 #include "creator.h"
 #include "rocket_behaviour.h"
 #include "trail_creator.h"
@@ -14,7 +14,7 @@ namespace JAF {
 	{
 	private:
 
-		typedef Math::Vector3 Vector3;
+		typedef JAWE::MATH::Vector3 Vector3;
 		typedef JAWE::Path<Vector3> vec3_path;
 		typedef std::shared_ptr<vec3_path> vec3_path_ptr;
 		typedef std::function<void(RocketBehaviour*)> behaviour_func;

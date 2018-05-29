@@ -36,7 +36,7 @@ namespace JAF {
 	protected:
 
 		Creator(UINT size)
-			: m_bank([](){return new T();}, [](T* p) { delete p; })
+			: m_bank([](){return new T();}, [](T* p) { _safe_delete(p); })
 		{
 			m_bank.resize(size);
 		}
@@ -60,8 +60,8 @@ namespace JAF {
 	{
 	protected:
 
-		typedef Math::Vector3 Vector3;
-		typedef Math::Color Color;
+		typedef JAWE::MATH::Vector3 Vector3;
+		typedef JAWE::MATH::Color Color;
 		typedef JAWE::Path<Vector3> vec3_path;
 		typedef JAWE::Path<float> float_path;
 		typedef JAWE::Path<Color> color_path;

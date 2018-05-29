@@ -4,7 +4,7 @@
 
 namespace JAF {
 
-	void SlowBurstBehaviour::start(BehaviourInfluenced* pItem, const Math::Matrix& offset)
+	void SlowBurstBehaviour::start(BehaviourInfluenced* pItem, const JAWE::MATH::Matrix& offset)
 	{
 		Particle* pParticle = dynamic_cast<Particle*>(pItem);
 		if(pParticle == nullptr)
@@ -39,14 +39,14 @@ namespace JAF {
 			pData->counters[i] -= pUpdateData->dt;
 			if(pData->counters[i] <= 0)
 			{
-				Math::Vector3 rot = pRelease->pRotation->traverse(delta);
-				Math::Matrix direction = Math::Matrix::setRotate(rot.x(), rot.y(), rot.z());
-				Math::Matrix transform = pItem->calculateTransform() * direction;
+				JAWE::MATH::Vector3 rot = pRelease->pRotation->traverse(delta);
+				JAWE::MATH::Matrix direction = JAWE::MATH::Matrix::setRotate(rot.x(), rot.y(), rot.z());
+				JAWE::MATH::Matrix transform = pItem->calculateTransform() * direction;
 				float degrees = 360.0f / static_cast<float>(pRelease->nrPerCircle);
 				for(UINT o=0; o<pRelease->nrPerCircle; ++o)
 				{
 					float d = degrees * static_cast<float>(o);
-					Math::Matrix offset = transform * Math::Matrix::setRotate(0,d,0);
+					JAWE::MATH::Matrix offset = transform * JAWE::MATH::Matrix::setRotate(0,d,0);
 					pData->counters[i] += pRelease->interval;
 					for(UINT particle = 0; particle < pRelease->nrPerInterval; ++particle)
 					{

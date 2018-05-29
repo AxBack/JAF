@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../jawe/color.h"
+#include "../jawe/math/color.h"
 #include "../jawe/path.h"
-#include "../jawe/vector3.h"
+#include "../jawe/math/vector3.h"
 #include "behaviour.h"
 #include "sequence.h"
 #include "sequence_creator.h"

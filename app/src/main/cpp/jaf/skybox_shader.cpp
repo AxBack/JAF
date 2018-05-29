@@ -10,7 +10,7 @@ namespace JAF {
 
     bool SkyboxShader::init(AAssetManager *pAssetManager, const JAF::SkyboxShader::Mesh &mesh)
     {
-        JAWE::PngLoader loader(pAssetManager);
+        JAWE::IO::PngLoader loader(pAssetManager);
         if(!m_texture.load("skybox/", &loader))
             return false;
 

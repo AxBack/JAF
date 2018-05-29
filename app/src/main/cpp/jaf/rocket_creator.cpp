@@ -30,24 +30,24 @@ namespace JAF {
 		m_nrParticles.push(150);
 		m_nrParticles.push(200);
 
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,-300}, {0,1250,300}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,300}, {0,1250,-300}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,600}, {0,1500,0}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {0,1000,-600}, {0,1500,0}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {600,1000,0}, {0,1500,0}}));
-		m_positions.push(createPath(3, (Math::Vector3[]){{0,0,0}, {-600,1000,0}, {0,1500,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {-300,500,0}, {300,1250,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {300,500,0}, {-300,1250,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1000,-300}, {0,1250,300}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1000,300}, {0,1250,-300}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1000,600}, {0,1500,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1000,-600}, {0,1500,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {600,1000,0}, {0,1500,0}}));
+		m_positions.push(createPath(3, (JAWE::MATH::Vector3[]){{0,0,0}, {-600,1000,0}, {0,1500,0}}));
 
-		m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1500,-250}}));
-		m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {0,1500,250}}));
-		m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {-250,1500,0}}));
-		m_positions.push(createPath(2, (Math::Vector3[]){{0,0,0}, {250,1500,0}}));
+		m_positions.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1500,-250}}));
+		m_positions.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {0,1500,250}}));
+		m_positions.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {-250,1500,0}}));
+		m_positions.push(createPath(2, (JAWE::MATH::Vector3[]){{0,0,0}, {250,1500,0}}));
 
-		m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {0,400,500}, {500,800,0}, {0,1200,-200}}), 2.0f);
-		m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {0,400,-500}, {-500,800,0}, {0,1200,200}}), 2.0f);
-		m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {-500,400,0}, {0,800,500}, {200,1200,0}}), 2.0f);
-		m_positions.push(createPath(4, (Math::Vector3[]){{0,0,0}, {500,400,0}, {0,800,-500}, {-200,1200,0}}), 2.0f);
+		m_positions.push(createPath(4, (JAWE::MATH::Vector3[]){{0,0,0}, {0,400,500}, {500,800,0}, {0,1200,-200}}), 2.0f);
+		m_positions.push(createPath(4, (JAWE::MATH::Vector3[]){{0,0,0}, {0,400,-500}, {-500,800,0}, {0,1200,200}}), 2.0f);
+		m_positions.push(createPath(4, (JAWE::MATH::Vector3[]){{0,0,0}, {-500,400,0}, {0,800,500}, {200,1200,0}}), 2.0f);
+		m_positions.push(createPath(4, (JAWE::MATH::Vector3[]){{0,0,0}, {500,400,0}, {0,800,-500}, {-200,1200,0}}), 2.0f);
 	}
 
 	RocketBehaviour* RocketCreator::create()

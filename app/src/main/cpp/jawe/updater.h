@@ -33,7 +33,7 @@ namespace JAWE {
                 : m_running(false) {
             m_id = sThreadCounter;
             ++sThreadCounter;
-            LOGI("engine( Created: %d )", m_id);
+            _logi("engine( Created: %d )", m_id);
         }
 
         virtual ~Updater() {

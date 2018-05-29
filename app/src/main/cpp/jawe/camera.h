@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mutex>
-#include "matrix.h"
+#include "math/matrix.h"
 #include "path.h"
 
 namespace JAWE {
@@ -10,8 +10,8 @@ namespace JAWE {
 	{
 	private:
 
-		typedef Math::Matrix Matrix;
-		typedef Math::Vector3 Vector3;
+		typedef MATH::Matrix Matrix;
+		typedef MATH::Vector3 Vector3;
 
 		bool        m_vpDirty { true };
 		Matrix		m_viewProjection;
@@ -71,11 +71,17 @@ namespace JAWE {
             m_vpDirty = true;
         }
 
-		void updateProjection(float w, float h)
+		void setProjection(float w, float h)
 		{
 			m_aspectRatio = w / h;
-			Matrix::perspective(m_projection, 90.0f, w / h, m_zMin, m_zMax);
+			Matrix::perspective(m_projection, 90.0f, m_aspectRatio, m_zMin, m_zMax);
 			m_vpDirty = true;
+		}
+
+		void setOrtho(float w, float h)
+		{
+			m_aspectRatio = w / h;
+			Matrix::ortho(m_projection, -w*0.5f, w*0.5f, -h*0.5f, h*0.5f, m_zMin, m_zMax);
 		}
 	};
 

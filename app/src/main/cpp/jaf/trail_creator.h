@@ -1,7 +1,7 @@
 #pragma once
 
 #include "balanced_collection.h"
-#include "../jawe/vector3.h"
+#include "../jawe/math/vector3.h"
 #include "creator.h"
 #include "trail_behaviour.h"
 #include "settings.h"
