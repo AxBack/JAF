@@ -39,6 +39,7 @@ namespace JAF {
 
 		glDeleteShader(vs);
 		m_counter.step();
+
 		return true;
 	}
 
@@ -67,7 +68,7 @@ namespace JAF {
 		return pass;
 	}
 
-	void BloomShader::render(const Mesh& mesh, const SwapChain& swapChain)
+	void BloomShader::render(const Mesh& mesh, const SwapChain& swapChain, float alpha)
 	{
 		glDisable(GL_DEPTH_TEST);
 		glDisable(GL_CULL_FACE);
@@ -94,7 +95,7 @@ namespace JAF {
 		mesh.render();
 
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0,0,swapChain.getWidth(), swapChain.getHeight());
+		glViewport(0, 0, swapChain.getWidth(), swapChain.getHeight());
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -102,9 +103,12 @@ namespace JAF {
 
 		m_swapChain.step();
 
-		preparePass(m_finalPass, &swapChain, &m_swapChain);
-		glUniform1f(m_intensityLocation, m_intensityRange.smoothstep(m_counter.time()));
-		mesh.render();
+		if(alpha > 0.0f)
+		{
+			preparePass(m_finalPass, &swapChain, &m_swapChain);
+			glUniform1f(m_intensityLocation, alpha);
+			mesh.render();
+		}
 	}
 
 	void BloomShader::preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1, size_t offset1)

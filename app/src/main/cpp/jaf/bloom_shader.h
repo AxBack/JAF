@@ -8,6 +8,7 @@
 #include "../jawe/gfx/texture.h"
 #include "../jawe/range.h"
 #include "../jawe/counter.h"
+#include "animator.h"
 
 namespace JAF {
 
@@ -37,7 +38,6 @@ namespace JAF {
 
 		GLint m_intensityLocation;
 		JAWE::Counter m_counter;
-		JAWE::Range<float> m_intensityRange { 0.0f, 2.0f };
 
 		static Pass setupPass(const Mesh& mesh, GLuint vs, GLuint ps, const char* texture0, const char* texture1 = nullptr, const char* texture2 = nullptr, const char* texture3 = nullptr);
 		static void preparePass(const Pass& pass, const SwapChain* pTexture0, const SwapChain* pTexture1 = nullptr, size_t offset1 = 0);
@@ -65,7 +65,7 @@ namespace JAF {
 			m_swapChain.release();
 		}
 
-		void render(const Mesh& mesh, const JAWE::GFX::SwapChain& framebuffer);
+		void render(const Mesh& mesh, const JAWE::GFX::SwapChain& framebuffer, float alpha);
 
 		void updateSize(GLsizei width, GLsizei height)
 		{
@@ -74,4 +74,4 @@ namespace JAF {
 			m_swapChain.init(2, w,h, true, JAWE::GFX::Framebuffer::NONE);
 		}
 	};
-};
+}

@@ -58,10 +58,10 @@ namespace JAWE {
 
         bool render()
         {
+			std::lock_guard<std::mutex> _(m_mutex);
 			if(!m_initialized && m_pAssetManager)
 				m_initialized = onInit(m_pAssetManager);
 
-			std::lock_guard<std::mutex> _(m_mutex);
 			return m_initialized && onRender();
         }
 

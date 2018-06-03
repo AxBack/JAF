@@ -22,6 +22,7 @@ namespace JAF {
         GLint m_rightLocation;
         GLint m_upLocation;
         GLint m_arLocation;
+		GLint m_alphaLocation;
 
         JAWE::GFX::CubeTexture m_texture;
 
@@ -42,6 +43,6 @@ namespace JAF {
             }
         }
 
-        void render(const JAWE::Camera& camera, const Mesh& mesh);
+        void render(const JAWE::Camera& camera, const Mesh& mesh, float alpha);
     };
 }

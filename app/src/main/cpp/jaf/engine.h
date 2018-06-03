@@ -59,6 +59,8 @@ namespace JAF {
 		JAWE::GFX::Mesh<PositionVertex> m_skyboxMesh;
 		SkyboxShader m_skyboxShader;
 
+		Animator m_fadeIn;
+
         bool setupParticles(AAssetManager* pAssetManager);
         bool setupPostProcess(AAssetManager* pAssetManager);
 		bool setupSkybox(AAssetManager* pAssetManager);
@@ -74,6 +76,7 @@ namespace JAF {
 			if(Settings::immersive())
 				m_sensor.resume();
 			m_updater.resume();
+			m_fadeIn.start();
 		}
 
 		virtual void onPause() override

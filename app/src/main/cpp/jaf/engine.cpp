@@ -30,6 +30,8 @@ namespace JAF {
 		if(!t.load("skybox/", &loader))
 			return false;
 
+		m_fadeIn.init(-1, 1);
+
         _logi("JAF::Engine( Init end: %d )", m_id);
         return true;
     }
@@ -174,7 +176,9 @@ namespace JAF {
         glClearDepthf(1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		m_skyboxShader.render(m_camera, m_skyboxMesh);
+		float alpha = m_fadeIn.advance();
+
+		m_skyboxShader.render(m_camera, m_skyboxMesh, alpha);
 
 		m_swapChain.step();
 		m_swapChain.set();
@@ -192,7 +196,7 @@ namespace JAF {
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glViewport(m_viewport[0], m_viewport[1], m_viewport[2], m_viewport[3]);
 
-			m_bloomShader.render(m_screenMesh, m_swapChain);
+			m_bloomShader.render(m_screenMesh, m_swapChain, 1.0f);
 		}
 
         return true;

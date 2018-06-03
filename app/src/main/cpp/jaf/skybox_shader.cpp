@@ -7,6 +7,7 @@ namespace JAF {
 #define RIGHT "cameraRight"
 #define TEXTURE "uTexture"
 #define ASPECT_RATIO "ar"
+#define ALPHA "alpha"
 
     bool SkyboxShader::init(AAssetManager *pAssetManager, const JAF::SkyboxShader::Mesh &mesh)
     {
@@ -21,6 +22,7 @@ namespace JAF {
         m_upLocation = getLocation(m_program, UP);
         m_rightLocation = getLocation(m_program, RIGHT);
 		m_arLocation = getLocation(m_program, ASPECT_RATIO);
+		m_alphaLocation = getLocation(m_program, ALPHA);
 
         glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
@@ -32,22 +34,24 @@ namespace JAF {
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(PositionVertex), nullptr);
 
         glBindVertexArray(0);
+
         return true;
     }
 
-    void SkyboxShader::render(const JAWE::Camera& camera, const Mesh& mesh)
+    void SkyboxShader::render(const JAWE::Camera& camera, const Mesh& mesh, float alpha)
     {
-        glUseProgram(m_program);
+		glUseProgram(m_program);
 
-        glActiveTexture(GL_TEXTURE0);
-        m_texture.bind();
-        glUniform1f(m_textureLocation, 0);
+		glActiveTexture(GL_TEXTURE0);
+		m_texture.bind();
+		glUniform1f(m_textureLocation, 0);
 
-        glBindVertexArray(m_vao);
-        glUniform3fv(m_forwardLocation, 1, camera.getForward().data());
-        glUniform3fv(m_upLocation, 1, camera.getUp().data());
-        glUniform3fv(m_rightLocation, 1, camera.getRight().data());
+		glBindVertexArray(m_vao);
+		glUniform3fv(m_forwardLocation, 1, camera.getForward().data());
+		glUniform3fv(m_upLocation, 1, camera.getUp().data());
+		glUniform3fv(m_rightLocation, 1, camera.getRight().data());
 		glUniform1f(m_arLocation, camera.getAspectRatio());
-        mesh.render();
+		glUniform1f(m_alphaLocation, alpha);
+		mesh.render();
     }
 }
