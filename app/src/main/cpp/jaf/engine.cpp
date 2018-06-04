@@ -176,9 +176,7 @@ namespace JAF {
         glClearDepthf(1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		float alpha = m_fadeIn.advance();
-
-		m_skyboxShader.render(m_camera, m_skyboxMesh, alpha);
+		m_skyboxShader.render(m_camera, m_skyboxMesh, m_fadeIn.advance());
 
 		m_swapChain.step();
 		m_swapChain.set();
