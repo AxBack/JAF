@@ -5,10 +5,10 @@ android {
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.wallpaper.axb.jaf"
-        minSdkVersion 23
+        minSdkVersion 24
         targetSdkVersion 27
-        versionCode 6
-        versionName "0.4.0"
+        versionCode 8
+        versionName "0.4.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {

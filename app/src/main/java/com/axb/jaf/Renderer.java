@@ -29,7 +29,7 @@ public class Renderer implements GLSurfaceView.Renderer, SharedPreferences.OnSha
     protected boolean mIsActive = false;
 
     public Renderer(Context ctx) {
-        mContext = ctx;
+        mContext = ctx.createDeviceProtectedStorageContext();
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.axb.jaf;
 import android.app.Activity;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class MainActivity extends Activity {
 
     Toast mToast = null;
 
+    Context mDirectBootContext;
+
     /**
      * {@inheritDoc}
      */
@@ -47,6 +50,8 @@ public class MainActivity extends Activity {
 
         Button btn = findViewById(R.id.setBtn);
         btn.setOnClickListener((View v) -> setAsWallpaper());
+
+        mDirectBootContext = this.createDeviceProtectedStorageContext();
 
         setupComboBox(main ,R.string.interactive_label, R.string.interactive_desc, R.array.interactable_options, Renderer.INTERACTIVE_MODE, 2);
         //setupCheckBox(main, R.string.interactive_label, R.string.interactive_desc, Renderer.INTERACTIVE_MODE, true);
@@ -124,7 +129,7 @@ public class MainActivity extends Activity {
     }
 
     private SharedPreferences getPrefs() {
-        return this.getSharedPreferences("JAF", MODE_PRIVATE);
+        return mDirectBootContext.getSharedPreferences("JAF", MODE_PRIVATE);
     }
 
     private void updatePrefs(String key, boolean value) {
