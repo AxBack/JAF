@@ -17,8 +17,19 @@ namespace JAF {
 		if(!setupSkybox(pAssetManager))
 			return false;
 
-        m_camera.setProjection(1080,1920);
+		float w = 1080.0f;
+		float h = 1920.0f;
+        m_camera.setProjection(w, h);
         m_camera.updateView(Vector3(0,0,-100), Vector3(0,0,0), Vector3(0,1,0));
+
+		m_bloomShader.updateSize(w, h);
+		m_swapChain.init(4, w, h, true, JAWE::GFX::Framebuffer::READ_WRITE);
+		for(int i=0; i<4; ++i)
+		{
+			m_swapChain.set();
+			m_swapChain.clear();
+			m_swapChain.step();
+		}
 
         if(!m_updater.init())
             return false;
